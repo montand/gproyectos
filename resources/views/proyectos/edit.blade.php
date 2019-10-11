@@ -9,9 +9,9 @@
             method="POST" action="{{ route('proyectos.update', $proyecto) }} ">
 
             @method('PATCH')
-            <h1 class="display-4">Editar proyecto</h1>
+            <h1 class="text-secondary">Editar proyecto</h1>
             <hr>
-            @include('catproyectos._form', ['btnText' => 'Actualizar'])
+            @include('proyectos._form', ['btnText' => 'Actualizar'])
          </form>
       </div>
    </div>

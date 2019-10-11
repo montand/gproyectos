@@ -10,6 +10,9 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('criterios', function(){
+    return \App\Criterio::with('proyecto')->get();
+});
 
 Route::get('/', function () {
     return view('welcome');

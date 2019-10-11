@@ -14,9 +14,8 @@ class CreateAssignedCriteriosTable extends Migration
     public function up()
     {
         Schema::create('assigned_criterios', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->integer('criterioid')->unsigned();
-            $table->integer('elementoid')->unsigned();
+            $table->integer('proyecto_id')->unsigned();
+            $table->integer('criterio_id')->unsigned();
             $table->timestamps();
         });
     }

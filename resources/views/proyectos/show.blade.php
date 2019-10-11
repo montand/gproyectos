@@ -4,9 +4,10 @@
 
 <div class="container">
     <div class="bg-white p-5 shadow rounded">
-        <h1>{{ $proyecto->cclave }}-{{ $proyecto->cnombre }}</h1>
-        <p class="text-secondary">{{ $proyecto->cdescripcion }}</p>
-        <p class="text-secondary">{{ $proyecto->cjustificacion }}</p>
+        <h1 class="text-secondary">{{ $proyecto->cclave }}-{{ $proyecto->cnombre }}</h1>
+        <hr>
+        <p class="text-secondary">Descripción: {{ $proyecto->cdescripcion }}</p>
+        <p class="text-secondary">Justificación: {{ $proyecto->cjustificacion }}</p>
         <p class="text-secondary">Costo: {{ number_format($proyecto->ncosto) }}</p>
         <p class="text-secondary">Duración: {{ $proyecto->nduracion }}</p>
         <p class="text-secondary">Unidades HH: {{ number_format($proyecto->unidades_rh) }}</p>

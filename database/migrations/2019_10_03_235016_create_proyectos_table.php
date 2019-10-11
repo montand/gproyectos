@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCatproyectosTable extends Migration
+class CreateProyectosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateCatproyectosTable extends Migration
      */
     public function up()
     {
-        Schema::create('cat_proyectos', function (Blueprint $table) {
+        Schema::create('proyectos', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('cclave',15);
             $table->string('cnombre',150);
@@ -33,6 +33,6 @@ class CreateCatproyectosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('cat_proyectos');
+        Schema::dropIfExists('proyectos');
     }
 }

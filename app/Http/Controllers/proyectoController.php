@@ -21,7 +21,7 @@ class proyectoController extends Controller
      */
     public function index()
     {
-        return view('catproyectos.index', [
+        return view('proyectos.index', [
             'proyectos' => Proyecto::latest()->paginate()
         ]);
     }
@@ -33,7 +33,7 @@ class proyectoController extends Controller
      */
     public function create()
     {
-        return view('catproyectos.create', [
+        return view('proyectos.create', [
             'proyecto' => new Proyecto
         ]);
     }
@@ -87,7 +87,7 @@ class proyectoController extends Controller
      */
     public function show(Proyecto $proyecto)
     {
-        return view('catproyectos.show', [
+        return view('proyectos.show', [
             'proyecto' => $proyecto
         ]);
     }
@@ -100,7 +100,7 @@ class proyectoController extends Controller
      */
     public function edit(Proyecto $proyecto)
     {
-        return view('catproyectos.edit', [
+        return view('proyectos.edit', [
             'proyecto' => $proyecto
         ]);
     }

@@ -31,8 +31,7 @@
     <label for="Descripción">Descripción</label>
        <textarea class="form-control border-0 bg-light shadow-sm"
           name="cdescripcion"
-          placeholder="Descripción">
-          {{ $proyecto->cdescripcion ?? old('cdescripcion') }}
+          placeholder="Descripción">{{ $proyecto->cdescripcion ?? old('cdescripcion') }}
        </textarea>
 </div>
 
@@ -40,17 +39,27 @@
     <label for="justificacion">Justificación</label>
        <textarea class="form-control border-0 bg-light shadow-sm"
           name="cjustificacion"
-          placeholder="Justificación">
-          {{ $proyecto->cjustificacion ?? old('cjustificacion') }}
+          placeholder="Justificación">{{ $proyecto->cjustificacion ?? old('cjustificacion') }}
        </textarea>
 </div>
+
+{{-- <div class="form-group">
+    <label for="Criterios">Criterios</label>
+        <select class="selec" name="selcriterios" id="selcriterios">
+
+        </select>
+       <textarea class="form-control border-0 bg-light shadow-sm"
+          name="cdescripcion"
+          placeholder="Descripción">{{ $proyecto->cdescripcion ?? old('cdescripcion') }}
+       </textarea>
+</div> --}}
 
 <div class="form-group">
     <label for="costo">Costo</label>
        <input class="form-control bg-light shadow-sm @error('ncosto') is-invalid @else border-0 @enderror" type="text"
           name="ncosto"
           placeholder="Costo en USD"
-          value="{{ $proyecto->ncosto ?? old('ncosto') }} " >
+          value="{{ number_format($proyecto->ncosto ?? old('ncosto'), 2) }} " >
       @error('ncosto')
          <span class="invalid-feedback" role="alert">
             <strong>{{ $message }} </strong>
@@ -78,7 +87,7 @@
        <input class="form-control bg-light shadow-sm @error('unidades_rh') is-invalid @else border-0 @enderror" type="text"
           name="unidades_rh"
           placeholder="Unidades HH"
-          value="{{ $proyecto->unidades_rh ?? old('unidades_rh') }} " >
+          value="{{ number_format($proyecto->unidades_rh ?? old('unidades_rh'), 0) }} " >
       @error('unidades_rh')
          <span class="invalid-feedback" role="alert">
             <strong>{{ $message }} </strong>
@@ -87,4 +96,4 @@
 </div>
 
 <input class="btn btn-primary btn-lg btn-block" type="submit" value="{{ $btnText }} ">
-<a class="btn btn-link btn-block" href="{{ route('proyectos.index') }}">Cancelar</a>
+<a class="btn btn-outline-secondary btn-block" href="{{ route('proyectos.index') }}">Cancelar</a>

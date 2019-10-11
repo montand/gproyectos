@@ -14,9 +14,9 @@
          <form class="bg-white py-3 px-4 shadow rounded"
             method="POST" action="{{ route('proyectos.store') }} ">
 
-            <h1 class="display-4">Nuevo proyecto</h1>
+            <h1 class="text-secondary">Nuevo proyecto</h1>
             <hr>
-            @include('catproyectos._form', ['btnText' => 'Guardar'])
+            @include('proyectos._form', ['btnText' => 'Guardar'])
          </form>
       </div>
    </div>

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCatcriteriosTable extends Migration
+class CreateCriteriosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateCatcriteriosTable extends Migration
      */
     public function up()
     {
-        Schema::create('cat_criterios', function (Blueprint $table) {
+        Schema::create('criterios', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('cnombre');
             $table->timestamps();
@@ -27,6 +27,6 @@ class CreateCatcriteriosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('cat_criterios');
+        Schema::dropIfExists('criterios');
     }
 }
