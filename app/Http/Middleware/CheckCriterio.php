@@ -17,7 +17,7 @@ class CheckCriterio
     {
         $criterios = array_slice(func_get_args(), 2);
 
-        dd(Proyecto()->proyecto()->hasCriterios($criterios));
+        // dd(Proyecto()->proyecto()->hasCriterios($criterios));
 
        if ( Proyecto()->proyecto()->hasCriterios($criterios) ) {
             return $next($request);

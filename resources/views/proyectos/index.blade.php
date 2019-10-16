@@ -43,13 +43,15 @@
                             </span>
                         </a>
                         </td>
-                        <td class="text-right">{{ number_format($proy->ncosto,2) }}</td>
+                        <td class="text-right">{{ number_format($proy->ncosto) }}</td>
                         <td class="text-center">{{ $proy->nduracion }}</td>
                         <td>
+                            {{-- {{ dd($proy->criterios->implode('cnombre', ', ')) }} --}}
                             {{ $proy->criterios->implode('cnombre', ', ') }}
-                            {{-- @foreach ($proy->criterios as $criterio) --}}
-                                {{-- {{ $criterio->cnombre }} <br> --}}
-                            {{-- @endforeach --}}
+                            {{-- {{ $proy->criterios[0]->cnombre }} --}}
+{{--                             @forelse ($proy->criterios as $item)
+                                    {{ $item['cnombre'] }} <br>
+                            @endforeach --}}
                         </td>
                         <td>
                             <a class="btn btn-info btn-sm"

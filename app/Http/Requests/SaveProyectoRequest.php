@@ -33,6 +33,7 @@ class SaveProyectoRequest extends FormRequest
             'ncosto' => 'required',
             'nduracion' => 'required',
             'unidades_rh' => 'required',
+            'criterios' => 'nullable'
         ];
     }
 

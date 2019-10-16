@@ -27,4 +27,18 @@ class proyecto extends Model
       return $this->criterios->pluck('cnombre')
          ->intersect($criterios)->count();
    }
+
+   public function reverse_number_format($num){
+      return (float)str_replace(',', '', $num);
+   }
+
+   function remove_non_numerics($str){
+      $temp       = trim($str);
+      $result  = "";
+      $pattern    = '/[^0-9]*/';
+      $result     = preg_replace($pattern, '', $temp);
+
+      return $result;
+   }
+
 }

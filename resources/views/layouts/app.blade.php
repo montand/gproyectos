@@ -10,7 +10,7 @@
      <title>{{ config('app.name', 'SGP-AS14') }}</title>
 
      <!-- Scripts -->
-     <script src="{{ asset('js/app.js') }}" defer></script>
+     <script src="{{ asset('js/app.js') }}"></script>
 
      <!-- Fonts -->
      <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -18,12 +18,17 @@
 
      <!-- Styles -->
      <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+     <link href="{{ asset('select2-4.0.10/dist/css/select2.css') }}" rel="stylesheet">
+
 </head>
 <body>
    <div id="app" class="d-flex flex-column h-screen justify-content-between">
       <header>
          @include('_nav')
-         @include('_session-status')
+         {{-- @include('_session-status') --}}
+        @if (session()->has('status'))
+            <div class="alert alert-success"> {{ session('status') }} </div>
+        @endif
       </header>
 
       <main class="py-4">
@@ -34,5 +39,15 @@
          {{ config('app.name') }} | Copyright @ {{ date('Y') }}
       </footer>
   </div>
+   <script type="text/javascript" src="{{ asset('select2-4.0.10/dist/js/select2.js') }}"></script>
+   <script>
+      $(document).ready(function(){
+         $("#criterios").select2({
+            tags: true,
+            allowClear: true,
+            placeholder : "Seleccionar"
+         });
+      });
+   </script>
 </body>
 </html>

@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 
+use App\Criterio;
 use App\Proyecto;
-use Illuminate\Http\Request;
 use App\Http\Requests\SaveProyectoRequest;
+use Illuminate\Http\Request;
 
 class proyectoController extends Controller
 {
@@ -33,8 +34,13 @@ class proyectoController extends Controller
      */
     public function create()
     {
+        $criteriosTodos = Criterio::pluck('cnombre','id');
+        $criterios = [];
+        // dd($criterio);
         return view('proyectos.create', [
-            'proyecto' => new Proyecto
+            'proyecto' => new Proyecto,
+            'criterio' => $criterios,
+            'criteriosTodos' => $criteriosTodos
         ]);
     }
 
@@ -47,19 +53,6 @@ class proyectoController extends Controller
     public function store(SaveProyectoRequest $request)
     {
 
-        // Proyecto::create([
-        //     'cclave' => $request->cclave,
-        //     'cnombre' => $request->cnombre,
-        //     'cdescripcion' => $request->cdescripcion,
-        //     'cjustificacion' => $request->cjustificacion,
-        //     'ncosto' => $request->ncosto,
-        //     'nduracion' => $request->nduracion,
-        //     'unidades_rh' => $request->unidades_rh,
-        // ]);
-
-        // Proyecto::create($request->only('cclave','cnombre','cdescripcion','cjustificacion','ncosto','nduracion','unidades_rh'));
-
-        // Se elimina la validación ya que se implementó el request
         $campos = $request->validate([
             'cclave' => 'required',
             'cnombre' => 'required',
@@ -69,12 +62,7 @@ class proyectoController extends Controller
             'nduracion' => 'required',
             'unidades_rh' => 'required',
         ]);
-        Proyecto::create($campos);
-
-        // Si se usa request
-        // Proyecto::create( $request->validated() );
-
-        // Proyecto::create( $request->all() );
+        Proyecto::create($campos)->criterios()->sync($request->criterios);
 
         return redirect()->route('proyectos.index')->with('status', 'El proyecto fue creado con éxito');
     }
@@ -100,9 +88,18 @@ class proyectoController extends Controller
      */
     public function edit(Proyecto $proyecto)
     {
+        $criterios = $proyecto->criterios()->pluck('cnombre','id')->toArray();
+        $criteriosTodos = Criterio::pluck('cnombre','id');
+        $ncosto_numerico = (int)$proyecto->ncosto;
+        // $proyecto->merge(['ncosto' => $ncosto_numerico]);
+        // $proyecto->ncosto = (int)$proyecto->ncosto;
+        // dd($proyecto);
+
         return view('proyectos.edit', [
-            'proyecto' => $proyecto
-        ]);
+            'proyecto' => $proyecto,
+            'criterio' => $criterios,
+            'criteriosTodos' => $criteriosTodos
+        ])->with('ncosto', $ncosto_numerico);
     }
 
     /**
@@ -114,8 +111,18 @@ class proyectoController extends Controller
      */
     public function update(SaveProyectoRequest $request, proyecto $proyecto)
     {
+        // dd($request->ncosto);
+        $ncosto = $proyecto->remove_non_numerics($request->ncosto);
+        $urh = $proyecto->remove_non_numerics($request->unidades_rh);
+        // dd($ncosto);
+        $request->merge(['ncosto' => $ncosto]);
+        $request->merge(['unidades_rh' => $urh]);
+
         $proyecto->update( $request->validated() );
-        return redirect()->route('proyectos.show', $proyecto)
+        $proyecto->criterios()->sync($request->criterios);
+
+        // return redirect()->route('proyectos.show', $proyecto)
+        return back()
             ->with('status', 'El proyecto fue actualizado con éxito');
     }
 
