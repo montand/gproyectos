@@ -23,9 +23,12 @@
                   <a id="catalogosDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>Catálogos
                   </a>
                   <div class="dropdown-menu dropdown-menu-left" aria-labelledby="catalogosDropdown">
-{{--                      <a class="dropdown-item" href="{{ route('criterios.index') }}">
+                     <a class="dropdown-item" href="{{ route('elementos.index') }}">
+                        Elementos
+                     </a>
+                     <a class="dropdown-item" href="{{ route('criterios.index') }}">
                         Criterios
-                     </a> --}}
+                     </a>
                      <a class="dropdown-item" href="{{ route('proyectos.index') }}">
                         Proyectos
                      </a>

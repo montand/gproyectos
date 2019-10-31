@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
    <div class="row">
-      <div class="col-12 col-sm-10 col-lg-6 mx-auto">
+      <div class="col-12 col-lg-10 mx-auto">
       {{--    @if ($errors->any())
             <ul>
                @foreach ($errors->all() as $error)
@@ -16,9 +16,44 @@
 
             <h1 class="text-secondary">Nuevo proyecto</h1>
             <hr>
-            @include('proyectos._form', ['btnText' => 'Guardar'])
+            @include('proyectos.form', ['btnText' => 'Guardar', 'tipo' => 'New'])
          </form>
       </div>
    </div>
 </div>
+@endsection
+
+@section('scripts')
+   <script>
+      $(document).ready(function(){
+         let row_number = 1;
+         $("#add_row").click(function(e){
+            e.preventDefault();
+            let new_row_number = row_number - 1;
+            $('#product' + row_number).html($('#product' + new_row_number).html()).find('td:first-child');
+            $('#criterios_table').append('<tr id="product' + (row_number + 1) + '"></tr>');
+            row_number++;
+         });
+
+         $("#delete_row").click(function(e){
+            e.preventDefault();
+            if(row_number > 1){
+               $("#product" + (row_number - 1)).html('');
+               row_number--;
+            }
+         });
+
+         $("#criterios").select2({
+            tags: true,
+            allowClear: true,
+            placeholder : "Seleccionar"
+         });
+
+         $("#elementos").select2({
+            tags: true,
+            allowClear: true,
+            placeholder : "Seleccionar"
+         });
+      });
+   </script>
 @endsection

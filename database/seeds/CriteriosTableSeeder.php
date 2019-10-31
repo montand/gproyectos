@@ -12,7 +12,9 @@ class CriteriosTableSeeder extends Seeder
    */
    public function run()
    {
-      Criterio::truncate();
+      // DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+      // Criterio::truncate();
+      // DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
       Criterio::create([
          'cnombre'   => 'TIR'

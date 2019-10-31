@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Criterio;
+use App\Elemento;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class criterioController extends Controller
 {
@@ -26,7 +28,14 @@ class criterioController extends Controller
      */
     public function create()
     {
-        //
+        $elementosTodos = Elemento::get()->pluck('elelemento','id');
+        $elementos = [];
+        // dd($criterio);
+        return view('criterios.create', [
+            'criterio' => new Criterio,
+            'elemento' => $elementos,
+            'elementosTodos' => $elementosTodos
+        ]);
     }
 
     /**
@@ -37,7 +46,13 @@ class criterioController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $campos = $request->validate([
+            'cnombre' => 'required'
+        ]);
+
+        Criterio::create($campos)->elementos()->sync($request->elementos);
+
+        return redirect()->route('criterios.index')->with('status', 'El criterio fue creado con éxito');
     }
 
 
@@ -47,9 +62,18 @@ class criterioController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Criterio $criterio)
     {
-        //
+        // $elementos = $criterio->elementos()->get()->pluck('elelemento','id')->toArray();
+        $elementos = $criterio->elementos->pluck('elelemento','id')->toArray();
+        $elementosTodos = Elemento::get()->pluck('elelemento','id');
+         // dd($elementosTodos);
+
+        return view('criterios.edit', [
+            'criterio' => $criterio,
+            'elemento' => $elementos,
+            'elementosTodos' => $elementosTodos
+        ]);
     }
 
     /**
@@ -59,9 +83,13 @@ class criterioController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Criterio $criterio)
     {
-        //
+      $criterio->update( $request->all() );
+      $criterio->elementos()->sync($request->elementos);
+
+      return back()
+         ->with('status', 'El criterio fue actualizado con éxito');
     }
 
     /**
@@ -70,8 +98,10 @@ class criterioController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Criterio $criterio)
     {
-        //
+      $criterio->find($criterio->id)->elementos()->detach();
+      $criterio->delete();
+      return redirect()->route('criterios.index')->with('status', 'El criterio fue eliminado con éxito');
     }
 }

@@ -15,9 +15,10 @@ class CreateAssignedCriteriosTable extends Migration
     {
         Schema::create('assigned_criterios', function (Blueprint $table) {
             $table->integer('proyecto_id')->unsigned();
-            $table->foreign('proyecto_id')->references('id')->on('proyectos');
+            $table->foreign('proyecto_id')->references('id')->on('proyectos')->onDelete('cascade');
             $table->integer('criterio_id')->unsigned();
-            $table->foreign('criterio_id')->references('id')->on('criterios');
+            $table->foreign('criterio_id')->references('id')->on('criterios')->onDelete('cascade');
+            $table->integer('npuntos')->unsigned()->nullable();
             $table->timestamps();
         });
     }

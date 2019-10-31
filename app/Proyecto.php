@@ -17,6 +17,7 @@ class proyecto extends Model
 
    public function criterios(){
       return  $this->belongsToMany(Criterio::class, 'assigned_criterios')
+      ->withPivot('npuntos')
       ->withTimestamps();
    }
 
@@ -41,4 +42,9 @@ class proyecto extends Model
       return $result;
    }
 
+   // Query scope (para búsquedas)
+   public function scopeNombre($query, $nombre){
+      if ($nombre)
+         return $query->where('cnombre', 'LIKE', "%$nombre%");
+   }
 }

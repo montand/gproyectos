@@ -57,7 +57,7 @@ $('#criterios').append(newOption).trigger('change'); --}}
     </select>
 </div>
 
-{{dd($proyecto)}}
+{{-- {{dd($proyecto)}} --}}
 <div class="form-group">
     <label for="costo">Costo</label>
        <input class="form-control text-right bg-light shadow-sm @error('ncosto') is-invalid @else border-0 @enderror"

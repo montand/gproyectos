@@ -10,13 +10,17 @@
             </a>
         @endauth
         <nav class="navbar navbar-light bg-light pull-right">
-          <form class="form-inline navbar navbar-light bg-light pull-right">
-{{--             {!! Form::open(['route' => 'proyectos.index', 'method' => 'GET', class' => 'form-inline navbar navbar-light bg-light pull-right']) !!} --}}
-                <input class="form-control mr-sm-2" type="search" placeholder="Buscar nombre" aria-label="Buscar">
-{{--                 {!! Form::input('name', null, ['class' => 'form-control mr-sm-2','placeholder' => 'Buscar nombre', 'aria-label' => 'Buscar']) !!} --}}
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Buscar</button>
-            {{-- {!! Form::close() !!} --}}
-          </form>
+          {{-- <form class="form-inline navbar navbar-light bg-light pull-right"> --}}
+            {!! Form::open(['route' => 'proyectos.index', 'method' => 'GET', 'class' => 'form-inline navbar navbar-light bg-light pull-right']) !!}
+               <div class="form-group">
+                  {!! Form::text('nombre', null, ['class' => 'form-control mr-sm-2','placeholder' => 'Nombre']) !!}
+               </div>
+                {{-- <input type="search" class="form-control mr-sm-2" placeholder="Buscar nombre" aria-label="Buscar" value=""> --}}
+                <div class="form-group">
+                  <button type="submit" class="btn btn-outline-success my-2 my-sm-0">Buscar</button>
+                </div>
+            {!! Form::close() !!}
+          {{-- </form> --}}
         </nav>
     </div>
     <div class="table-responsive">
@@ -28,7 +32,7 @@
                     <th scope="col">Costo</th>
                     <th scope="col">Duración</th>
                     <th scope="col">Criterios</th>
-                    <th scope="col">Acciones</th>
+                    <th scope="col" colspan="3">Acciones</th>
                 </tr>
             </thead>
             <tbody>
@@ -47,21 +51,26 @@
                         <td class="text-center">{{ $proy->nduracion }}</td>
                         <td>
                             {{-- {{ dd($proy->criterios->implode('cnombre', ', ')) }} --}}
-                            {{ $proy->criterios->implode('cnombre', ', ') }}
+                            {{-- {{ $proy->criterios->implode('cnombre', ', ') }} --}}
+
                             {{-- {{ $proy->criterios[0]->cnombre }} --}}
-{{--                             @forelse ($proy->criterios as $item)
-                                    {{ $item['cnombre'] }} <br>
-                            @endforeach --}}
+                            <ul class="list-group">
+                               @forelse ($proy->criterios as $item)
+                                  <li class="list-group-item bg-transparent d-flex justify-content-between align-items-center">
+                                    {{ $item['cnombre'] }}
+                                    <span class="badge badge-primary badge-pill">
+                                       {{ $item->pivot->npuntos }}
+                                    </span>
+                                  </li>
+                               @endforeach
+                            </ul>
                         </td>
                         <td>
                             <a class="btn btn-info btn-sm"
-                                href="{{ route('criterios', $proy->id) }} ">Criterios
-                            </a>
-
-                            <a class="btn btn-info btn-sm"
                                 href="{{ route('proyectos.edit', $proy->id) }} ">Editar
                             </a>
-
+                        </td>
+                        <td>
                             <form style="display:inline"
                                 method="POST"
                                 action="{{ route('proyectos.destroy', $proy->id) }} ">
@@ -77,9 +86,9 @@
                         No hay proyectos para mostrar
                     </li>
                 @endforelse
-                {{ $proyectos->links() }}
             </tbody>
         </table>
+         {{ $proyectos->links() }}
     </div>
 
 {{--     <ul class="list-group">

@@ -12,7 +12,11 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
-      User::truncate();
+      // DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+      // User::truncate();
+      // DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+
+      factory(App\User::class, 5)->create();
 
       User::create([
          'name'   => 'Victor Lopez',

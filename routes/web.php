@@ -1,8 +1,8 @@
 <?php
 
-Route::get('criterios', function(){
-    return \App\Criterio::with('proyecto')->get();
-});
+// Route::get('criterios', function(){
+//     return \App\Criterio::with('proyecto')->get();
+// });
 
 Route::get('/', function () {
     return view('welcome');
@@ -12,11 +12,11 @@ Route::get('/main', function () {
     return view('main');
 })->name('main');
 
-Route::view('criterios', 'catcriterios')->name('criterios');
 Route::view('ejercicios', 'catejercicios')->name('ejercicios');
 
 Route::resource('proyectos', 'proyectoController');
-// Route::resource('criterios', 'criterioController');
+Route::resource('criterios', 'criterioController');
+Route::resource('elementos', 'elementoController');
 Route::resource('escenarios', 'escenarioController');
 
 Route::view('pmaestro', 'pmaestro.index')->name('pmaestro.index');

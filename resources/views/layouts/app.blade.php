@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
      <meta charset="utf-8">
@@ -19,8 +19,9 @@
      <!-- Styles -->
      <link href="{{ asset('css/app.css') }}" rel="stylesheet">
      <link href="{{ asset('select2-4.0.10/dist/css/select2.css') }}" rel="stylesheet">
-
+      @yield('styles')
 </head>
+
 <body>
    <div id="app" class="d-flex flex-column h-screen justify-content-between">
       <header>
@@ -39,15 +40,7 @@
          {{ config('app.name') }} | Copyright @ {{ date('Y') }}
       </footer>
   </div>
-   <script type="text/javascript" src="{{ asset('select2-4.0.10/dist/js/select2.js') }}"></script>
-   <script>
-      $(document).ready(function(){
-         $("#criterios").select2({
-            tags: true,
-            allowClear: true,
-            placeholder : "Seleccionar"
-         });
-      });
-   </script>
+   <script src="{{ asset('select2-4.0.10/dist/js/select2.js') }}"></script>
+   @yield('scripts')
 </body>
 </html>

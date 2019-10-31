@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-
+use DB;
 use App\Criterio;
 use App\Proyecto;
 use App\Http\Requests\SaveProyectoRequest;
@@ -20,11 +20,28 @@ class proyectoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return view('proyectos.index', [
-            'proyectos' => Proyecto::latest()->paginate()
-        ]);
+      // if($request){
+
+      //    $sql=trim($request->get('buscarTexto'));
+      //    $proyectos=DB::table('proyectos')->where('cnombre','LIKE','%'.$sql.'%')
+      //       ->orderBy('id','desc')
+      //       ->paginate(3);
+      //    return view('proyectos.index',["proyectos"=>$proyectos,"buscarTexto"=>$sql]);
+
+      // }
+
+      // $proyectos = Proyecto::with('criterios')->get();
+      $nombre = $request->get('cnombre');
+      $proyectos = Proyecto::orderBy('id','ASC')
+         ->nombre($nombre)
+         ->paginate(10);
+      return view('proyectos.index', compact('proyectos'));
+
+      // return view('proyectos.index', [
+      //    'proyectos' => Proyecto::latest()->paginate(10)
+      // ]);
     }
 
     /**
@@ -34,14 +51,17 @@ class proyectoController extends Controller
      */
     public function create()
     {
-        $criteriosTodos = Criterio::pluck('cnombre','id');
-        $criterios = [];
-        // dd($criterio);
-        return view('proyectos.create', [
-            'proyecto' => new Proyecto,
-            'criterio' => $criterios,
-            'criteriosTodos' => $criteriosTodos
-        ]);
+        // $criteriosTodos = Criterio::pluck('cnombre','id');
+        // $criterios = [];
+        // // dd($criterio);
+        // return view('proyectos.create', [
+        //     'proyecto' => new Proyecto,
+        //     'criterio' => $criterios,
+        //     'criteriosTodos' => $criteriosTodos
+        // ]);
+
+      $criterios = Criterio::all();
+      return view('proyectos.create', compact('criterios'));
     }
 
     /**
@@ -62,7 +82,17 @@ class proyectoController extends Controller
             'nduracion' => 'required',
             'unidades_rh' => 'required',
         ]);
-        Proyecto::create($campos)->criterios()->sync($request->criterios);
+
+         $proyecto = Proyecto::create($request->all());
+         // Proyecto::create($campos)->criterios()->sync($request->criterios);
+
+         $criterios = $request->input('products', []);
+         $puntos = $request->input('quantities', []);
+         for ($criterio=0; $criterio < count($criterios); $criterio++) {
+            if ($criterios[$criterio] != '') {
+               $proyecto->criterios()->attach($criterios[$criterio], ['npuntos' => $puntos[$criterio]]);
+            }
+         }
 
         return redirect()->route('proyectos.index')->with('status', 'El proyecto fue creado con éxito');
     }
@@ -88,18 +118,18 @@ class proyectoController extends Controller
      */
     public function edit(Proyecto $proyecto)
     {
-        $criterios = $proyecto->criterios()->pluck('cnombre','id')->toArray();
-        $criteriosTodos = Criterio::pluck('cnombre','id');
-        $ncosto_numerico = (int)$proyecto->ncosto;
-        // $proyecto->merge(['ncosto' => $ncosto_numerico]);
-        // $proyecto->ncosto = (int)$proyecto->ncosto;
-        // dd($proyecto);
+        // $criterios = $proyecto->criterios()->pluck('cnombre','id')->toArray();
+        // $criteriosTodos = Criterio::pluck('cnombre','id');
+        // $ncosto_numerico = (int)$proyecto->ncosto;
 
-        return view('proyectos.edit', [
-            'proyecto' => $proyecto,
-            'criterio' => $criterios,
-            'criteriosTodos' => $criteriosTodos
-        ])->with('ncosto', $ncosto_numerico);
+        // return view('proyectos.edit', [
+        //     'proyecto' => $proyecto,
+        //     'criterio' => $criterios,
+        //     'criteriosTodos' => $criteriosTodos
+        // ])->with('ncosto', $ncosto_numerico);
+      $criterios = Criterio::all();
+      $proyecto->load('criterios');
+      return view('proyectos.edit', compact('criterios','proyecto'));
     }
 
     /**
@@ -112,18 +142,30 @@ class proyectoController extends Controller
     public function update(SaveProyectoRequest $request, proyecto $proyecto)
     {
         // dd($request->ncosto);
-        $ncosto = $proyecto->remove_non_numerics($request->ncosto);
-        $urh = $proyecto->remove_non_numerics($request->unidades_rh);
-        // dd($ncosto);
-        $request->merge(['ncosto' => $ncosto]);
-        $request->merge(['unidades_rh' => $urh]);
+        // $ncosto = $proyecto->remove_non_numerics($request->ncosto);
+        // $urh = $proyecto->remove_non_numerics($request->unidades_rh);
+        // // dd($ncosto);
+        // $request->merge(['ncosto' => $ncosto]);
+        // $request->merge(['unidades_rh' => $urh]);
 
-        $proyecto->update( $request->validated() );
-        $proyecto->criterios()->sync($request->criterios);
+        // $proyecto->update( $request->validated() );
+        // $proyecto->criterios()->sync($request->criterios);
 
-        // return redirect()->route('proyectos.show', $proyecto)
-        return back()
-            ->with('status', 'El proyecto fue actualizado con éxito');
+        // // return redirect()->route('proyectos.show', $proyecto)
+        // return back()
+        //     ->with('status', 'El proyecto fue actualizado con éxito');
+         $proyecto->update($request->all());
+
+         $proyecto->criterios()->detach();
+         $criterios = $request->input('products', []);
+         $puntos = $request->input('quantities', []);
+         for ($criterio=0; $criterio < count($criterios); $criterio++) {
+            if ($criterios[$criterio] != '') {
+               $proyecto->criterios()->attach($criterios[$criterio], ['npuntos' => $puntos[$criterio]]);
+            }
+         }
+
+        return redirect()->route('proyectos.index')->with('status', 'El proyecto fue actualizado con éxito');
     }
 
     /**
@@ -134,8 +176,9 @@ class proyectoController extends Controller
      */
     public function destroy(proyecto $proyecto)
     {
-        $proyecto->delete();
-        return redirect()->route('proyectos.index')->with('status', 'El proyecto fue eliminado con éxito');
+         $proyecto->find($proyecto->id)->criterios()->detach();
+         $proyecto->delete();
+         return redirect()->route('proyectos.index')->with('status', 'El proyecto fue eliminado con éxito');
     }
 
 }
