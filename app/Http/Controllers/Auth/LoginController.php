@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
 
 class LoginController extends Controller
 {
@@ -25,7 +26,18 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/main';
+
+    // protected $redirectTo = '/';
+
+    public function authenticated(Request $request){
+
+      $request->session()->put('glo_periodo',$request->periodo);
+
+      return view('main');
+
+    }
+
+
 
     /**
      * Create a new controller instance.

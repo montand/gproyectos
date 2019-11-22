@@ -7,6 +7,11 @@ use Illuminate\Http\Request;
 
 class elementoController extends Controller
 {
+
+    function __construct(){
+        $this->middleware('auth');
+    }
+
    /**
     * Display a listing of the resource.
     *
@@ -15,7 +20,7 @@ class elementoController extends Controller
    public function index()
    {
       return view('elementos.index', [
-         'elementos' => Elemento::latest()->paginate()
+         'elementos' => Elemento::latest()->paginate(8)
       ]);
    }
 

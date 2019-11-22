@@ -12,7 +12,7 @@ class proyectoController extends Controller
 {
 
     public function __construct(){
-        $this->middleware('auth')->except('index','show');
+        $this->middleware('auth')->except('show');
     }
 
     /**
@@ -22,26 +22,14 @@ class proyectoController extends Controller
      */
     public function index(Request $request)
     {
-      // if($request){
 
-      //    $sql=trim($request->get('buscarTexto'));
-      //    $proyectos=DB::table('proyectos')->where('cnombre','LIKE','%'.$sql.'%')
-      //       ->orderBy('id','desc')
-      //       ->paginate(3);
-      //    return view('proyectos.index',["proyectos"=>$proyectos,"buscarTexto"=>$sql]);
-
-      // }
-
-      // $proyectos = Proyecto::with('criterios')->get();
-      $nombre = $request->get('cnombre');
+      $s = $request->input('s');
       $proyectos = Proyecto::orderBy('id','ASC')
-         ->nombre($nombre)
-         ->paginate(10);
-      return view('proyectos.index', compact('proyectos'));
+         ->search($s)
+         ->paginate(5);
+      // return $proyectos;
+      return view('proyectos.index', compact('proyectos', 's'));
 
-      // return view('proyectos.index', [
-      //    'proyectos' => Proyecto::latest()->paginate(10)
-      // ]);
     }
 
     /**

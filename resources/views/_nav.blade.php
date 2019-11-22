@@ -1,11 +1,8 @@
 <nav class="navbar navbar-light navbar-expand-lg bg-white shadow-sm">
    <div class="container">
+      <i class="fas fa-home fa-2x">&nbsp</i>
       <a class="navbar-brand"
-         @auth
-            href="{{ url('main') }}">
-         @else
-            href="{{ url('/') }}">
-         @endauth
+         href="{{ url('/') }}">
          {{ config('app.name', 'SGP_AS14') }}
       </a>
       <button class="navbar-toggler" type="button"
@@ -32,8 +29,8 @@
                      <a class="dropdown-item" href="{{ route('proyectos.index') }}">
                         Proyectos
                      </a>
-                     <a class="dropdown-item" href="{{ route('ejercicios') }}">
-                        Ejercicios
+                     <a class="dropdown-item" href="{{ route('periodos.index') }}">
+                        Periodos
                      </a>
                   </div>
                </li>
@@ -68,9 +65,15 @@
          <!-- Right Side Of Navbar -->
          <ul class="navbar-nav ml-auto">
             <!-- Authentication Links -->
+            @if (session()->has('glo_periodo'))
+               <li class="nav-item">
+                  <a class="nav-link font-weight-bolder">
+                     <i class="fas fa-calendar">&nbsp</i>{{ session('glo_periodo') }}</a>
+               </li>
+            @endif
             @guest
                <li class="nav-item">
-                  <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                  <a class="nav-link" href="{{ route('login') }}"><i class="fas fa-door-closed"></i> {{ __('Login') }}</a>
                </li>
                @if (Route::has('register'))
                   <li class="nav-item">
@@ -80,6 +83,7 @@
                @else
                <li class="nav-item dropdown">
                   <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                     <i class="fas fa-user-alt">&nbsp</i>
                      {{ Auth::user()->name }} <span class="caret"></span>
                   </a>
 
@@ -87,6 +91,7 @@
                      <a class="dropdown-item" href="{{ route('logout') }}"
                         onclick="event.preventDefault();
                            document.getElementById('logout-form').submit();">
+                        <i class="fas fa-sign-out-alt">&nbsp</i>
                         {{ __('Logout') }}
                      </a>
 

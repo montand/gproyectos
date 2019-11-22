@@ -9,6 +9,11 @@ use Illuminate\Support\Facades\DB;
 
 class criterioController extends Controller
 {
+
+    function __construct(){
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -17,7 +22,7 @@ class criterioController extends Controller
     public function index()
     {
         return view('criterios.index', [
-            'criterios' => Criterio::latest()->paginate()
+            'criterios' => Criterio::latest()->paginate(5)
         ]);
     }
 

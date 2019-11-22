@@ -1,23 +1,21 @@
 <?php
 
-// Route::get('criterios', function(){
-//     return \App\Criterio::with('proyecto')->get();
-// });
+// Route::get('/', function () {
+//     return view('welcome');
+// })->name('home');
 
 Route::get('/', function () {
-    return view('welcome');
-})->name('home');
-
-Route::get('/main', function () {
     return view('main');
 })->name('main');
 
-Route::view('ejercicios', 'catejercicios')->name('ejercicios');
+// Route::get('periodos', 'PeriodoController@index')->name('catperiodos');
+
 
 Route::resource('proyectos', 'proyectoController');
 Route::resource('criterios', 'criterioController');
 Route::resource('elementos', 'elementoController');
 Route::resource('escenarios', 'escenarioController');
+Route::resource('periodos', 'periodoController');
 
 Route::view('pmaestro', 'pmaestro.index')->name('pmaestro.index');
 Route::view('configuracion', 'configuracion.index')->name('configuracion.index');

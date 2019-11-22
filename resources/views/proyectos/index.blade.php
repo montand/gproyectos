@@ -10,17 +10,37 @@
             </a>
         @endauth
         <nav class="navbar navbar-light bg-light pull-right">
-          {{-- <form class="form-inline navbar navbar-light bg-light pull-right"> --}}
-            {!! Form::open(['route' => 'proyectos.index', 'method' => 'GET', 'class' => 'form-inline navbar navbar-light bg-light pull-right']) !!}
+
+            <form action="{{ route('proyectos.index') }}" method="get" class="form-inline navbar navbar-light bg-light pull-right">
                <div class="form-group">
-                  {!! Form::text('nombre', null, ['class' => 'form-control mr-sm-2','placeholder' => 'Nombre']) !!}
+                  <input type="text" class="form-control mr-sm-2" name="s" placeholder="Nombre" value="{{ isset($s) ? $s : '' }}">
                </div>
-                {{-- <input type="search" class="form-control mr-sm-2" placeholder="Buscar nombre" aria-label="Buscar" value=""> --}}
+
+               <div class="form-group">
+                  <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Buscar</button>
+               </div>
+
+            </form>
+
+{{--             {!! Form::open(['route' => 'proyectos.index', 'method' => 'GET', 'class' => 'form-inline navbar navbar-light bg-light pull-right']) !!}
+               <div class="form-group">
+                  {!! Form::text('elnombre', null, ['class' => 'form-control mr-sm-2','placeholder' => 'Nombre']) !!}
+               </div>
+
                 <div class="form-group">
                   <button type="submit" class="btn btn-outline-success my-2 my-sm-0">Buscar</button>
                 </div>
-            {!! Form::close() !!}
-          {{-- </form> --}}
+            {!! Form::close() !!} --}}
+
+{{--             {!!Form::open(array('url'=>'proyecto','method'=>'GET','autocomplete'=>'off','role'=>'search'))!!}
+               <div class="input-group">
+
+               <input type="text" name="buscarTexto" class="form-control" placeholder="Buscar texto" value="{{$buscarTexto}}">
+               <button type="submit"  class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
+               </div>
+            {!! Form::close() !!} --}}
+
+
         </nav>
     </div>
     <div class="table-responsive">
@@ -88,7 +108,7 @@
                 @endforelse
             </tbody>
         </table>
-         {{ $proyectos->links() }}
+         {{ $proyectos->appends(['s' => $s])->links() }}
     </div>
 
 {{--     <ul class="list-group">

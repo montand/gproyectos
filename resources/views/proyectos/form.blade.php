@@ -61,7 +61,7 @@
 
 {{-- {{ dd($proyecto ?? ''->ncosto) }} --}}
 <div class="form-group">
-    <label for="duracion">Duración</label>
+    <label for="duracion">Duración en meses</label>
        <input class="form-control text-right bg-light shadow-sm @error('nduracion') is-invalid @else border-0 @enderror"
           type="text"
           name="nduracion"

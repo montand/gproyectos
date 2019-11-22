@@ -15,7 +15,7 @@
          <thead>
             <tr class="d-flex text-center table-success">
                <th class="text-left col-sm-4">Nombre</th>
-               <th class="col-sm-5">Elementos</th>
+               <th class="col-sm-6">Elementos</th>
                <th class="col-sm-2" colspan="2">Acciones</th>
             </tr>
          </thead>
@@ -23,8 +23,18 @@
             @forelse ($criterios as $crits)
                <tr class="d-flex active small">
                   <td class="text-left col-sm-4">{{ $crits->cnombre }}</td>
-                  <td class="col-sm-5">
-                     {{ $crits->elementos->implode('elelemento', ', ') }}
+                  <td class="col-sm-6">
+                     {{-- {{ $crits->elementos->implode('elelemento', ', ') }} --}}
+                      <ul class="list-group">
+                         @forelse ($crits->elementos as $item)
+                            <li class="list-group-item bg-transparent d-flex justify-content-between align-items-center">
+                              {{ $item['cnombre'] }}
+                              <span class="badge badge-primary badge-pill">
+                                 {{ $item['npuntos'] }}
+                              </span>
+                            </li>
+                         @endforeach
+                      </ul>
                   </td>
                   <td class="col-sm-1">
                      <a class="btn btn-info btn-sm"
@@ -44,9 +54,9 @@
             @empty
                <li>No hay criterios para mostrar</li>
             @endforelse
-            {{ $criterios->links() }}
          </tbody>
       </table>
+      {{ $criterios->links() }}
    </div>
 </div>
 @endsection

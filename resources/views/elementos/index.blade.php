@@ -11,6 +11,7 @@
             </a>
         @endauth
     </div>
+    {{-- Tope costo : {{ number_format(h_topecosto(),2) }} &emsp; Tope RH : {{ number_format(h_toperh()) }} --}}
     <div class="table-responsive justify-content-center">
         <table class="table table-hover table-sm ">
             <thead>
@@ -48,9 +49,9 @@
                         No hay proyectos para mostrar
                     </li>
                 @endforelse
-                {{ $elementos->links() }}
             </tbody>
         </table>
+         {{ $elementos->links() }}
     </div>
 </div>
 

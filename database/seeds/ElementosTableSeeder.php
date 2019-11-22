@@ -60,5 +60,57 @@ class ElementosTableSeeder extends Seeder
       'cnombre' => 'Casi ningún riesgo',
       'npuntos' => '4'
       ]);
+      Elemento::create([
+      'cnombre' => 'No tiene riesgo',
+      'npuntos' => '5'
+      ]);
+      Elemento::create([
+      'cnombre' => 'Mayor que 36 meses',
+      'npuntos' => '0'
+      ]);
+      Elemento::create([
+      'cnombre' => 'De 30 a 36 meses',
+      'npuntos' => '1'
+      ]);
+      Elemento::create([
+      'cnombre' => 'De 24 a 36 meses',
+      'npuntos' => '2'
+      ]);
+      Elemento::create([
+      'cnombre' => 'De 18 a 24 meses',
+      'npuntos' => '3'
+      ]);
+      Elemento::create([
+      'cnombre' => 'De 12 a 18 meses',
+      'npuntos' => '4'
+      ]);
+      Elemento::create([
+      'cnombre' => 'Menos de 12 meses',
+      'npuntos' => '5'
+      ]);
+      Elemento::create([
+      'cnombre' => 'No tiene impacto',
+      'npuntos' => '0'
+      ]);
+      Elemento::create([
+      'cnombre' => 'Casi no tiene impacto',
+      'npuntos' => '1'
+      ]);
+      Elemento::create([
+      'cnombre' => 'Poco impacto',
+      'npuntos' => '2'
+      ]);
+      Elemento::create([
+      'cnombre' => 'Mediano impacto',
+      'npuntos' => '3'
+      ]);
+      Elemento::create([
+      'cnombre' => 'Mucho impacto',
+      'npuntos' => '4'
+      ]);
+      Elemento::create([
+      'cnombre' => 'Impacto directo',
+      'npuntos' => '5'
+      ]);
    }
 }

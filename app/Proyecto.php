@@ -43,8 +43,9 @@ class proyecto extends Model
    }
 
    // Query scope (para búsquedas)
-   public function scopeNombre($query, $nombre){
-      if ($nombre)
-         return $query->where('cnombre', 'LIKE', "%$nombre%");
+   public function scopeSearch($query, $s){
+      // if ($s)
+         return $query->where('cnombre', 'LIKE', "%$s%");
+            // ->orWhere('otroCampo', 'LIKE', '%' . $s . '%');
    }
 }

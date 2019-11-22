@@ -18,6 +18,7 @@ class ProyectosTableSeeder extends Seeder
       factory(App\Proyecto::class, 100)->create()->each(function(App\Proyecto $proy){
         $proy->criterios()->sync([
             rand(1,5),
+            rand(1,5),
             rand(1,5)
         ]);
       });
