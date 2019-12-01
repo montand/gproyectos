@@ -9,14 +9,17 @@
         <p class="text-secondary"><b>Descripción:</b> {{ $proyecto->cdescripcion }}</p>
         <p class="text-secondary"><b>Justificación:</b> {{ $proyecto->cjustificacion }}</p>
         <p class="text-secondary"><b>Costo:</b> {{ number_format($proyecto->ncosto) }}</p>
-        <p class="text-secondary"><b>Criterios:</b></p>
-        @foreach ($proyecto->criterios as $proy)
-            <span class="text-secondary ml-3">
-                {{ $proy->cnombre }}<br>
-            </span>
-        @endforeach
         <p class="text-secondary"><b>Duración:</b> {{ $proyecto->nduracion }}</p>
         <p class="text-secondary"><b>Unidades HH:</b> {{ number_format($proyecto->unidades_rh) }}</p>
+        <p class="text-secondary"><b>Criterios:</b></p>
+        <ul class="list-group">
+        @foreach ($proyecto->criteriosxproy as $proy)
+            <span class="text-secondary ml-3">
+                <li class="list-group-item p-1">{{ $proy->pivot->npuntos }} - {{ $proy->cnombre }}</li>
+            </span>
+        @endforeach
+        </ul>
+        <hr>
         <div class="d-flex justify-content-between align-items-center">
             <a href="{{ route('proyectos.index') }}">Regresar</a>
             <div class="btn-group btn-group-sm">

@@ -15,19 +15,19 @@ class proyecto extends Model
       'ncosto','nduracion','unidades_rh'
    ];
 
-   public function criterios(){
+   public function criteriosxproy(){
       return  $this->belongsToMany(Criterio::class, 'assigned_criterios')
       ->withPivot('npuntos')
       ->withTimestamps();
    }
 
-   public function hasCriterios(array $criterios){
-      dd($this->criterios->pluck('cnombre')
-         ->intersect($criterios)->count());
+   // public function hasCriterios(array $criterios){
+   //    dd($this->criterios->pluck('cnombre')
+   //       ->intersect($criterios)->count());
 
-      return $this->criterios->pluck('cnombre')
-         ->intersect($criterios)->count();
-   }
+   //    return $this->criterios->pluck('cnombre')
+   //       ->intersect($criterios)->count();
+   // }
 
    public function reverse_number_format($num){
       return (float)str_replace(',', '', $num);

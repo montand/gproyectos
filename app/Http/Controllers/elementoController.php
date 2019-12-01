@@ -45,12 +45,12 @@ class elementoController extends Controller
    public function store(Request $request)
    {
         $campos = $request->validate([
-            'cnombre' => 'required',
+            'cnombre' => 'required|min:5',
             'npuntos' => 'required'
         ]);
         Elemento::create($campos);
 
-        return redirect()->route('elementos.index')->with('status', 'El elemento fue creado con éxito');
+        return redirect()->route('elementos.index')->with('success', 'El elemento fue creado con éxito');
    }
 
    /**
@@ -78,10 +78,13 @@ class elementoController extends Controller
    public function update(Request $request, Elemento $elemento)
    {
       // dd($request->ncosto);
+      $valida = $request->validate([
+         'cnombre' => 'required|min:5',
+      ]);
       $elemento->update( $request->all() );
 
-      return back()
-         ->with('status', 'El elemento fue actualizado con éxito');
+      return redirect()->route('elementos.index')
+         ->with('success', 'El elemento fue actualizado con éxito');
    }
 
    /**
@@ -92,7 +95,9 @@ class elementoController extends Controller
     */
    public function destroy(Elemento $elemento)
    {
+
         $elemento->delete();
-        return redirect()->route('elementos.index')->with('status', 'El elemento fue eliminado con éxito');
+        return redirect()->route('elementos.index')->with('success', 'El elemento fue eliminado con éxito');
+
    }
 }

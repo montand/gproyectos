@@ -2,11 +2,19 @@
 
 namespace App\Http\Controllers;
 
+Use Alert;
 use App\Escenario;
+use App\Criterio;
+use App\Elemento;
 use Illuminate\Http\Request;
 
 class escenarioController extends Controller
 {
+
+    function __construct(){
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -14,8 +22,9 @@ class escenarioController extends Controller
      */
     public function index()
     {
+
         return view('escenarios.index', [
-            'escenario' => Escenario::latest()->paginate()
+            'escenario' => Escenario::latest()->paginate(8)
         ]);
     }
 
@@ -26,7 +35,19 @@ class escenarioController extends Controller
      */
     public function create()
     {
-        //
+         // $criteriosTodos = Criterio::pluck('cnombre','id');
+         $criteriosTodos = Criterio::all();
+         $elementos = Elemento::all();
+
+         return view('escenarios.create', [
+            'escenario' => new Escenario,
+            'criteriosTodos' => $criteriosTodos,
+            'elementos' => $elementos
+         ]);
+
+         // return view('escenarios.create', [
+         //    'escenario' => new Escenario
+         // ]);
     }
 
     /**

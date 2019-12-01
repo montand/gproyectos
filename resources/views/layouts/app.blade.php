@@ -19,6 +19,12 @@
      <!-- Styles -->
      <link href="{{ asset('css/app.css') }}" rel="stylesheet">
      <link href="{{ asset('select2-4.0.10/dist/css/select2.css') }}" rel="stylesheet">
+
+      <!-- dataTables -->
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.css">
+      <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css">
+      <!-- <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css"> -->
+
       @yield('styles')
 </head>
 
@@ -41,6 +47,15 @@
       </footer>
   </div>
    <script src="{{ asset('select2-4.0.10/dist/js/select2.js') }}"></script>
+
+   <!-- dataTables -->
+   <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+   <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+   <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>
+
+   @include('sweetalert::alert')
    @yield('scripts')
 </body>
+
+
 </html>

@@ -2,7 +2,7 @@
 
 namespace App;
 
-use App\Elemento;
+// use App\Elemento;
 use Illuminate\Database\Eloquent\Model;
 
 class Criterio extends Model
@@ -10,12 +10,14 @@ class Criterio extends Model
    protected $fillable =['cnombre'];
 
    public function proyectos(){
-    return $this->hasMany(Proyecto::class);
+    return $this->belongsToMany(Proyecto::class);
    }
 
    public function elementos(){
-      return  $this->belongsToMany(Elemento::class, 'assigned_elementos')
-      ->withTimestamps();
+      return  $this->hasMany(Elemento::class);
+      // tenía belongsToMany
+      // 'assigned_elementos'
+      // ->withTimestamps();
    }
 
    // public function proyecto($value=''){

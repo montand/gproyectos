@@ -40,7 +40,7 @@
                                 {!! csrf_field() !!}
                                 {!! method_field('DELETE') !!}
 
-                                <button class="btn btn-danger btn-sm" type="button" onclick="return confirm('Estas seguro de eliminar?')">Eliminar</button>
+                                <button class="btn btn-danger btn-sm" type="submit" onclick="return confirm('Estas seguro de eliminar?')">Eliminar</button>
                             </form>
                         </td>
                     </tr>

@@ -16626,6 +16626,7 @@ readers do not read off random characters that represent icons */
 }
 
 .h-screen {
+    width: 100%;
   height: 100vh;
 }
 

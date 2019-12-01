@@ -175,6 +175,9 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
+        RealRashid\SweetAlert\SweetAlertServiceProvider::class,
+        'Barryvdh\Debugbar\ServiceProvider',
+        Yajra\DataTables\DataTablesServiceProvider::class,
 
     ],
 
@@ -228,6 +231,9 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'Form' => Collective\Html\FormFacade::class,
         'Html' => Collective\Html\HtmlFacade::class,
+        'Alert' => RealRashid\SweetAlert\Facades\Alert::class,
+        'Debugbar' => 'Barryvdh\Debugbar\Facade',
+        'DataTables' => Yajra\DataTables\Facades\DataTables::class,
 
     ],
 

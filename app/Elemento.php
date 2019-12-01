@@ -7,10 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class elemento extends Model
 {
-    protected $fillable =['cnombre','npuntos'];
+    protected $fillable =['cnombre','npuntos','criterio_id'];
 
-    public function criterios(){
-        return $this->hasMany(Criterio::class);
+    public function criterio(){
+        return $this->belongsTo(Criterio::class);
     }
 
    public function getElelementoAttribute($value){

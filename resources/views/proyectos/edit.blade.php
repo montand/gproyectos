@@ -11,7 +11,7 @@
             @method('PATCH')
             <h1 class="text-secondary">Editar proyecto</h1>
             <hr>
-            @include('proyectos.form', ['btnText' => 'Actualizar', 'tipo' => 'Edit'])
+            @include('proyectos._formedit', ['btnText' => 'Actualizar', 'tipo' => 'Edit'])
          </form>
       </div>
    </div>
@@ -21,19 +21,19 @@
 @section('scripts')
    <script>
       $(document).ready(function(){
-         let row_number = {{ $proyecto->criterios->count() }};
+         let row_number = {{ $proyecto->criteriosxproy->count() }};
          $("#add_row").click(function(e){
             e.preventDefault();
             let new_row_number = row_number - 1;
-            $('#product' + row_number).html($('#product' + new_row_number).html()).find('td:first-child');
-            $('#criterios_table').append('<tr id="product' + (row_number + 1) + '"></tr>');
+            $('#crit' + row_number).html($('#crit' + new_row_number).html()).find('td:first-child');
+            $('#criterios_table').append('<tr id="crit' + (row_number + 1) + '"></tr>');
             row_number++;
          });
 
          $("#delete_row").click(function(e){
             e.preventDefault();
             if(row_number > 1){
-               $("#product" + (row_number - 1)).html('');
+               $("#crit" + (row_number - 1)).html('');
                row_number--;
             }
          });

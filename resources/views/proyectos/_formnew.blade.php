@@ -123,8 +123,8 @@ $('#criterios').append(newOption).trigger('change'); --}}
                     <td>
                         <select name="criterios[]" class="form-control">
                             <option value="">-- seleccione el criterio --</option>
-                            @foreach ($criteriosTodos as $crit)
-                                <option value="{{ $crit->id }}">{{ $crit->cnombre }} (${{ number_format($crit->cpuntos) }})</option>
+                            @foreach ($criterios as $crit)
+                                <option value="{{ $crit->id }}">{{ $crit->cnombre }}</option>
                             @endforeach
                         </select>
                     </td>
@@ -138,8 +138,10 @@ $('#criterios').append(newOption).trigger('change'); --}}
 
         <div class="row">
             <div class="col-md-12">
-                <button id="add_row" class="btn btn-default pull-left">+ Añadir fila</button>
-                <button id='delete_row' class="pull-right btn btn-danger">- Borrar fila</button>
+                <button id="add_row" class="btn btn-outline-primary btn-sm pull-left">
+                  <i class="fas fa-plus"></i> Añadir fila</button>
+                <button id='delete_row' class="pull-right btn btn-sm btn-outline-danger">
+                  <i class="fas fa-minus"></i> Borrar fila</button>
             </div>
         </div>
     </div>
@@ -147,4 +149,3 @@ $('#criterios').append(newOption).trigger('change'); --}}
 
 <input class="btn btn-primary btn-lg btn-block" type="submit" value="{{ $btnText }} ">
 <a class="btn btn-outline-secondary btn-block" href="{{ route('proyectos.index') }}">Cancelar</a>
-

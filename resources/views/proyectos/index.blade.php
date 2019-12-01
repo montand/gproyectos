@@ -13,7 +13,7 @@
 
             <form action="{{ route('proyectos.index') }}" method="get" class="form-inline navbar navbar-light bg-light pull-right">
                <div class="form-group">
-                  <input type="text" class="form-control mr-sm-2" name="s" placeholder="Nombre" value="{{ isset($s) ? $s : '' }}">
+                  <input type="text" class="form-control mr-sm-2" name="search" placeholder="Nombre" value="{{ isset($s) ? $s : '' }}">
                </div>
 
                <div class="form-group">
@@ -75,7 +75,7 @@
 
                             {{-- {{ $proy->criterios[0]->cnombre }} --}}
                             <ul class="list-group">
-                               @forelse ($proy->criterios as $item)
+                               @forelse ($proy->criteriosxproy as $item)
                                   <li class="list-group-item bg-transparent d-flex justify-content-between align-items-center">
                                     {{ $item['cnombre'] }}
                                     <span class="badge badge-primary badge-pill">

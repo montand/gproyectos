@@ -15,9 +15,12 @@ class CreateElementosTable extends Migration
     {
         Schema::create('elementos', function (Blueprint $table) {
             $table->Increments('id')->unsigned();
+            $table->integer('criterio_id')->unsigned()->nullable();
             $table->string('cnombre');
             $table->tinyInteger('npuntos')->unsigned();
             $table->timestamps();
+
+            $table->foreign('criterio_id')->references('id')->on('criterios');
         });
     }
 

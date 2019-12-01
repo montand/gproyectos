@@ -119,20 +119,25 @@ $('#criterios').append(newOption).trigger('change'); --}}
                 </tr>
             </thead>
             <tbody>
-                <tr id="crit0">
-                    <td>
-                        <select name="criterios[]" class="form-control">
-                            <option value="">-- seleccione el criterio --</option>
-                            @foreach ($criteriosTodos as $crit)
-                                <option value="{{ $crit->id }}">{{ $crit->cnombre }} (${{ number_format($crit->cpuntos) }})</option>
-                            @endforeach
-                        </select>
-                    </td>
-                    <td>
-                        <input type="number" name="puntos[]" class="form-control" value="0" />
-                    </td>
-                </tr>
-                <tr id="crit1"></tr>
+               @foreach ($proyecto->criteriosxproy as $proy_crit)
+                   <tr id="crit{{ $loop->index }}">
+                       <td>
+                           <select name="criterios[]" class="form-control">
+                               <option value="">-- seleccione el criterio --</option>
+                               @foreach ($criterios as $crit)
+                                   <option value="{{ $crit->id }}"
+                                       @if ($proy_crit->id == $crit->id) selected @endif
+                                   >{{ $crit->cnombre }} </option>
+                               @endforeach
+                           </select>
+                       </td>
+                       <td>
+                           <input type="number" name="puntos[]" class="form-control"
+                                  value="{{ $proy_crit->pivot->npuntos }}" />
+                       </td>
+                   </tr>
+               @endforeach
+               <tr id="crit{{ $proyecto->criteriosxproy->count() }}"></tr>
             </tbody>
         </table>
 
@@ -147,4 +152,3 @@ $('#criterios').append(newOption).trigger('change'); --}}
 
 <input class="btn btn-primary btn-lg btn-block" type="submit" value="{{ $btnText }} ">
 <a class="btn btn-outline-secondary btn-block" href="{{ route('proyectos.index') }}">Cancelar</a>
-

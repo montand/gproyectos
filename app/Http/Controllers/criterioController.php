@@ -21,9 +21,12 @@ class criterioController extends Controller
      */
     public function index()
     {
-        return view('criterios.index', [
-            'criterios' => Criterio::latest()->paginate(5)
-        ]);
+         $criterios = Criterio::with('elementos')->paginate(5);
+
+         return view('criterios.index', compact('criterios'));
+        // return view('criterios.index', [
+        //     'criterios' => Criterio::latest()->paginate(5)
+        // ]);
     }
 
     /**
@@ -49,16 +52,22 @@ class criterioController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
-        $campos = $request->validate([
-            'cnombre' => 'required'
-        ]);
+   public function store(Request $request)
+   {
 
-        Criterio::create($campos)->elementos()->sync($request->elementos);
+      $campos = $request->validate([
+         'cnombre' => 'required'
+      ]);
 
-        return redirect()->route('criterios.index')->with('status', 'El criterio fue creado con éxito');
-    }
+      $resul = Criterio::create($campos);
+      // dd($resul->toArray());
+      if ( $request->has('elementos') ) {
+         $res = Elemento::whereIn('id',$request->elementos)
+            ->update(['criterio_id' => $resul->id]);
+      }
+
+        return redirect()->route('criterios.index')->with('success', 'El criterio fue creado con éxito');
+   }
 
 
     /**
@@ -69,10 +78,10 @@ class criterioController extends Controller
      */
     public function edit(Criterio $criterio)
     {
-        // $elementos = $criterio->elementos()->get()->pluck('elelemento','id')->toArray();
+
+        // Llamo a la función 'getElelementoAttribute' del modelo donde concateno npuntos con cnombre
         $elementos = $criterio->elementos->pluck('elelemento','id')->toArray();
         $elementosTodos = Elemento::get()->pluck('elelemento','id');
-         // dd($elementosTodos);
 
         return view('criterios.edit', [
             'criterio' => $criterio,
@@ -90,11 +99,23 @@ class criterioController extends Controller
      */
     public function update(Request $request, Criterio $criterio)
     {
-      $criterio->update( $request->all() );
-      $criterio->elementos()->sync($request->elementos);
 
-      return back()
-         ->with('status', 'El criterio fue actualizado con éxito');
+      if ($request->has('elementos')) {
+
+         $num_actualizados = Elemento::whereIn('id',$request->elementos)
+            ->update(['criterio_id' => $criterio->id]);
+
+      }
+
+// $elementos->each(function ($e) use ($criterio) {
+//     $e->associate($criterio);
+// });
+
+      $criterio->update( $request->all() );
+      // $criterio->elementos()->saveMany($elements);
+
+      return redirect()->route('criterios.index')
+         ->withSuccess('El criterio fue actualizado con éxito');
     }
 
     /**
@@ -105,8 +126,17 @@ class criterioController extends Controller
      */
     public function destroy(Criterio $criterio)
     {
-      $criterio->find($criterio->id)->elementos()->detach();
+      // $criterio->find($criterio->id)->elementos()->detach();
+      $tieneElementos = $criterio->find($criterio->id)->elementos()->count();
+
+      if ($tieneElementos) {
+         $elem = $criterio->elementos->pluck('id')->toArray();
+
+         $act = Elemento::whereIn('id',$elem)
+            ->update(['criterio_id' => null]);
+
+      }
       $criterio->delete();
-      return redirect()->route('criterios.index')->with('status', 'El criterio fue eliminado con éxito');
+      return redirect()->route('criterios.index')->with('success', 'El criterio fue eliminado con éxito');
     }
 }

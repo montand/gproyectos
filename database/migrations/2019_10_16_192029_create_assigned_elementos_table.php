@@ -13,16 +13,16 @@ class CreateAssignedElementosTable extends Migration
      */
     public function up()
     {
-        Schema::create('assigned_elementos', function (Blueprint $table) {
-            $table->integer('criterio_id')->unsigned();
-            $table->integer('elemento_id')->unsigned();
-            $table->timestamps();
-        });
+        // Schema::create('assigned_elementos', function (Blueprint $table) {
+        //     $table->integer('criterio_id')->unsigned();
+        //     $table->integer('elemento_id')->unsigned();
+        //     $table->timestamps();
+        // });
 
-        Schema::table('assigned_elementos', function ($table) {
-            $table->foreign('criterio_id')->references('id')->on('criterios')->onDelete('cascade');
-            $table->foreign('elemento_id')->references('id')->on('elementos')->onDelete('cascade');
-        });
+        // Schema::table('assigned_elementos', function ($table) {
+        //     $table->foreign('criterio_id')->references('id')->on('criterios')->onDelete('cascade');
+        //     $table->foreign('elemento_id')->references('id')->on('elementos')->onDelete('cascade');
+        // });
     }
 
     /**
