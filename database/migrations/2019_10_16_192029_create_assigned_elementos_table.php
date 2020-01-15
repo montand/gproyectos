@@ -7,8 +7,8 @@ use Illuminate\Support\Facades\Schema;
 class CreateAssignedElementosTable extends Migration
 {
     /**
-     * Run the migrations.
-     *
+     * Se elimina esta tabla ya que se cambia la relación
+     * de belongsToMany a hasMany
      * @return void
      */
     public function up()

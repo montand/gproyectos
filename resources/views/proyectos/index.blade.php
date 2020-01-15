@@ -2,154 +2,80 @@
 
 @section('content')
 <div class="container">
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <h1 class="mb-0">Catalogo de Proyectos</h1>
-        @auth
-            <a class="btn btn-primary"
-                href="{{ route('proyectos.create') }}">Crear proyecto
-            </a>
-        @endauth
-        <nav class="navbar navbar-light bg-light pull-right">
+{{--    <div class="d-flex justify-content-between align-items-center mb-3">
 
-            <form action="{{ route('proyectos.index') }}" method="get" class="form-inline navbar navbar-light bg-light pull-right">
-               <div class="form-group">
-                  <input type="text" class="form-control mr-sm-2" name="search" placeholder="Nombre" value="{{ isset($s) ? $s : '' }}">
-               </div>
-
-               <div class="form-group">
-                  <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Buscar</button>
-               </div>
-
-            </form>
-
-{{--             {!! Form::open(['route' => 'proyectos.index', 'method' => 'GET', 'class' => 'form-inline navbar navbar-light bg-light pull-right']) !!}
-               <div class="form-group">
-                  {!! Form::text('elnombre', null, ['class' => 'form-control mr-sm-2','placeholder' => 'Nombre']) !!}
-               </div>
-
-                <div class="form-group">
-                  <button type="submit" class="btn btn-outline-success my-2 my-sm-0">Buscar</button>
-                </div>
-            {!! Form::close() !!} --}}
-
-{{--             {!!Form::open(array('url'=>'proyecto','method'=>'GET','autocomplete'=>'off','role'=>'search'))!!}
-               <div class="input-group">
-
-               <input type="text" name="buscarTexto" class="form-control" placeholder="Buscar texto" value="{{$buscarTexto}}">
-               <button type="submit"  class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
-               </div>
-            {!! Form::close() !!} --}}
-
-
-        </nav>
-    </div>
-    <div class="table-responsive">
-        <table class="table table-hover table-sm">
-            <thead>
-                <tr class="text-center table-success">
-                    <th scope="col">ID</th>
-                    <th scope="col">Nombre</th>
-                    <th scope="col">Costo</th>
-                    <th scope="col">Duración</th>
-                    <th scope="col">Criterios</th>
-                    <th scope="col" colspan="3">Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                @forelse($proyectos as $proy)
-                    <tr class="active small">
-                        <th scope="row">{{ $proy->id }}</th>
-                        <td>
-                            <a class="col justify-content-between align-items-center"
-                            href="{{ route('proyectos.show', $proy) }}">
-                            <span>
-                                {{ $proy->cclave }} - {{ $proy->cnombre }}
-                            </span>
-                        </a>
-                        </td>
-                        <td class="text-right">{{ number_format($proy->ncosto) }}</td>
-                        <td class="text-center">{{ $proy->nduracion }}</td>
-                        <td>
-                            {{-- {{ dd($proy->criterios->implode('cnombre', ', ')) }} --}}
-                            {{-- {{ $proy->criterios->implode('cnombre', ', ') }} --}}
-
-                            {{-- {{ $proy->criterios[0]->cnombre }} --}}
-                            <ul class="list-group">
-                               @forelse ($proy->criteriosxproy as $item)
-                                  <li class="list-group-item bg-transparent d-flex justify-content-between align-items-center">
-                                    {{ $item['cnombre'] }}
-                                    <span class="badge badge-primary badge-pill">
-                                       {{ $item->pivot->npuntos }}
-                                    </span>
-                                  </li>
-                               @endforeach
-                            </ul>
-                        </td>
-                        <td>
-                            <a class="btn btn-info btn-sm"
-                                href="{{ route('proyectos.edit', $proy->id) }} ">Editar
-                            </a>
-                        </td>
-                        <td>
-                            <form style="display:inline"
-                                method="POST"
-                                action="{{ route('proyectos.destroy', $proy->id) }} ">
-                                {!! csrf_field() !!}
-                                {!! method_field('DELETE') !!}
-
-                                <button class="btn btn-danger btn-sm" type="submit">Eliminar</button>
-                            </form>
-                        </td>
-                    </tr>
-                @empty
-                    <li class="list-group-item border-0 mb-3 shadow-sm">
-                        No hay proyectos para mostrar
-                    </li>
-                @endforelse
-            </tbody>
-        </table>
-         {{ $proyectos->appends(['s' => $s])->links() }}
-    </div>
-
-{{--     <ul class="list-group">
-        @forelse($proyectos as $proy)
-            <li class="list-group-item border-0 mb-2 shadow-sm ">
-                <a class="col text-secondary justify-content-between align-items-center"
-                    href="{{ route('proyectos.show', $proy) }}">
-                <span class="font-weight-bold">
-                    {{ $proy->cclave }} - {{ $proy->cnombre }}
-                </span>
-                </a>
-                <span class="col text-black-50">
-                    {{ $proy->created_at->format('d/m/Y') }}
-                </span>
-                <span class="col list-inline">
-                    <a class="btn btn-info btn-sm"
-                        href="{{ route('criterios', $proy->id) }} ">Criterios
-                    </a>
-                </span>
-                <span class="col list-inline">
-                    <a class="btn btn-info btn-sm"
-                        href="{{ route('proyectos.edit', $proy->id) }} ">Editar
-                    </a>
-                </span>
-                <span class="col ">
-                    <form style="display:inline"
-                        method="POST"
-                        action="{{ route('proyectos.destroy', $proy->id) }} ">
-                        {!! csrf_field() !!}
-                        {!! method_field('DELETE') !!}
-
-                        <button class="btn btn-danger btn-sm" type="submit">Eliminar</button>
-                    </form>
-                </span>
-            </li>
-        @empty
-            <li class="list-group-item border-0 mb-3 shadow-sm">
-                No hay proyectos para mostrar
-            </li>
-        @endforelse
-        {{ $proyectos->links() }}
-    </ul> --}}
+   </div> --}}
+   <div class="col-md-12">
+      <div class="card">
+         <div class="card-header card-group">
+            <div> <h4 class="card-title">Proyectos</h4> </div>
+            @auth
+               <a class="btn btn-sm btn-primary ml-auto px-3"
+                  href="{{ route('proyectos.create') }}">Crear proyecto
+               </a>
+            @endauth
+         </div>
+         <div class="card card-body bg-light">
+            <table id="project-table" class="table table-sm table-bordered table-primary">
+               <thead>
+                  <tr>
+                     <th class="exportable" width="10%" scope="col">ID</th>
+                     <th class="exportable" scope="col">Nombre</th>
+                     <th class="exportable" width="15%" scope="col">Costo</th>
+                     <th class="exportable" width="10%" scope="col">Duración</th>
+                     <th>Acciones</th>
+                  </tr>
+               </thead>
+            </table>
+            {{-- {{ $proyectos->appends(['s' => $s])->links() }} --}}
+         </div>
+      </div>
+   </div>
 </div>
+@endsection
+
+@section('scripts')
+<script>
+   $(function() {
+      var table = $('#project-table').DataTable({
+         // scrollY: '45vh',
+         processing: true,
+         serverSide: true,
+         ajax: "{{ route('proyectos.index') }}",
+         columns: [
+            { data: 'id', className: "text-center"},
+            { data: 'cnombre',
+               render: function(data, type, row){
+                  return row.cclave+" - "+row.cnombre
+               }
+            },
+            { data: 'ncosto', className: "text-right", render: $.fn.dataTable.render.number( ',', '.', 0, '$' )},
+            { data: 'nduracion', className: "text-center"},
+            { data: 'btn', name: 'btn', orderable: false, className: "text-center", printable: false}
+         ],
+         language: {
+            url: "https://cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
+         },
+         rowId: 'id'
+      });
+
+      //$('#project-table tbody tr').on('click', 'a', function(e) {
+      //    e.preventDefault();
+      //    var href = $("a", this).attr('href');
+      //    $(href).html("You clicked " + href + " !");
+      //    console.log($(this).id());
+      // });
+
+      // var curpro = trs.find('a').length();
+      // console.log(trs);
+      // console.log('el ID del tr: '+$trs.id());
+
+      // $('#project-table tbody tr').on( 'click', function () {
+      //    // var data = table.row( $(this).parents('tr') ).data();
+      //    console.log($(this).id());
+      //    // var $tr = $(this).closest('tr'), id = $tr.attr('data-elem');
+      //    // alert( data[1] +"'s costo is: "+ data[ 2 ] );
+      // } );
+   });
+</script>
 @endsection

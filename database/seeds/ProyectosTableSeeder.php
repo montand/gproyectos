@@ -15,13 +15,13 @@ class ProyectosTableSeeder extends Seeder
       // Proyecto::truncate();
       // DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
-      factory(App\Proyecto::class, 100)->create()->each(function(App\Proyecto $proy){
-        $proy->criterios()->sync([
-            rand(1,5),
-            rand(1,5),
-            rand(1,5)
-        ]);
-      });
+      // factory(App\Proyecto::class, 100)->create()->each(function(App\Proyecto $proy){
+      //   $proy->criterios()->sync([
+      //       rand(1,5),
+      //       rand(1,5),
+      //       rand(1,5)
+      //   ]);
+      // });
 
    //    Proyecto::create([
    //       'cclave'       => 'P1',

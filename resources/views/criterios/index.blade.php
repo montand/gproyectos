@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
    <div class="d-flex justify-content-between align-items-center mb-3">
-      <h1 class="mb-0 ">Catalogo de Criterios</h1>
+      <h3 class="mb-0 ">Criterios</h3>
       @auth
          <a class="btn btn-primary"
             href="{{ route('criterios.create') }}">Crear criterio

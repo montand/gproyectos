@@ -17,11 +17,26 @@ class elementoController extends Controller
     *
     * @return \Illuminate\Http\Response
     */
-   public function index()
+   public function index(Request $request)
    {
-      return view('elementos.index', [
-         'elementos' => Elemento::latest()->paginate(8)
-      ]);
+
+      if ($request->ajax()) {
+         return Datatables()
+            ->of(Elemento::latest()->get())
+            ->addColumn('btn', function($data){
+               $button = '<a href="'. route('elementos.edit', $data->id) .'" class="btn btn-success btn-sm text-center" data-toggle="tooltip" data-placement="top" title="Editar"><i class="far fa-edit" aria-hidden="true"></i></a>';
+               $button .= '&nbsp;&nbsp;';
+               $button .= '<a href="'. route('elementos.destroy', $data->id) .'" class="btn btn-danger btn-sm text-center" data-toggle="tooltip" data-placement="top" title="Eliminar"><i class="fas fa-trash-alt" aria-hidden="true"></i></a>';
+               return $button;
+            })
+            ->rawColumns(['btn'])
+            ->make(true);
+      }
+
+      return view('elementos.index');
+      // return view('elementos.index', [
+      //    'elementos' => Elemento::latest()->paginate(8)
+      // ]);
    }
 
    /**

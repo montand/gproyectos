@@ -3,26 +3,44 @@
 @section('content')
 
 <div class="container">
-    <div class="d-flex justify-content-between align-items-center mb-3">
+{{--     <div class="d-flex justify-content-between align-items-center mb-3">
         <h1 class="mb-0">Catalogo de Elementos</h1>
         @auth
             <a class="btn btn-primary"
                 href="{{ route('elementos.create') }}">Crear elemento
             </a>
         @endauth
-    </div>
+    </div> --}}
     {{-- Tope costo : {{ number_format(h_topecosto(),2) }} &emsp; Tope RH : {{ number_format(h_toperh()) }} --}}
-    <div class="table-responsive justify-content-center">
-        <table class="table table-hover table-sm ">
-            <thead>
-                <tr class="text-center table-success">
-                    <th scope="col">ID</th>
-                    <th class="text-left" scope="col">Nombre</th>
-                    <th scope="col">Puntos</th>
-                    <th scope="col" colspan="2">Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
+
+ <div class="col-md-12">
+      <div class="card">
+         <div class="card-header card-group">
+            <div> <h4 class="card-title">Elementos</h4> </div>
+            @auth
+               <a class="btn btn-sm btn-primary ml-auto px-3"
+                  href="{{ route('elementos.create') }}">Crear elemento
+               </a>
+            @endauth
+         </div>
+         <div class="card card-body bg-light">
+            <div class="table-responsive">
+            <table id="elem-table" class="table table-hover table-sm ">
+               <thead>
+                  <tr>
+                     <th class="exportable">ID</th>
+                     <th class="exportable">Nombre</th>
+                     <th class="exportable text-center">Puntos</th>
+                     <th>Acciones</th>
+                  </tr>
+               </thead>
+            </table>
+            </div>
+
+       </div>
+      </div>
+   </div>
+ {{--            <tbody>
                 @forelse($elementos as $element)
                     <tr class="active small">
                         <th class="text-center" scope="row">{{ $element->id }}</th>
@@ -49,10 +67,28 @@
                         No hay proyectos para mostrar
                     </li>
                 @endforelse
-            </tbody>
-        </table>
-         {{ $elementos->links() }}
-    </div>
+            </tbody> --}}
+
+         {{-- {{ $elementos->links() }} --}}
 </div>
 
+@endsection
+
+@section('scripts')
+<script>
+   $(function() {
+      var table = $('#elem-table').DataTable({
+         processing: true,
+         serverSide: true,
+         ajax: "{{ route('elementos.index') }}",
+         columns: [
+            { data: 'id', className: "text-center"},
+            { data: 'cnombre'},
+            { data: 'npuntos', className: "text-center"},
+            { data: 'btn', name: 'btn', className: "text-center", orderable: false, exportable: false}
+         ],
+      });
+
+   });
+</script>
 @endsection

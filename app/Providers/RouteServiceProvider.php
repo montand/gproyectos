@@ -26,6 +26,12 @@ class RouteServiceProvider extends ServiceProvider
         //
 
         parent::boot();
+
+      // Lineas añadidas el 16/Dic/2019 por Victor Lopez
+      /** @var \Illuminate\Routing\UrlGenerator $url */
+      $url = $this->app['url'];
+      // Force the application URL
+      $url->forceRootUrl(config('app.url'));
     }
 
     /**

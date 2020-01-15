@@ -14,10 +14,10 @@ class CreateEscenariosTable extends Migration
     public function up()
     {
         Schema::create('escenarios', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->Increments('id')->unsigned();
             $table->string('cnombre')->required();
-            $table->decimal('totcosto',18,2);
-            $table->integer('totrh');
+            $table->decimal('ntotcosto',18,2);
+            $table->integer('ntotrh');
             $table->timestamps();
         });
     }

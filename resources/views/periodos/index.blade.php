@@ -4,9 +4,9 @@
 
 <div class="container">
    <div class="d-flex justify-content-between align-items-center mb-3">
-      <h1 class="mb-0 ">Periodos</h1>
+      <h3 class="mb-0 ">Periodos</h3>
       @auth
-         <a class="btn btn-primary"
+         <a class="btn btn-primary btn-sm"
             href="{{ route('periodos.create') }}">Nuevo periodo
          </a>
       @endauth

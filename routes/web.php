@@ -18,9 +18,11 @@ Route::get('/', function () {
 
 Route::get('/post-data', 'getelementos@obtenElementos')->name('postData');
 
+// Route::get('proyectos/getProy', 'proyectoController@getProy')->name('proyectos.getProy');
 Route::resource('proyectos', 'proyectoController');
 Route::resource('criterios', 'criterioController');
 Route::resource('elementos', 'elementoController');
+Route::get('escenarios/getProyectos', 'escenarioController@getProyectos')->name('escenarios.getProyectos');
 Route::resource('escenarios', 'escenarioController');
 Route::resource('periodos', 'periodoController');
 // Route::get('getelementos', 'getelementos@obtenElementos');

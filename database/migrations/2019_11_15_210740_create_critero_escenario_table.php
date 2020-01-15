@@ -17,6 +17,11 @@ class CreateCriteroEscenarioTable extends Migration
             $table->integer('escenario_id')->unsigned();
             $table->integer('criterio_id')->unsigned();
             $table->integer('npeso');
+
+            $table->foreign('escenario_id')->references('id')->on('escenarios')
+               ->onDelete('cascade');
+            $table->foreign('criterio_id')->references('id')->on('criterios')
+               ->onDelete('cascade');
         });
     }
 

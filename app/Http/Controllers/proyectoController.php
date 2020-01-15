@@ -20,18 +20,75 @@ class proyectoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
 
-      $s = $request->input('search');
+      if (request()->ajax()) {
 
-      $proyectos = Proyecto::with('criteriosxproy')->orderBy('id','ASC')
-         ->search($s)
-         ->paginate(5);
+         return Datatables()
+            ->of(Proyecto::latest()->get())
+            ->addColumn('btn', function($data){
+               $button = '<a href="'. route('proyectos.show', $data->id) .'" class="btn btn-primary btn-sm text-center" data-toggle="tooltip" data-placement="top" title="Ver"><i class="fas fa-glasses" aria-hidden="true"></i></a>';
+               $button .= '&nbsp;&nbsp;';
+               $button .= '<a href="'. route('proyectos.edit', $data->id) .'" class="btn btn-success btn-sm text-center" data-toggle="tooltip" data-placement="top" title="Editar"><i class="far fa-edit" aria-hidden="true"></i></a>';
+               $button .= '&nbsp;&nbsp;';
+               $button .= '<a href="'. route('proyectos.destroy', $data->id) .'" class="btn btn-danger btn-sm text-center" data-toggle="tooltip" data-placement="top" title="Eliminar"><i class="fas fa-trash-alt" aria-hidden="true"></i></a>';
+               return $button;
+            })
+            ->rawColumns(['btn'])
+            ->make(true);
+// dd("SI entra");
+         // return Datatables()
+         //    // ->of(Proyecto::latest()->get())
+         //    ->eloquent(Proyecto::query())
+         //    // ->eloquent(Proyecto::with('criteriosxproy'))
+         //    ->addColumn('btn', 'proyectos.actions')
+         //    ->rawColumns(['btn'])
+         //    // ->make(true);
+         //    ->toJson();
 
-      return view('proyectos.index', compact('proyectos', 's'));
+      // $proy = Proyecto::select('cclave','cnombre','ncosto','nduracion','unidades_rh');
+      // dd($proy);
+      // return Datatables()
+      //    ->of($proy)
+      //    ->make(true);
+
+      }
+// dd("No entra");
+      // $proyectos = Proyecto::query();
+      return view('proyectos.index');
+
+      // $s = $request->input('search');
+
+      // $proyectos = Proyecto::with('criteriosxproy')->orderBy('id','ASC')
+      //    ->search($s)
+      //    ->paginate(5);
+
+      // return view('proyectos.index', compact('proyectos', 's'));
 
     }
+
+    // function getProy()
+    // {
+    //   // $proy = Proyecto::select('id','cclave','cnombre','ncosto','nduracion','unidades_rh');
+    //   // dd($proy);
+    //      // ->setRowId(function($proyecto){
+    //      //    return $proyecto->id;
+    //      // })
+    //   return Datatables()
+    //      ->of(Proyecto::latest()->get())
+    //      ->addColumn('btn', function($data){
+    //         $button = '<a href="'. route('proyectos.show', $data->id) .'" class="btn btn-primary btn-sm text-center" data-toggle="tooltip" data-placement="top" title="Ver"><i class="fas fa-glasses" aria-hidden="true"></i></a>';
+    //         $button .= '&nbsp;&nbsp;';
+    //         $button .= '<a href="'. route('proyectos.edit', $data->id) .'" class="btn btn-success btn-sm text-center" data-toggle="tooltip" data-placement="top" title="Editar"><i class="far fa-edit" aria-hidden="true"></i></a>';
+    //         $button .= '&nbsp;&nbsp;';
+    //         $button .= '<a href="'. route('proyectos.destroy', $data->id) .'" class="btn btn-danger btn-sm text-center" data-toggle="tooltip" data-placement="top" title="Eliminar"><i class="fas fa-trash-alt" aria-hidden="true"></i></a>';
+    //         return $button;
+    //      })
+    //      ->rawColumns(['btn'])
+    //      ->make(true);
+    // }
+
 
     /**
      * Show the form for creating a new resource.

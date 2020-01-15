@@ -1,4 +1,4 @@
-@import url(https://fonts.googleapis.com/css?family=Nunito);@charset "UTF-8";
+@import url(https://fonts.googleapis.com/css?family=Nunito);.tippy-tooltip[data-animation=scale][data-placement^=top]{transform-origin:bottom}.tippy-tooltip[data-animation=scale][data-placement^=bottom]{transform-origin:top}.tippy-tooltip[data-animation=scale][data-placement^=left]{transform-origin:right}.tippy-tooltip[data-animation=scale][data-placement^=right]{transform-origin:left}.tippy-tooltip[data-animation=scale][data-state=hidden]{transform:scale(.5);opacity:0}@charset "UTF-8";
 
 /*!
  * Bootstrap v4.3.1 (https://getbootstrap.com/)
@@ -16626,7 +16626,6 @@ readers do not read off random characters that represent icons */
 }
 
 .h-screen {
-    width: 100%;
   height: 100vh;
 }
 
