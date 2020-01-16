@@ -1,5 +1,6 @@
 <?php
 
+use App\Proyecto;
 use Illuminate\Database\Seeder;
 
 class ProyectosTableSeeder extends Seeder
@@ -67,6 +68,51 @@ class ProyectosTableSeeder extends Seeder
          'ncosto'       => '10000000',
          'nduracion'    => '6',
          'unidades_rh'  => '5280'
+      ]);
+      Proyecto::create([
+         'cclave'       => 'P6',
+         'cnombre'      => 'Comunicación digital',
+         'cdescripcion' => 'Instalación de displays LCD touch screen en las tiendas, ofreciendo información Starbucks (menú, mensaje del presidente, etc) y también capturando sugerencia de los clientes',
+         'cjustificacion'  => 'Incrementar los conocimientos de los clientes acerca de Starbuck de manera lúdica e interactiva, maximizando la experiencia de compra',
+         'ncosto'       => '112300000',
+         'nduracion'    => '8',
+         'unidades_rh'  => '7040'
+      ]);
+      Proyecto::create([
+         'cclave'       => 'P7',
+         'cnombre'      => 'Relaciones con canales complementarios',
+         'cdescripcion' => 'Crear un proceso interno para establecer relacionamiento técnico-comercial con los canales complementarios y sus interlocutores',
+         'cjustificacion'  => 'Tener un proceso maduro de relacionamiento con estos nuevos canales',
+         'ncosto'       => '500000',
+         'nduracion'    => '9',
+         'unidades_rh'  => '9504'
+      ]);
+      Proyecto::create([
+         'cclave'       => 'P8',
+         'cnombre'      => 'Adecuación de la cadena logística',
+         'cdescripcion' => 'Adaptar el sistema de distribución de Starbucks a los canales complementarios',
+         'cjustificacion'  => 'Asegurar el costo apropiado y la confiabilidad en  la entrega de los productos vendidos a los canales complementarios',
+         'ncosto'       => '200000000',
+         'nduracion'    => '18',
+         'unidades_rh'  => '16896'
+      ]);
+      Proyecto::create([
+         'cclave'       => 'P9',
+         'cnombre'      => 'Centro de entrenamiento avanzado',
+         'cdescripcion' => 'Construir un centro de entrenamiento en países emergentes y instalar un equipo de instructores',
+         'cjustificacion'  => 'Garantizar que la cultura y los estándares Starbucks estén presentes  a nivel mundial',
+         'ncosto'       => '40000000',
+         'nduracion'    => '28',
+         'unidades_rh'  => '39424'
+      ]);
+      Proyecto::create([
+         'cclave'       => 'P10',
+         'cnombre'      => 'Nuevo CRM',
+         'cdescripcion' => 'Implementar un nuevo software para el realcionamiento con los clientes. Involucra integrar los sistemas actuales en los diferentes países en una sola base de datos, también integrar a los clientes de los canales complementarios ',
+         'cjustificacion'  => 'Entender mejor la cultura, necesidades y deseos de los clientes Starbucks para poder poner foco en ellos.',
+         'ncosto'       => '7000000',
+         'nduracion'    => '24',
+         'unidades_rh'  => '33792'
       ]);
    }
 }
