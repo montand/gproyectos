@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\periodo;
+use App\Periodo;
 use Illuminate\Http\Request;
 
 class PeriodoController extends Controller
