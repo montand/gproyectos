@@ -19,9 +19,11 @@ class PeriodoController extends Controller
      */
     public function index()
     {
+
       $periodos = Periodo::get();
       // return $periodo;
       return view('periodos.index', compact('periodos') );
+
     }
 
     /**
