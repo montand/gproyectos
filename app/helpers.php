@@ -1,7 +1,7 @@
 <?php
 // Creo funciones personalizadas
 
-use App\periodo;
+use App\Periodo;
 
 function h_topecosto (){
 

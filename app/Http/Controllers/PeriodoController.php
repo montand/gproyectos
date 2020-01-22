@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Periodo;
 use Illuminate\Http\Request;
 
-class PeriodoController extends Controller
+class periodoController extends Controller
 {
 
     function __construct(){
