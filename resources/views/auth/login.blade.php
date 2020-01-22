@@ -41,7 +41,7 @@
                         <div class="form-group row">
                             <label for="periodo" class="col-md-4 col-form-label text-md-right">Ejercicio</label>
                             <div class="col-md-6">
-                               {{ Form::selectYear('periodo', date('Y'), date('Y')+4, null, ['class' => 'form-control'])}}
+                               {{ Form::selectYear('periodo', date('Y')-1, date('Y')+4, null, ['class' => 'form-control'])}}
                             </div>
                         </div>
 
