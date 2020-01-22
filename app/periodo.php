@@ -5,12 +5,12 @@ namespace App;
 use DB;
 use Illuminate\Database\Eloquent\Model;
 
-class periodo extends Model
+class Periodo extends Model
 {
 
    public $timestamps = false;
 
-   protected $fillable =[
+   protected $fillable = [
       'ano','ntope_costo','ntope_rh','activo'
    ];
 
