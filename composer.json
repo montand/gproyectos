@@ -20,7 +20,7 @@
         "yajra/laravel-datatables-oracle": "^9.7"
     },
     "require-dev": {
-        "facade/ignition": "^1.4",
+        "facade/ignition": "^1.16",
         "facade/ignition-code-editor": "^1.0",
         "facade/ignition-tinker-tab": "^1.0",
         "fzaninotto/faker": "^1.4",

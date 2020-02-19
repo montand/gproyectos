@@ -85,6 +85,21 @@ class escenarioController extends Controller
 
    }
 
+   public function getProy_easy(){
+
+      // $query = DB::select(DB::raw('CALL sp_critxproy'));
+
+      // return $query;
+      $criteriosTodos = Criterio::all();
+
+      return view('escenarios.getProy_easy', compact('criteriosTodos'));
+   }
+
+   // public function proy_para_escenarios(Request $request){
+   //    $query = DB::select(DB::raw('CALL sp_critxproy'));
+   //    return $query;
+   // }
+
    /**
     * Store a newly created resource in storage.
     *
