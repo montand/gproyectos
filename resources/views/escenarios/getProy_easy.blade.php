@@ -8,74 +8,17 @@
    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
    <link rel="stylesheet" href="https://www.jeasyui.com/easyui/themes/default/easyui.css">
    <link rel="stylesheet" href="https://www.jeasyui.com/easyui/themes/icon.css">
-</head>
-<body>
-<form method="post" action="">
-   <div class="container">
-      <div id="d_criterios" class="col-4">
-         <span class="text-center border border-primary rounded btn-block">Seleccione 3 criterios</span>
-         @foreach ($criteriosTodos as $crit)
-            <label class="form-check-label ml-4">
-               <input id="chkCrit{{ $crit->id }}" class="form-check-input" type="checkbox"
-                     value="{{ $crit->id }}" data-nombre="{{ $crit->cnombre }}">
-               {{ $crit->cnombre }}
-            </label>
-            <br>
-         @endforeach
-      </div>
-      <div class="col-12 ">
-         <p class="form-check-label text-center">Peso de los criterios (de 1 a 5)</p>
-         <div class="input-group input-group-sm no-gutters justify-content-center">
-            <input id="peso1" data-crit="" type="text" class="mr-2 text-center" value="1" placeholder="Peso C1">
-            <input id="peso2" data-crit="" type="text" class="mr-2 text-center" value="1" placeholder="Peso C2">
-            <input id="peso3" data-crit="" type="text" class="mr-2 text-center" value="1" placeholder="Peso C3">
-            <a id="btnCalcula" href="" class="btn btn-sm btn-primary"><i class="fas fa-calculator"></i> Calcular</a>
-         </div>
-      </div>
-      <p></p>
 
-      <table id="dg" class="easyui-datagrid"
-         title="Listado de proyectos"
-         view='bufferview'
-         method='get' url='proy_para_escenarios'
-         singleSelect='false'
-         fitColumns='true'
-         fit='false'
-         showFooter='true'
-         collapsible='true'
-         toolbar='#toolbar'>
-         <thead>
-            <tr>
-               <th data-options="field:'proyecto',sortable:true">Proyecto</th>
-               <th data-options="field:'C1',align:'center',hidden:true,width:100,defaultWidth:100">Crit1</th>
-               <th data-options="field:'C2',align:'center',hidden:true,width:100,defaultWidth:100,sortable:true">Crit2</th>
-               <th data-options="field:'C3',align:'center',hidden:true,width:100,defaultWidth:100">Crit3</th>
-               <th data-options="field:'C4',align:'center',hidden:true,width:100,defaultWidth:100">Crit4</th>
-               <th data-options="field:'C5',align:'center',hidden:true,width:100,defaultWidth:100">Crit5</th>
-               <th data-options="field:'ntotpuntos',halign:'center',fixed:true, align:'right',width:100,defaultWidth:100,sortable:'true'">Puntuación total</th>
-               <th data-options="field:'ncosto',align:'right',width:100,defaultWidth:100,formatter:formatDecim">Costo</th>
-               <th data-options="field:'unidades_rh',align:'center',width:100,defaultWidth:100,formatter:format">R.H.</th>
-               <th data-options="field:'excluir',width:100,defaultWidth:100,checkbox:true">EXCL</th>
-            </tr>
-         </thead>
-      </table>
-      <div id="toolbar">
-         <a href="#" class="easyui-linkbutton" iconCls='icon-add' plain='true' onClick='hasAlgo()'>Ranquear proyectos</a>
-         {{-- <a href="#" id="suma" class="easyui-linkbutton" iconCls='icon-save' plain='true' >Suma</a> --}}
-      </div>
-   </div>
-</form>
+   <!-- <script src="{{ asset('js/app.js') }}"></script> -->
+   <!-- <script src="https://www.jeasyui.com/easyui/jquery.easyui.min.js"></script> -->
+   <!-- <script src="https://www.jeasyui.com/easyui/datagrid-scrollview.js"></script> -->
 
-   <script src="{{ asset('js/app.js') }}"></script>
-   <script src="https://www.jeasyui.com/easyui/jquery.easyui.min.js"></script>
-   <script src="https://www.jeasyui.com/easyui/datagrid-detailview.js"></script>
+   <script type="text/javascript" src="http://www.jeasyui.com/easyui/jquery.min.js"></script>
+   <script type="text/javascript" src="http://www.jeasyui.com/easyui/jquery.easyui.min.js"></script>
+   <script type="text/javascript" src="http://www.jeasyui.com/easyui/datagrid-scrollview.js"></script>
+
    <script src="https://cdnjs.cloudflare.com/ajax/libs/df-number-format/2.1.6/jquery.number.min.js"></script>
    <script>
-
-      function hasAlgo(){
-         alert("Esto es una prueba");
-      }
-
       function format(num){
          return $.number(num);
       }
@@ -152,7 +95,49 @@
 
       $(function(){
 
+         var w = $(document).width()-220;
+         var h = $(document).height()-220;
          var dg = $('#dg');
+         dg.datagrid({
+            view: scrollview,
+            method:'get',
+            url:'proy_para_escenarios',
+            // url: 'https://api.myjson.com/bins/pv3nc',
+            // singleSelect:false,
+            fitColumns:true,
+            fit:false,
+            // pageSize: 100,
+            width: w,
+            height: h,
+            scriped: true,
+            showFooter:true,
+            collapsible:true,
+            toolbar:'#toolbar',
+            columns:[[
+               {field:'proyecto', title:'proyecto', width:200, sortable:true},
+               {field:'C1', title:'Crit1', width:100, defaultWidth:100, editor:{type:'numberbox',options:{precision:2}}, align:'center', hidden: true},
+               {field:'C2', title:'Crit2', width:100, defaultWidth:100, editor:{type:'numberbox',options:{precision:2}}, align:'center', hidden: true},
+               {field:'C3', title:'Crit3', width:100, defaultWidth:100, editor:{type:'numberbox',options:{precision:2}}, align:'center', hidden: true},
+               {field:'C4', title:'Crit4', width:100, defaultWidth:100, editor:{type:'numberbox',options:{precision:2}}, align:'center', hidden: true},
+               {field:'C5', title:'Crit5', width:100, defaultWidth:100, editor:{type:'numberbox',options:{precision:2}}, align:'center', hidden: true},
+               {field:'ntotpuntos', title:'Puntuación total', width:100, defaultWidth:100, halign:'center', align:'right', sortable:true, fixed:true},
+               {field:'ncosto', title:'Costo', align:'right', width:100, defaultWidth:100, formatter:formatDecim},
+               {field:'unidades_rh', title:'R.H.',align:'center',width:100, defaultWidth:100, formatter:format},
+               {field:'excluir', title:'EXCL',width:100, defaultWidth:100,checkbox:true}
+            ]],
+            onCheckAll: function(){
+               var state = $(this).data('datagrid');
+               state.selectedRows = $.extend(true,[],state.data.lastRows);
+               state.checkedRows = $.extend(true,[],state.data.lastRows);
+            },
+            onUncheckAll: function(){
+               var state = $(this).data('datagrid');
+               state.selectedRows = [];
+               state.checkedRows = [];
+            }
+         });
+
+         $('#dg').datagrid('selectAll');
          dg.datagrid().datagrid('enableCellEditing');
          dg.datagrid({
             onCheck: function (Index, row) {
@@ -166,44 +151,19 @@
             }
          });
 
-          // var all_grid = dg.datagrid('getRows');
-         // $.each(all_grid, function(index, fila) {
-         //    var indice = dg.datagrid('getRowIndex', fila);
-         //    dg.datagrid.check
-         // });
-
-         // $('#suma').on('click', function(event) {
-         //    event.preventDefault();
-         //    var myData = dg.datagrid('getData');
-         //    var filas = dg.datagrid('getRows');
-         //    var fila = null;
-         //    for (var i = 0; i < filas.length; i++){
-         //       // console.log(filas[i]['C3']);
-         //       totp = filas[i]['C3'] * 5;
-         //       fila = filas[i];
-         //       var indice = dg.datagrid('getRowIndex',fila);
-         //       dg.datagrid('updateRow', {
-         //          index: indice,
-         //          row: { attr1: "PRUEBA" }
-         //       })
-         //    }
-         // });
-
          $(".form-check-input").on('click', function() {
-            // console.log($(this).val() + ' ' + $(this).prop('checked'));
             var col = 'C'+$(this).val();
             if ($(this).prop('checked')) {
                dg.datagrid('showColumn',col);
             }else{
                dg.datagrid('hideColumn',col);
             }
-            // $('#dg').datagrid('resizeFilter');
          });
 
-         $('#dg').datagrid('reloadFooter', [
-           {ntotpuntos:'Total: ', align:'rigth', ncosto:123},
-           {ntotpuntos:'Restriccion', align:'rigth', ncosto:456}
-         ]);
+         // $('#dg').datagrid('reloadFooter', [
+         //   {ntotpuntos:'Total: ', align:'rigth', ncosto:123},
+         //   {ntotpuntos:'Restriccion', align:'rigth', ncosto:456}
+         // ]);
 
 
          $('#btnCalcula').on('click', function(e) {
@@ -212,13 +172,10 @@
             var pn = 1;
             var pInput = '';
             $(".form-check-input").each(function() {
-               // console.log(this.id +" "+ $(this).prop('checked'));
                if ( $(this).prop('checked') ) {
                   arrCrit = arrCrit + this.id.slice(-1);
                   pInput = 'peso'+pn;
-                  // console.log(pInput + '  '+this.id.slice(-1));
                   $('#'+pInput).attr('data-crit', this.id.slice(-1));
-                  // console.log($('#'+pInput).attr('data-crit'));
                   pn = pn + 1;
                   pInput = '';
                }
@@ -229,38 +186,9 @@
             var lnIdx = 0;
             if (nCrits > 0) {
                recalcular(arrCrit);
-               // $.each(arrCrit, function(index, el) {
-               //    // lnPuntaje = tableProy.cell(idx, el).data();
-               //    lnIdx = index+1;
-               //    pInput = 'peso'+lnIdx;
-               //    lnPeso = $('#'+pInput).val();
-               //    // recalcular(lnPeso, el);
-
-               //    // lnTot += (lnPuntaje * lnPeso);
-               //    // console.log('index:'+index+'  el:'+el+'  Peso:'+lnPeso);
-               // });
-               // tableProy.cell(idx, 6).data(lnTot);
-               // tableProy.cell(node, 6).attr(lnTot);
             }
          });
 
-         // $('.custom-checkbox').find('.easyui-checkbox').each(function() {
-         //    var mas = $(this).checkbox('options');
-         //    console.log(mas);
-         //    $(this).click(function(event) {
-         //       console.log('checkbox changed ');
-         //    });
-         // });
-         // $('.custom-checkbox .input').click(function(){
-         //    console.log('click');
-            // $('.custom-checkbox').find('.easyui-checkbox').each(function() {
-            //    if ($(this).is(':checked')) {
-            //       var lv = $(this).val();
-            //       console.log('Criterio '+lv+' activado');
-            //    }
-            // });
-         // });
-        $('#dg').datagrid('selectAll');
       })
 
       function recalcular(aCriterios){
@@ -289,9 +217,43 @@
              })
              .datagrid("refreshRow", nIndex);
          });
-
       }
 
    </script>
+</head>
+<body>
+<form method="post" action="">
+   <div class="container">
+      <div id="d_criterios" class="col-4">
+         <span class="text-center border border-primary rounded btn-block">Seleccione 3 criterios</span>
+         @foreach ($criteriosTodos as $crit)
+            <label class="form-check-label ml-4">
+               <input id="chkCrit{{ $crit->id }}" class="form-check-input" type="checkbox"
+                     value="{{ $crit->id }}" data-nombre="{{ $crit->cnombre }}">
+               {{ $crit->cnombre }}
+            </label>
+            <br>
+         @endforeach
+      </div>
+      <div class="col-12 ">
+         <p class="form-check-label text-center">Peso de los criterios (de 1 a 5)</p>
+         <div class="input-group input-group-sm no-gutters justify-content-center">
+            <input id="peso1" data-crit="" type="text" class="mr-2 text-center" value="1" placeholder="Peso C1">
+            <input id="peso2" data-crit="" type="text" class="mr-2 text-center" value="1" placeholder="Peso C2">
+            <input id="peso3" data-crit="" type="text" class="mr-2 text-center" value="1" placeholder="Peso C3">
+            <a id="btnCalcula" href="" class="btn btn-sm btn-primary"><i class="fas fa-calculator"></i> Calcular</a>
+         </div>
+      </div>
+      <p></p>
+
+      <table id="dg" class="easyui-datagrid" title="Listado de proyectos">
+      </table>
+      <div id="toolbar">
+         <a href="#" class="easyui-linkbutton" iconCls='icon-add' plain='true' onClick='hasAlgo()'>Ranquear proyectos</a>
+         {{-- <a href="#" id="suma" class="easyui-linkbutton" iconCls='icon-save' plain='true' >Suma</a> --}}
+      </div>
+   </div>
+</form>
+
 </body>
 </html>
