@@ -89,6 +89,18 @@
       @enderror
 </div>
 
+<div class="form-group">
+   <label for="tema">Tema</label>
+   <select name="tema_id" class="form-control">
+       <option value="">-- seleccione el tema --</option>
+       @foreach ($temas as $tema)
+           <option value="{{ $tema->id }}"
+               @if ($proyecto->tema_id == $tema->id) selected @endif
+           >{{ $tema->nomcorto }} </option>
+       @endforeach
+   </select>
+</div>
+
 {{--     {!! Form::select('criterio', $criterio, null, ['id' => 'criterio',
         'class' => 'js-example-responsive', 'style' => 'width: 50%']) !!} --}}
 {{-- {{ dd($criterio) }} --}}

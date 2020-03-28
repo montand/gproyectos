@@ -99,20 +99,21 @@
          var h = $(document).height()-220;
          var dg = $('#dg');
          dg.datagrid({
-            view: scrollview,
+            // view: scrollview,
             method:'get',
             url:'proy_para_escenarios',
             // url: 'https://api.myjson.com/bins/pv3nc',
-            // singleSelect:false,
+            singleSelect:false,
             fitColumns:true,
             fit:false,
             // pageSize: 100,
-            width: w,
-            height: h,
+            // width: w,
+            // height: h,
             scriped: true,
             showFooter:true,
             collapsible:true,
             toolbar:'#toolbar',
+            idField:'proyecto',
             columns:[[
                {field:'proyecto', title:'proyecto', width:200, sortable:true},
                {field:'C1', title:'Crit1', width:100, defaultWidth:100, editor:{type:'numberbox',options:{precision:2}}, align:'center', hidden: true},
@@ -126,30 +127,48 @@
                {field:'excluir', title:'EXCL',width:100, defaultWidth:100,checkbox:true}
             ]],
             onCheckAll: function(){
-               var state = $(this).data('datagrid');
-               state.selectedRows = $.extend(true,[],state.data.lastRows);
-               state.checkedRows = $.extend(true,[],state.data.lastRows);
+               // var state = $(this).data('datagrid');
+               // state.selectedRows = $.extend(true,[],state.data.rows);
+               // state.checkedRows = $.extend(true,[],state.data.rows);
+               let aCant=[{{ head(h_totales_escenario()) }},{{ last(h_totales_escenario()) }}];
+               actualiza_footer(aCant, 1, 1);
             },
             onUncheckAll: function(){
-               var state = $(this).data('datagrid');
-               state.selectedRows = [];
-               state.checkedRows = [];
-            }
-         });
-
-         $('#dg').datagrid('selectAll');
-         dg.datagrid().datagrid('enableCellEditing');
-         dg.datagrid({
-            onCheck: function (Index, row) {
-               console.log('Activo indice '+Index);
-            }
-         });
-
-         dg.datagrid({
+               // var state = $(this).data('datagrid');
+               // state.selectedRows = [];
+               // state.checkedRows = [];
+               let aCant=[0,0];
+               actualiza_footer(aCant, 0, 0);
+            },
+            onCheck: function (rowIndex, fila) {
+               // var ntot = parseFloat($('#total_costo').val()) + parseFloat(fila.ncosto);
+               let aCant=[fila.ncosto,fila.unidades_rh];
+               // console.log("costo :"+aCant[0]+"<br>RH :"+aCant[1]);
+               actualiza_footer(aCant, 1);
+            },
             onUncheck: function (rowIndex, fila) {
-               console.log('Inactivo indice '+rowIndex);
-            }
+               // var ntot = parseFloat($('#total_costo').val()) - parseFloat(fila.ncosto);
+               let aCant=[fila.ncosto,fila.unidades_rh];
+               actualiza_footer(aCant, 0);
+            },
+            checkOnSelect: false
          });
+         // No funciona el selectAll
+         dg.datagrid().datagrid('enableCellEditing');
+         $('#dg').datagrid('selectAll');
+
+         // dg.datagrid({
+         //    onCheckAll: function () {
+         //       actualiza_footer({{ head(h_totales_escenario()) }}, 1, 1);
+         //    }
+         // });
+
+         // dg.datagrid({
+         //    onUncheck: function (rowIndex, fila) {
+         //       var ntot2 = $('#total_costo').val() - fila.ncosto;
+         //       actualiza_footer(ntot2);
+         //    }
+         // });
 
          $(".form-check-input").on('click', function() {
             var col = 'C'+$(this).val();
@@ -159,11 +178,6 @@
                dg.datagrid('hideColumn',col);
             }
          });
-
-         // $('#dg').datagrid('reloadFooter', [
-         //   {ntotpuntos:'Total: ', align:'rigth', ncosto:123},
-         //   {ntotpuntos:'Restriccion', align:'rigth', ncosto:456}
-         // ]);
 
 
          $('#btnCalcula').on('click', function(e) {
@@ -183,10 +197,10 @@
             var nCrits = arrCrit.length;
             arrCrit = nCrits > 0 ? arrCrit.split('') : [];
             // Calculo el puntaje total de acuerdo a los criterios activos y el peso de c/u
-            var lnIdx = 0;
-            if (nCrits > 0) {
-               recalcular(arrCrit);
-            }
+            // var lnIdx = 0;
+
+            recalcular(arrCrit);
+
          });
 
       })
@@ -194,6 +208,9 @@
       function recalcular(aCriterios){
          var All_Rows= $('#dg').datagrid('getRows');
          var aFactores = [];
+
+         // Hago la suma solo si se ha seleccionado algun criterio
+         var lSumar = (aCriterios.length > 0);
 
          //Armo el array con todos los factores a usar //
          $.each(aCriterios, function(index){
@@ -203,20 +220,53 @@
 
          //Recorro toda la grilla //
          $.each(All_Rows, function(i, oneRow){
-             var nIndex = $('#dg').datagrid('getRowIndex', oneRow);
+            var nIndex = $('#dg').datagrid('getRowIndex', oneRow);
 
-             oneRow.ntotpuntos = 0; //Inicializo en cero, pasa sumar las columnas
+            oneRow.ntotpuntos = 0; //Inicializo en cero, pasa sumar las columnas
 
-             $.each(aCriterios, function(index, value) {
-                 oneRow.ntotpuntos += oneRow['C'+value] * aFactores[index];
-             })
+            if (lSumar) {
+               $.each(aCriterios, function(index, value) {
+                     oneRow.ntotpuntos += oneRow['C'+value] * aFactores[index];
+               })
+            }
 
-             $("#dg").datagrid("updateRow",{
+            $("#dg").datagrid("updateRow",{
                index: nIndex,
                row: oneRow
-             })
-             .datagrid("refreshRow", nIndex);
+            })
+               .datagrid("refreshRow", nIndex)
+               // .datagrid("selectRow", nIndex);
+               // .datagrid('reloadFooter', [
+               //   {ntotpuntos:'Total: ', align:'rigth', ncosto:{{head(h_totales_escenario())}}, unidades_rh:{{last(h_totales_escenario())}}},
+               //   {ntotpuntos:'Restriccion', align:'rigth', ncosto:$('#tope_costo').val(), unidades_rh:$('#tope_rh').val()}
+               // ]);
          });
+
+      }
+
+      function actualiza_footer(aTotales, lSuma, lTodos) {
+         // console.log("costo :"+aTotales[0]+"<br>RH :"+aTotales[1]+"<br>"+lSuma+"<br>"+lTodos);
+         var newCosto = 0, newRH = 0;
+         if (!isNaN(lTodos)) {
+            newCosto = parseFloat(aTotales[0]);
+            newRH = parseFloat(aTotales[1]);
+         }else {
+            newCosto = lSuma ? parseFloat($('#total_costo').val()) + parseFloat(aTotales[0]) :
+               parseFloat($('#total_costo').val()) - parseFloat(aTotales[0]);
+            newRH = lSuma ? parseFloat($('#total_rh').val()) + parseFloat(aTotales[1]) :
+               parseFloat($('#total_rh').val()) - parseFloat(aTotales[1]);
+         }
+         $('#total_costo').val(newCosto);
+         $('#total_rh').val(newRH);
+         $('#dif_costo').val(parseFloat($('#tope_costo').val())-newCosto);
+         $('#dif_rh').val(parseFloat($('#tope_rh').val())-newRH);
+         // console.log('total_costo '+$('#total_costo').val());
+         $('#dg').datagrid('reloadFooter', [
+           {ntotpuntos:'TOTAL ', align:'rigth', ncosto:$('#total_costo').val(), unidades_rh:$('#total_rh').val()},
+           {ntotpuntos:'RESTRICCIÓN ', align:'rigth', ncosto:$('#tope_costo').val(), unidades_rh:$('#tope_rh').val()},
+           {ntotpuntos:'DIFERENCIA ', align:'rigth', ncosto:$('#dif_costo').val(), unidades_rh:$('#dif_rh').val()}
+         ]);
+
       }
 
    </script>
@@ -245,7 +295,13 @@
          </div>
       </div>
       <p></p>
-
+      <input type="hidden" id="tope_costo" value="{{ h_topecosto() }}">
+      <input type="hidden" id="tope_rh" value="{{ h_toperh() }}">
+      <input type="hidden" id="total_costo" value="0">
+      {{-- <input type="hidden" id="total_costo" value="{{ head(h_totales_escenario()) }}"> --}}
+      <input type="hidden" id="total_rh" value="0">
+      <input type="hidden" id="dif_costo" value="0">
+      <input type="hidden" id="dif_rh" value="0">
       <table id="dg" class="easyui-datagrid" title="Listado de proyectos">
       </table>
       <div id="toolbar">

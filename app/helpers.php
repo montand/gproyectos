@@ -2,23 +2,24 @@
 // Creo funciones personalizadas
 
 use App\Periodo;
+use App\Proyecto;
 
-function h_topecosto (){
+function h_topes (){
 
-   $pactivo = Periodo::where('activo','1')->first();
-   $tope = isset($pactivo) ? $pactivo->ntope_costo : '0';
+   $pactivo = Periodo::select('ntope_costo','ntope_rh')
+    ->where('activo','1')->first();
 
-   return $tope;
+   $topes = isset($pactivo) ? [$pactivo->ntope_costo,$pactivo->ntope_rh] : [];
+
+   return $topes;
 
 }
 
-function h_toperh (){
+function h_totales_escenario (){
 
-   $pactivo = Periodo::where('activo','1')->first();
-   $tope = isset($pactivo) ? $pactivo->ntope_rh : '0';
+   $total = [ Proyecto::sum('ncosto'), Proyecto::sum('unidades_rh') ];
 
-   return $tope;
-
+   return $total;
 }
 
 

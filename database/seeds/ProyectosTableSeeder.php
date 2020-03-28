@@ -114,5 +114,51 @@ class ProyectosTableSeeder extends Seeder
          'nduracion'    => '24',
          'unidades_rh'  => '33792'
       ]);
+      Proyecto::create([
+         'cclave'       => 'P11',
+         'cnombre'      => 'Plan de sucesión',
+         'cdescripcion' => 'Desarrollar un plan para la sucesión de los líderes',
+         'cjustificacion'  => 'Garantizar que los líderes de Starbucks tengan un sucesor preparado y otro mapeado.',
+         'ncosto'       => '1000000',
+         'nduracion'    => '9',
+         'unidades_rh'  => '7920'
+      ]);
+      Proyecto::create([
+         'cclave'       => 'P12',
+         'cnombre'      => 'Gestión de riesgo',
+         'cdescripcion' => 'Sistemáticamente mapear y crear planes para bajar posibles riesgos regulatorios y de cumplimiento, responsabilidad social corporativa, etc.',
+         'cjustificacion'  => 'Garantizar que Starburck esté siempre  cumpliendo  los requisitos ambientales, regulatorios y de responsabilidad social',
+         'ncosto'       => '2000000',
+         'nduracion'    => '8',
+         'unidades_rh'  => '4224'
+      ]);
+      Proyecto::create([
+         'cclave'       => 'P13',
+         'cnombre'      => 'Ampliación del programa de fidelización',
+         'cdescripcion' => 'Fortalecer el programa de MKT y fidelizacion a los canales complementarios, ampliando el sistema de recompenzas y alianzas con empresas de targetas de creditos',
+         'cjustificacion'  => 'Construir la marca, mejorar la imagen de la empresa, y aumentar la lealtad del cliente. Monitorear continuamente la entrega de los atributos de la propuesta de valor.',
+         'ncosto'       => '1500000',
+         'nduracion'    => '8',
+         'unidades_rh'  => '6336'
+      ]);
+      Proyecto::create([
+         'cclave'       => 'P14',
+         'cnombre'      => 'Reingenieria de los procesos',
+         'cdescripcion' => 'Reingenieria de los procesos de la empresa',
+         'cjustificacion'  => 'Mejorar los desplazamientos en las tiendas  para entregar un servicio mas rápido y amigable a los clientes.',
+         'ncosto'       => '10000000',
+         'nduracion'    => '12',
+         'unidades_rh'  => '63360'
+      ]);
+      Proyecto::create([
+         'cclave'       => 'P15',
+         'cnombre'      => 'Entrenamiento de los nuevos socios',
+         'cdescripcion' => 'Revisar el programa de integración de los nuevos socios alineados a la nueva estategia Starbucks',
+         'cjustificacion'  => 'Garantizar que los nuevos socios tengan foco en los clientes y coherencia con la propuesta de valor Starbucks.',
+         'ncosto'       => '200000',
+         'nduracion'    => '6',
+         'unidades_rh'  => '5280'
+      ]);
+
    }
 }

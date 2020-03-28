@@ -22,7 +22,10 @@ class CreateProyectosTable extends Migration
             $table->decimal('ncosto',18,2);
             $table->tinyInteger('nduracion')->unsigned();
             $table->integer('unidades_rh')->unsigned();
+            $table->integer('tema_id')->unsigned()->nullable();
             $table->timestamps();
+
+            $table->foreign('tema_id')->references('id')->on('temas');
         });
     }
 

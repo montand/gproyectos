@@ -49,6 +49,7 @@
             allowClear: true,
             placeholder : "Seleccionar"
          });
+
       });
    </script>
 @endsection

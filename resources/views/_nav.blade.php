@@ -26,6 +26,9 @@
                      <a class="dropdown-item" href="{{ route('criterios.index') }}">
                         Criterios
                      </a>
+                     <a class="dropdown-item" href="{{ route('temas.index') }}">
+                        Temas
+                     </a>
                      <a class="dropdown-item" href="{{ route('proyectos.index') }}">
                         Proyectos
                      </a>

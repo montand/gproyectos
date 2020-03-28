@@ -105,6 +105,8 @@ $('#criterios').append(newOption).trigger('change'); --}}
     </select>
 </div> --}}
 
+dd($criteriosTodos);
+
 <div class="card">
     <div class="card-header">
         Criterios

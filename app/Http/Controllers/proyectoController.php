@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use DB;
 use App\Criterio;
 use App\Proyecto;
+use App\Tema;
 use App\Http\Requests\SaveProyectoRequest;
 use Illuminate\Http\Request;
 
@@ -99,8 +100,9 @@ class proyectoController extends Controller
     {
 
         $criterios = Criterio::all();
+        $temas = Tema::all();
 
-        return view('proyectos.create', compact('criterios'));
+        return view('proyectos.create', compact('criterios','temas'));
 
         // $criteriosTodos = Criterio::pluck('cnombre','id');
         // $criterios = [];
@@ -132,6 +134,7 @@ class proyectoController extends Controller
             'ncosto' => 'required',
             'nduracion' => 'required',
             'unidades_rh' => 'required',
+            'tema_id' => 'nullable',
         ]);
 
          $proyecto = Proyecto::create($request->all());
@@ -172,10 +175,11 @@ class proyectoController extends Controller
     {
 
          $criterios = Criterio::all();
+         $temas = Tema::all();
          $proyecto->with('criteriosxproy');
          // $proyecto->load('criterios');
 
-         return view('proyectos.edit', compact('criterios', 'proyecto'));
+         return view('proyectos.edit', compact('criterios', 'temas', 'proyecto'));
 
         // $criterios = $proyecto->criteriosxproy()->pluck('cnombre','id')->toArray();
         // $criteriosTodos = Criterio::pluck('cnombre','id');
@@ -235,9 +239,10 @@ class proyectoController extends Controller
      */
     public function destroy(proyecto $proyecto)
     {
-         $proyecto->find($proyecto->id)->criteriosxproy()->detach();
-         $proyecto->delete();
-         return redirect()->route('proyectos.index')->with('success', 'El proyecto fue eliminado con éxito');
+
+      $proyecto->find($proyecto->id)->criteriosxproy()->detach();
+      $proyecto->delete();
+      return redirect()->route('proyectos.index')->with('success', 'El proyecto fue eliminado con éxito');
     }
 
 }

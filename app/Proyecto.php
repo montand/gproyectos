@@ -12,13 +12,17 @@ class proyecto extends Model
    // protected $guarded = [];
    protected $fillable =[
       'cclave','cnombre','cdescripcion','cjustificacion',
-      'ncosto','nduracion','unidades_rh'
+      'ncosto','nduracion','unidades_rh', 'tema_id'
    ];
 
    public function criteriosxproy(){
       return  $this->belongsToMany(Criterio::class, 'assigned_criterios')
       ->withPivot('npuntos')
       ->withTimestamps();
+   }
+
+   public function tema(){
+    return $this->belongsTo(Tema::class);
    }
 
    // public function hasCriterios(array $criterios){

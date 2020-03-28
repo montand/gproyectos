@@ -44,6 +44,13 @@
 
 <hr>
 
+<input type="hidden" id="tope_costo" value="{{ head(h_topes()) }}">
+<input type="hidden" id="tope_rh" value="{{ last(h_topes()) }}">
+<input type="hidden" id="total_costo" value="0">
+<input type="hidden" id="total_rh" value="0">
+<input type="hidden" id="dif_costo" value="0">
+<input type="hidden" id="dif_rh" value="0">
+
 <div class="row mt-2 justify-content-center">
    <div class="col-md-12">
       <div class="card">
@@ -51,74 +58,7 @@
         <div id="totCosto" hidden></div>
         <div id="totRH" hidden></div>
          <div class="card card-body bg-light">
-            <table id="proy-table" class="table table-sm table-striped table-bordered">
-               <thead>
-                <tr id="tr_enc">
-                     <th scope="col">Proyectos</th>
-                     <th scope="col">Crit1</th>
-                     <th scope="col">Crit2</th>
-                     <th scope="col">Crit3</th>
-                     <th scope="col">Crit4</th>
-                     <th scope="col">Crit5</th>
-                     <th width="8%" scope="col">Puntuación total</th>
-                     <th width="13%" scope="col">Costo</th>
-                     <th width="10%" scope="col">HH</th>
-                     <th width="6%" scope="col">Excluir</th>
-{{--                   <th scope="col">Proyecto</th>
-                  <th scope="col">Cr1</th>
-                  <th scope="col">Cr2</th>
-                  <th scope="col">Cr3</th>
-                  <th scope="col">Puntuación Total</th>
-                  <th scope="col">Costo (USD)</th>
-                  <th scope="col">HH</th>
-                  <th scope="col">Excluír</th> --}}
-                </tr>
-              </thead>
-              <tfoot>
-               <tr>
-                  <th colspan="7" style="text-align: right !important;">Total: </th>
-                  <th class="text-right"></th>
-                  <th></th>
-                  <th></th>
-               </tr>
-{{--                <tr>
-                  <th colspan="7" class="text-right">Restricción: </th>
-                  <th colspan="3"></th>
-               </tr>
-               <tr>
-                  <th colspan="7" class="text-right">Diferencia: </th>
-                  <th colspan="3"></th>
-               </tr> --}}
-               <tr><th colspan="10"></th></tr>
-              </tfoot>
-      {{--         <tbody>
-                  @foreach ($proyectos as $proy)
-                     <tr>
-                       <td scope="row">{{ $proy->cclave }} - {{ $proy->cnombre }} </td>
-                     </tr>
-                  @endforeach
-                     <tr id="cr1">
-                       <td scope="row"> </td>
-                     </tr>
-                     <tr id="cr2">
-                       <td scope="row"> </td>
-                     </tr>
-                     <tr id="cr3">
-                       <td scope="row"> </td>
-                     </tr>
-                     <tr id="puntuacion">
-                       <td scope="row"> </td>
-                     </tr>
-                     <tr>
-                       <td scope="row"> </td>
-                     </tr>
-                     <tr id="hh">
-                       <td scope="row"> </td>
-                     </tr>
-                     <tr id="excluir">
-                       <td scope="row"> </td>
-                     </tr>
-              </tbody> --}}
+            <table id="dg" class="easyui-datagrid" title="Listado de proyectos">
             </table>
          </div>
       </div>
@@ -131,31 +71,3 @@
       <a class="btn btn-outline-secondary " href="{{ route('escenarios.index') }}">Cancelar</a>
    </div>
 </div>
-{{-- <div class="form-group">
-   <label for="nombre">Nombre</label>
-   <input class="form-control bg-light shadow-sm @error('cnombre') is-invalid @else border-0 @enderror" type="text"
-   name="cnombre"
-   placeholder="Nombre del elemento"
-   value="{{ $element->cnombre ?? old('cnombre') }} " >
-   @error('cnombre')
-      <span class="invalid-feedback" role="alert">
-         <strong>{{ $message }} </strong>
-      </span>
-   @enderror
-</div> --}}
-{{--
-<div class="form-group">
-   <label for="puntos">Puntos</label>
-   <input class="form-control text-right bg-light shadow-sm @error('npuntos') is-invalid @else border-0 @enderror"
-   type="text"
-   name="npuntos"
-   placeholder="Puntos"
-   value="{{ round($element->npuntos) ?? old('npuntos') }}" >
-   @error('npuntos')
-      <span class="invalid-feedback" role="alert">
-         <strong>{{ $message }} </strong>
-      </span>
-   @enderror
-</div>
- --}}
-

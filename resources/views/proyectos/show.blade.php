@@ -4,13 +4,16 @@
 
 <div class="container">
     <div class=" bg-white p-5 shadow rounded">
-        <h1 class="text-secondary">{{ $proyecto->cclave }}-{{ $proyecto->cnombre }}</h1>
+         <h3 class="text-secondary font-italic">Proyectos</h3>
+         <br>
+        <h4 class="text-secondary font-weight-bold">{{ $proyecto->cclave }} - {{ $proyecto->cnombre }}</h4>
         <hr>
         <p class="text-secondary"><b>Descripción:</b> {{ $proyecto->cdescripcion }}</p>
         <p class="text-secondary"><b>Justificación:</b> {{ $proyecto->cjustificacion }}</p>
         <p class="text-secondary"><b>Costo:</b> {{ number_format($proyecto->ncosto) }}</p>
         <p class="text-secondary"><b>Duración:</b> {{ $proyecto->nduracion }}</p>
         <p class="text-secondary"><b>Unidades HH:</b> {{ number_format($proyecto->unidades_rh) }}</p>
+        <p class="text-secondary"><b>Tema:</b> {{ $proyecto->tema->nomcorto }}</p>
         <p class="text-secondary"><b>Criterios:</b></p>
         <ul class="list-group">
         @foreach ($proyecto->criteriosxproy as $proy)

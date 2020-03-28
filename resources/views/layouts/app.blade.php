@@ -30,8 +30,6 @@
       <link rel="stylesheet" href="https://cdn.datatables.net/fixedheader/3.1.6/css/fixedHeader.bootstrap4.min.css">
       <!-- dataTable checkboxes -->
       <link rel="stylesheet" href="https://gyrocode.github.io/jquery-datatables-checkboxes/1.2.11/css/dataTables.checkboxes.css">
-
-      <link rel="stylesheet" href="https://unpkg.com/tippy.js@5/dist/backdrop.css" />
       @yield('styles')
 </head>
 
@@ -73,7 +71,8 @@
    <script src="https://cdn.datatables.net/buttons/1.6.1/js/buttons.colVis.min.js"></script>
    <script src="https://cdn.datatables.net/fixedheader/3.1.6/js/dataTables.fixedHeader.min.js"></script>
    <!-- dataTables checkboxes -->
-   <script src="https://gyrocode.github.io/jquery-datatables-checkboxes/1.2.11/js/dataTables.checkboxes.min.js"></script>
+   <script src="https://gyrocode.github.io/jquery-datatables-checkboxes/1.2.11/js/dataTables.checkboxes.min.js">
+   </script>
 
    @include('sweetalert::alert')
    <script>
@@ -106,8 +105,6 @@
             //    'copy', 'csv', 'excel', 'pdf', 'print'
             // ],
          });
-
-
       });
    </script>
 
