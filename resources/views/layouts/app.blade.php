@@ -48,7 +48,7 @@
       </main>
 
       <footer class="bg-white text-sm-center text-black-50 py-3 shadow">
-         {{ config('app.name') }} | Copyright @ {{ date('Y') }}
+         {{ config('app.name') }} | Copyright ® {{ date('Y') }}
       </footer>
   </div>
    <script src="{{ asset('select2-4.0.10/dist/js/select2.js') }}"></script>

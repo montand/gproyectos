@@ -18,7 +18,10 @@ class CreateEscenariosTable extends Migration
             $table->string('cnombre')->required();
             $table->decimal('ntotcosto',18,2);
             $table->integer('ntotrh');
+            $table->integer('tema_id')->unsigned()->nullable();
             $table->timestamps();
+
+            $table->foreign('tema_id')->references('id')->on('temas');
         });
     }
 

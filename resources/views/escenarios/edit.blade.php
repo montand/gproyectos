@@ -6,13 +6,13 @@
    <div class="row">
       <div class="col-12">
          <form id="frm-data" class="bg-white py-2 px-3 shadow rounded form-inline"
-            method="POST" action="{{ route('escenarios.store') }}">
+            method="POST" action="{{ route('escenarios.update', $escenario) }}">
 
             <div class="form-group col-3">
-               <h4 class="text-secondary">Nuevo escenario</h4>
+               <h4 class="text-secondary">Editar escenario</h4>
             </div>
             <div class="form-group col-5">
-               <label for="nombre">Nombre: &ensp;</label>
+               <label for="nombre" class="text-dark font-weight-bold">Nombre: &ensp;</label>
                <input class="form-control col-10 bg-light shadow-sm @error('cnombre') is-invalid @else border-1 @enderror" type="text"
                   name="cnombre"
                   id="txtNombre"
@@ -26,18 +26,19 @@
             </div>
             <div class="form-group col-4">   {{-- Uso $temas --}}
                <label for="temas" class="text-dark font-weight-bold">Tema: &ensp;</label>
-               <select class="form-control col-8" name="tema_id" id="tema">
-                  <option value="{{ $escenario->tema_id ?? old('tema_id') }}" selected>-- Seleccione un tema --</option>
+               <input disabled class="form-control col-8 bg-light shadow-sm @error('tema_id') is-invalid @else border-1 @enderror" type="text" name="tema_id" id="tema" value="{{ $escenario->tema->nomcorto ?? old('nomcorto') }}">
+{{--                <select disabled class="form-control col-8" name="tema_id" id="tema">
+                  <option value="{{ $escenario->tema_id ?? old('tema_id') }}" selected> Seleccione un tema </option>
                   @foreach ($temas as $key => $nomcorto)
                      <option value="{{ $key }}">{{ $nomcorto }}
                      </option>
                   @endforeach
-               </select>
+               </select> --}}
             </div>
 
             <div class="col-12"><hr></div>
             <div class="col-12">
-               @include('escenarios._form', ['btnText' => 'Guardar'])
+               @include('escenarios._formedit', ['btnText' => 'Actualizar'])
             </div>
          </form>
       </div>

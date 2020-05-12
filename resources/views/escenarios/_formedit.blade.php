@@ -9,6 +9,7 @@
             <div class="form-check">
                <label class="form-check-label align-middle ">
                   <input id="chkCrit{{ $crit->id }}" class="form-check-input" name="chkCrits[]" type="checkbox"
+                        {{-- {{ $periodo->activo ? 'checked' : '' }} --}}
                         value="{{ $crit->id }}" data-nombre="{{ $crit->cnombre }}">
                   {{ $crit->id }} - {{ $crit->cnombre }}
                </label>

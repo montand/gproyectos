@@ -126,16 +126,7 @@ class proyectoController extends Controller
     public function store(SaveProyectoRequest $request)
     {
 
-        $campos = $request->validate([
-            'cclave' => 'required',
-            'cnombre' => 'required',
-            'cdescripcion' => 'nullable',
-            'cjustificacion' => 'nullable',
-            'ncosto' => 'required',
-            'nduracion' => 'required',
-            'unidades_rh' => 'required',
-            'tema_id' => 'nullable',
-        ]);
+         $campos = $request->validated();
 
          $proyecto = Proyecto::create($request->all());
          // Proyecto::create($campos)->criterios()->sync($request->criterios);

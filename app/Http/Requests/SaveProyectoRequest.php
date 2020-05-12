@@ -30,9 +30,9 @@ class SaveProyectoRequest extends FormRequest
             'cnombre' => 'required',
             'cdescripcion' => 'nullable',
             'cjustificacion' => 'nullable',
-            'ncosto' => 'required',
+            'ncosto' => 'required|gt:0',
             'nduracion' => 'required',
-            'unidades_rh' => 'required',
+            'unidades_rh' => 'required|gt:0',
             'criterios' => 'nullable'
         ];
     }
@@ -42,8 +42,10 @@ class SaveProyectoRequest extends FormRequest
             'cclave.required' => 'Falta especificar la clave del proyecto',
             'cnombre.required' => 'Falta especificar el nombre del proyecto',
             'ncosto.required' => 'Falta especificar el costo del proyecto',
+            'ncosto.gt' => 'El costo debe ser mayor que cero',
             'nduracion.required' => 'Falta especificar la duración del proyecto',
-            'unidades_rh.required' => 'Falta especificar las unidades HH del proyecto'
+            'unidades_rh.required' => 'Falta especificar las unidades HH del proyecto',
+            'unidades_rh.gt' => 'Las unidades HH debe ser un número mayor que cero'
         ];
     }
 }

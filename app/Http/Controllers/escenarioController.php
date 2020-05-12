@@ -5,9 +5,12 @@ namespace App\Http\Controllers;
 Use Alert;
 Use DB;
 use App\Escenario;
+use App\Escenariodet;
 use App\Criterio;
 use App\Elemento;
 use App\Proyecto;
+use App\Tema;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class escenarioController extends Controller
@@ -41,11 +44,13 @@ class escenarioController extends Controller
        $criteriosTodos = Criterio::all();
        $elementos = Elemento::all();
        $proyectos = Proyecto::all();
+       $temas = Tema::pluck('nomcorto','id')->toArray();
 
        return view('escenarios.create', [
          'escenario' => new Escenario,
          'criteriosTodos' => $criteriosTodos,
          'elementos' => $elementos,
+         'temas' => $temas,
          'proyectos' => $proyectos
        ]);
 
@@ -109,8 +114,63 @@ class escenarioController extends Controller
    public function store(Request $request)
    {
 
+      // $ncrits = count(Request()->aCrits);
+      $campos = $request->validate([
+         'cnombre' => 'required',
+         'tema_id' => 'required',
+         'ntotcosto' => 'nullable',
+         'ntotrh' => 'nullable'
+      ]);
+
+      $escenario = Escenario::create($request->all());
+
+      $criterios = Request()->aCrits;
+      $criterios = array_filter($criterios, function($v){
+         return $v != 0;
+      });
+      $pesos = Request()->aPeso;
+      for ($criterio=0; $criterio < count($criterios); $criterio++) {
+            $escenario->criteriosxescenario()->attach($criterios[$criterio], ['npeso' => $pesos[$criterio]]);
+      }
+      $datosGrid = Request()->grid;
+      // foreach ($datosGrid as $value) {
+      //    $escenario->proyectosyescenarios()->attach($value['id'], ['ntotpuntos' => $value['ntotpuntos'], 'excluir' => $value['excluir']]);
+      // }
+      $escid = $escenario->id;
+      foreach ($datosGrid as $valor) {
+         $escDetId = DB::table('escenariosdet')->insertGetId([
+            'escenario_id' => $escid,
+            'proyecto_id'  => $valor['id'],
+            'ntotpuntos'   => $valor['ntotpuntos'],
+            'excluir'      => $valor['excluir'],
+            'created_at'   => now(),
+            'updated_at'   => now(),
+         ]);
+         // Inserto el detalle de escenariosdet por criterio para registrar los puntos capturados
+         for ($crit=0; $crit < count($criterios); $crit++) {
+            $cr = $criterios[$crit];
+            $pCrit = "C".$cr;
+            DB::table('criterio_escenariodet')->insertOrIgnore([
+               'escenariodet_id' => $escDetId,
+               'criterio_id'     => $cr,
+               'npuntos'         => $valor[$pCrit],
+               'created_at'      => now(),
+               'updated_at'      => now(),
+            ]);
+         }
+      }
+      return response()->json(["respuesta" => 1]);
+      // return redirect()->route('escenarios.index')->with('success', 'El escenario fue creado con éxito');
+
+      // if ( $request->has('aCrits') ) {
+      //    $res = Elemento::whereIn('id',$request->elementos)
+      //       ->update(['criterio_id' => $resul->id]);
+      // }
+
+
    }
 
+      // return response()->json(['message'=>'Tu información ha sido recibida'],200);
    /**
     * Display the specified resource.
     *
@@ -130,7 +190,32 @@ class escenarioController extends Controller
     */
    public function edit(Escenario $escenario)
    {
-      //
+       $criteriosTodos = Criterio::all();
+       $elementos = Elemento::all();
+       $proyectos = Proyecto::all();
+       $temas = Tema::pluck('nomcorto','id')->toArray();
+       $escenario->with('criteriosxescenario','tema','proyectosyescenarios');
+       // dd($escenario->criteriosxescenario->pluck('npeso','id')->toArray());
+       $aCritPesos=[];
+       foreach ($escenario->criteriosxescenario as $dato) {
+         $aCritPesos[] = ["id" => $dato->id, "peso" => $dato->pivot->npeso];
+       }
+       // dd($escenario->proyectosyescenarios);
+       $aDetalles = [];
+       foreach ($escenario->proyectosyescenarios as $dato) {
+         $aDetalles[] = ["proy_id" => $dato->id, "cnombre" => $dato->cnombre];
+       }
+       // dd($aCritPesos);
+       // dd($escenario->tema->id);
+
+       return view('escenarios.edit', [
+         'escenario' => $escenario,
+         'criteriosTodos' => $criteriosTodos,
+         'acritpesos' => $aCritPesos,
+         'elementos' => $elementos,
+         'temas' => $temas,
+         'proyectos' => $proyectos
+       ]);
    }
 
    /**

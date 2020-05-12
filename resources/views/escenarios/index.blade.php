@@ -27,11 +27,12 @@
                     <tr class="active small">
                         <th class="text-center" scope="row">{{ $item->id }}</th>
                         <td class="text-left">{{ $item->cnombre }}</td>
-                        <td class="text-center">{{ $item->totcosto }}</td>
-                        <td class="text-center">{{ $item->totrh }}</td>
+                        <td class="text-center">{{ number_format($item->ntotcosto,2) }}</td>
+                        <td class="text-center">{{ number_format($item->ntotrh) }}</td>
                         <td class="text-center">
-                            <a class="btn btn-info btn-sm"
-                                href="{{ route('escenarios.edit', $item->id) }} ">Editar
+                            <a class="btn btn-info btn-sm" id="btnEdit"
+                                href="#">Editar
+                                {{-- href="{{ route('escenarios.edit', $item->id) }} ">Editar --}}
                             </a>
                         </td>
                         <td class="text-center">
@@ -57,3 +58,4 @@
 </div>
 
 @stop
+

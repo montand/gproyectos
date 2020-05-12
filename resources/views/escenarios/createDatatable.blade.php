@@ -263,7 +263,7 @@
             // Traigo los elementos del criterio seleccionado para mostrarlo en el DOM
             $.ajax({
                type: 'GET',
-               url:' {{ route("postData") }}',
+               url:' {{ route("getelementos") }}',
                dataType: 'json',
                data: {crit:crit, activo:ok, _token:token}
             })

@@ -272,44 +272,43 @@
    </script>
 </head>
 <body>
-<form method="post" action="">
-   <div class="container">
-      <div id="d_criterios" class="col-4">
-         <span class="text-center border border-primary rounded btn-block">Seleccione 3 criterios</span>
-         @foreach ($criteriosTodos as $crit)
-            <label class="form-check-label ml-4">
-               <input id="chkCrit{{ $crit->id }}" class="form-check-input" type="checkbox"
-                     value="{{ $crit->id }}" data-nombre="{{ $crit->cnombre }}">
-               {{ $crit->cnombre }}
-            </label>
-            <br>
-         @endforeach
-      </div>
-      <div class="col-12 ">
-         <p class="form-check-label text-center">Peso de los criterios (de 1 a 5)</p>
-         <div class="input-group input-group-sm no-gutters justify-content-center">
-            <input id="peso1" data-crit="" type="text" class="mr-2 text-center" value="1" placeholder="Peso C1">
-            <input id="peso2" data-crit="" type="text" class="mr-2 text-center" value="1" placeholder="Peso C2">
-            <input id="peso3" data-crit="" type="text" class="mr-2 text-center" value="1" placeholder="Peso C3">
-            <a id="btnCalcula" href="" class="btn btn-sm btn-primary"><i class="fas fa-calculator"></i> Calcular</a>
+   <form method="post" action="">
+      <div class="container">
+         <div id="d_criterios" class="col-4">
+            <span class="text-center border border-primary rounded btn-block">Seleccione 3 criterios</span>
+            @foreach ($criteriosTodos as $crit)
+               <label class="form-check-label ml-4">
+                  <input id="chkCrit{{ $crit->id }}" class="form-check-input" type="checkbox"
+                        value="{{ $crit->id }}" data-nombre="{{ $crit->cnombre }}">
+                  {{ $crit->cnombre }}
+               </label>
+               <br>
+            @endforeach
+         </div>
+         <div class="col-12 ">
+            <p class="form-check-label text-center">Peso de los criterios (de 1 a 5)</p>
+            <div class="input-group input-group-sm no-gutters justify-content-center">
+               <input id="peso1" data-crit="" type="text" class="mr-2 text-center" value="1" placeholder="Peso C1">
+               <input id="peso2" data-crit="" type="text" class="mr-2 text-center" value="1" placeholder="Peso C2">
+               <input id="peso3" data-crit="" type="text" class="mr-2 text-center" value="1" placeholder="Peso C3">
+               <a id="btnCalcula" href="" class="btn btn-sm btn-primary"><i class="fas fa-calculator"></i> Calcular</a>
+            </div>
+         </div>
+         <p></p>
+         <input type="hidden" id="tope_costo" value="{{ head(h_topes()) }}">
+         <input type="hidden" id="tope_rh" value="{{ last(h_topes()) }}">
+         <input type="hidden" id="total_costo" value="0">
+         {{-- <input type="hidden" id="total_costo" value="{{ head(h_totales_escenario()) }}"> --}}
+         <input type="hidden" id="total_rh" value="0">
+         <input type="hidden" id="dif_costo" value="0">
+         <input type="hidden" id="dif_rh" value="0">
+         <table id="dg" class="easyui-datagrid" title="Listado de proyectos">
+         </table>
+         <div id="toolbar">
+            <a href="#" class="easyui-linkbutton" iconCls='icon-add' plain='true' onClick='hasAlgo()'>Ranquear proyectos</a>
+            {{-- <a href="#" id="suma" class="easyui-linkbutton" iconCls='icon-save' plain='true' >Suma</a> --}}
          </div>
       </div>
-      <p></p>
-      <input type="hidden" id="tope_costo" value="{{ h_topecosto() }}">
-      <input type="hidden" id="tope_rh" value="{{ h_toperh() }}">
-      <input type="hidden" id="total_costo" value="0">
-      {{-- <input type="hidden" id="total_costo" value="{{ head(h_totales_escenario()) }}"> --}}
-      <input type="hidden" id="total_rh" value="0">
-      <input type="hidden" id="dif_costo" value="0">
-      <input type="hidden" id="dif_rh" value="0">
-      <table id="dg" class="easyui-datagrid" title="Listado de proyectos">
-      </table>
-      <div id="toolbar">
-         <a href="#" class="easyui-linkbutton" iconCls='icon-add' plain='true' onClick='hasAlgo()'>Ranquear proyectos</a>
-         {{-- <a href="#" id="suma" class="easyui-linkbutton" iconCls='icon-save' plain='true' >Suma</a> --}}
-      </div>
-   </div>
-</form>
-
+   </form>
 </body>
 </html>

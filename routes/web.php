@@ -16,9 +16,94 @@ Route::get('/', function () {
 //    }
 // });
 
-Route::get('/post-data', 'getelementos@obtenElementos')->name('postData');
+Route::get('/getelementos', 'getelementos@obtenElementos')->name('getelementos');
 
 // Route::get('proyectos/getProy', 'proyectoController@getProy')->name('proyectos.getProy');
+Route::get('escenarios/proy_de_temas/{pTema}', function($pTema){
+   // $proy = App\Tema::find($pTema)->proyectos()->where('tema_id', $pTema)->get()->toJson();
+   $proy = DB::Select('SELECT id, CONCAT(cclave," - ", cnombre) AS proyecto,
+                      "0" AS C1, "0" AS C2, "0" AS C3, "0" AS C4, "0" AS C5,
+                      0 AS ntotpuntos, ncosto, unidades_rh, 0 AS excluir
+                      FROM proyectos
+                      WHERE tema_id = ?', [$pTema]
+                   );
+   $rows = collect($proy);
+   $topes = h_topes();
+   $topecosto = $topes[0];
+   $toperh = $topes[1];
+
+   $final = [
+     'total'  => $rows->count(),
+     'rows'   => $rows->toArray(),
+     'footer' => [
+        [
+           'ntotpuntos'  => 'TOTAL ',
+           // 'ncosto'      => $rows->sum('ncosto'),
+           'ncosto'      => 0,
+           // 'unidades_rh' => $rows->sum('unidades_rh'),
+           'unidades_rh' => 0,
+        ],
+        [
+           'ntotpuntos'  => 'RESTRICCIÓN ',
+           'ncosto'      => $topecosto,
+           'unidades_rh' => $toperh,
+        ],
+        [
+           'ntotpuntos'  => 'DIFERENCIA ',
+           'ncosto'      => $topecosto,
+           'unidades_rh' => $toperh,
+        ],
+     ]
+  ];
+  $final = json_encode($final);
+  return $final;
+});
+
+Route::get('escenarios/detalle_escenario/{pEscen}', function($pTema){
+   // $proy = App\Tema::find($pTema)->proyectos()->where('tema_id', $pTema)->get()->toJson();
+   $proy = DB::Select('SELECT ed.proyecto_id AS id, CONCAT(p.cclave," - ", p.cnombre) AS proyecto,
+      IFNULL((SELECT npuntos FROM criterio_escenariodet WHERE escenariodet_id=ed.id AND criterio_id=1), 0) AS C1,
+      IFNULL((SELECT npuntos FROM criterio_escenariodet WHERE escenariodet_id=ed.id AND criterio_id=2), 0) AS C2,
+      IFNULL((SELECT npuntos FROM criterio_escenariodet WHERE escenariodet_id=ed.id AND criterio_id=3), 0) AS C3,
+      IFNULL((SELECT npuntos FROM criterio_escenariodet WHERE escenariodet_id=ed.id AND criterio_id=4), 0) AS C4,
+      IFNULL((SELECT npuntos FROM criterio_escenariodet WHERE escenariodet_id=ed.id AND criterio_id=5), 0) AS C5,
+      ed.ntotpuntos, p.ncosto, p.unidades_rh, ed.excluir
+      FROM escenariosdet AS ed
+      LEFT JOIN proyectos AS p ON ed.proyecto_id = p.id
+      WHERE ed.escenario_id = ?', [$pEscen]
+   );
+   $rows = collect($proy);
+   $topes = h_topes();
+   $topecosto = $topes[0];
+   $toperh = $topes[1];
+
+   $final = [
+     'total'  => $rows->count(),
+     'rows'   => $rows->toArray(),
+     'footer' => [
+        [
+           'ntotpuntos'  => 'TOTAL ',
+           // 'ncosto'      => $rows->sum('ncosto'),
+           'ncosto'      => 0,
+           // 'unidades_rh' => $rows->sum('unidades_rh'),
+           'unidades_rh' => 0,
+        ],
+        [
+           'ntotpuntos'  => 'RESTRICCIÓN ',
+           'ncosto'      => $topecosto,
+           'unidades_rh' => $toperh,
+        ],
+        [
+           'ntotpuntos'  => 'DIFERENCIA ',
+           'ncosto'      => $topecosto,
+           'unidades_rh' => $toperh,
+        ],
+     ]
+  ];
+  $final = json_encode($final);
+  return $final;
+});
+
 Route::get('escenarios/proy_para_escenarios', function(){
    $proy = DB::select(DB::raw('CALL sp_critxproy'));
 

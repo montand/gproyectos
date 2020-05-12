@@ -131,32 +131,50 @@ $('#criterios').append(newOption).trigger('change'); --}}
                 </tr>
             </thead>
             <tbody>
-               @foreach ($proyecto->criteriosxproy as $proy_crit)
-                   <tr id="crit{{ $loop->index }}">
-                       <td>
-                           <select name="criterios[]" class="form-control">
-                               <option value="">-- seleccione el criterio --</option>
-                               @foreach ($criterios as $crit)
-                                   <option value="{{ $crit->id }}"
-                                       @if ($proy_crit->id == $crit->id) selected @endif
-                                   >{{ $crit->cnombre }} </option>
-                               @endforeach
-                           </select>
-                       </td>
-                       <td>
-                           <input type="number" name="puntos[]" class="form-control"
-                                  value="{{ $proy_crit->pivot->npuntos }}" />
-                       </td>
-                   </tr>
-               @endforeach
+               @if ($proyecto->criteriosxproy->count() === 0)
+                <tr id="crit0">
+                    <td>
+                        <select name="criterios[]" class="form-control">
+                            <option value="">-- seleccione el criterio --</option>
+                            @foreach ($criterios as $crit)
+                                <option value="{{ $crit->id }}">{{ $crit->cnombre }}</option>
+                            @endforeach
+                        </select>
+                    </td>
+                    <td>
+                        <input type="number" name="puntos[]" class="form-control" value="0" />
+                    </td>
+                </tr>
+               @else
+                  @foreach ($proyecto->criteriosxproy as $proy_crit)
+                      <tr id="crit{{ $loop->index }}">
+                          <td>
+                              <select name="criterios[]" class="form-control">
+                                  <option value="">-- seleccione el criterio --</option>
+                                  @foreach ($criterios as $crit)
+                                      <option value="{{ $crit->id }}"
+                                          @if ($proy_crit->id == $crit->id) selected @endif
+                                      >{{ $crit->cnombre }} </option>
+                                  @endforeach
+                              </select>
+                          </td>
+                          <td>
+                              <input type="number" name="puntos[]" class="form-control"
+                                     value="{{ $proy_crit->pivot->npuntos }}" />
+                          </td>
+                      </tr>
+                  @endforeach
+               @endif
                <tr id="crit{{ $proyecto->criteriosxproy->count() }}"></tr>
             </tbody>
         </table>
 
         <div class="row">
             <div class="col-md-12">
-                <button id="add_row" class="btn btn-default pull-left">+ Añadir fila</button>
-                <button id='delete_row' class="pull-right btn btn-danger">- Borrar fila</button>
+                <button id="add_row" class="btn btn-outline-primary btn-sm pull-left">
+                  <i class="fas fa-plus"></i> Añadir fila</button>
+                <button id='delete_row' class="pull-right btn btn-sm btn-outline-danger">
+                  <i class="fas fa-minus"></i> Borrar fila</button>
             </div>
         </div>
     </div>

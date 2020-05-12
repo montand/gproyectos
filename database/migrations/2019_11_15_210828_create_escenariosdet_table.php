@@ -17,8 +17,6 @@ class CreateEscenariosdetTable extends Migration
             $table->Increments('id')->unsigned();
             $table->integer('escenario_id')->unsigned();
             $table->integer('proyecto_id')->unsigned();
-            $table->decimal('ncosto',18,2);
-            $table->integer('unidades_rh')->unsigned();
             $table->integer('ntotpuntos')->unsigned();
             $table->boolean('excluir')->default('0');
             $table->timestamps();
