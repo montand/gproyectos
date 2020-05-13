@@ -7,7 +7,7 @@ use App\Tema;
 use App\Proyecto;
 use Illuminate\Http\Request;
 
-class TemaController extends Controller
+class temaController extends Controller
 {
 
     function __construct(){
