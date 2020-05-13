@@ -16,7 +16,7 @@ class TemaController extends Controller
 
     /**
      * Display a listing of the resource.
-     *
+     * comentario
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
