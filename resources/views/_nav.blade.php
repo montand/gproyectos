@@ -1,6 +1,7 @@
 <nav class="navbar navbar-light navbar-expand-lg bg-white shadow-sm">
    <div class="container">
-      <i class="fas fa-home fa-2x">&nbsp</i>
+      {{-- <i class="fas fa-home fa-2x">&nbsp</i> --}}
+      <img src="{{ url('img/left.png') }}" style="width: 40px" alt="">
       <a class="navbar-brand"
          href="{{ url('/') }}">
          {{ config('app.name', 'SGP_AS14') }}

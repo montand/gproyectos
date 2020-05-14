@@ -19,9 +19,9 @@ class CreateProyectosTable extends Migration
             $table->string('cnombre',150);
             $table->string('cdescripcion')->nullable();
             $table->string('cjustificacion')->nullable();
-            $table->decimal('ncosto',18,2);
-            $table->tinyInteger('nduracion')->unsigned();
-            $table->integer('unidades_rh')->unsigned();
+            $table->decimal('ncosto',18,2)->default('0');
+            $table->tinyInteger('nduracion')->unsigned()->default('0');
+            $table->integer('unidades_rh')->unsigned()->default('0');
             $table->integer('tema_id')->unsigned()->nullable();
             $table->timestamps();
 

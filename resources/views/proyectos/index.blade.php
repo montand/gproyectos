@@ -19,11 +19,11 @@
             <table id="project-table" class="table table-sm table-bordered table-primary">
                <thead>
                   <tr>
-                     <th class="exportable" width="10%" scope="col">ID</th>
+                     <th class="exportable" width="8%" scope="col">ID</th>
                      <th class="exportable" scope="col">Nombre</th>
                      <th class="exportable" width="15%" scope="col">Costo</th>
                      <th class="exportable" width="10%" scope="col">Duración</th>
-                     <th>Acciones</th>
+                     <th width="15%">Acciones</th>
                   </tr>
                </thead>
             </table>

@@ -81,14 +81,17 @@
             remoteSort: false,
             fitColumns:true,
             fit:false,
-            pageSize: 100,
+            pageSize: 10,
             // width: w,
             // height: h,
             scriped: true,
-            showFooter:true,
+            showFooter:false,
             collapsible:true,
-            toolbar:'#toolbar',
+            // toolbar:'#toolbar',
             idField:'proyecto',
+            rownumbers: true,
+            // autoRowHeight: false,
+            // pagination: true,
             columns:[[
                {field:'proyecto', title:'Proyecto', halign:'center', width:200, sortable:true},
                {field:'C1', title:'C1', width:100, defaultWidth:100, editor:'numberbox', align:'center', hidden: true},
@@ -185,9 +188,9 @@
          if ($('#dg').datagrid('validateRow', editIndex)){
             // console.log('Valida '+editIndex);
             $('#dg').datagrid('endEdit', editIndex);
-            $('#dg').datagrid('acceptChanges');
+            // $('#dg').datagrid('acceptChanges');
             // var cambios = $('#dg').datagrid('getChanges');
-            // console.log(cambios.length);
+            // console.log(cambios);
             editIndex = undefined;
             return true;
          } else {
@@ -212,7 +215,7 @@
          aPeso[0] = $('#peso1').val() === undefined ? 0 : $('#peso1').val();
          aPeso[1] = $('#peso2').val() === undefined ? 0 : $('#peso2').val();
          aPeso[2] = $('#peso3').val() === undefined ? 0 : $('#peso3').val();
-         var newJson = $('#dg').datagrid('getRows');
+         var newJson = JSON.stringify($('#dg').datagrid('getRows'));
          console.log(newJson);
          $.ajax({
             url: '/escenarios',
@@ -227,9 +230,15 @@
                "aPeso": aPeso,
                "grid": newJson
             },
+            beforeSend: function(){
+               $('#msgModal').modal('show');
+            },
             // success:function(data){
             //    console.log("Mensaje de que todo esta bien");
             // }
+            complete: function(){
+               $('#msgModal').modal('hide');
+            }
          })
          .done(function(response) {
             if(response.respuesta=='1'){
@@ -376,7 +385,9 @@
       }
 
       function recalcular(aCriterios){
-         var All_Rows= $('#dg').datagrid('getRows');
+         // var All_Rows= $('#dg').datagrid('getRows');
+         var All_Rows = $('#dg').datagrid('getChanges');
+         // console.log(All_Rows);
          var aFactores = [];
 
          // Hago la suma solo si se ha seleccionado algun criterio

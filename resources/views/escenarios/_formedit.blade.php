@@ -66,7 +66,8 @@
         <div id="totCosto" hidden></div>
         <div id="totRH" hidden></div>
          <div class="card card-body bg-light">
-            <table id="dg" class="easyui-datagrid" title="Listado de proyectos (click en puntuación para ordenar)">
+            <table id="dg" class="easyui-datagrid"
+               title="Listado de proyectos (click en puntuación para ordenar)">
             </table>
 {{--             <table id="dg" class="easyui-datagrid" title="Listado de proyectos"
                data-options="collapsible:true, fitColumns:true">

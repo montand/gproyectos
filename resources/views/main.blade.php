@@ -5,7 +5,8 @@
     <div class="row">
         <div class="col-12">
             <h1 class="display-4 text-primary">
-               <i class="fas fa-tasks">&nbsp</i>
+               {{-- <i class="fas fa-tasks">&nbsp</i> --}}
+               <img src="{{ url('img/left.png') }}" alt="">
                Gestión de proyectos</h1>
             <p class="lead text-secondary">Sistema para el desarrollo y costeo de escenarios con pull de proyectos.</p>
         </div>

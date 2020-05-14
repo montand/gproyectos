@@ -130,14 +130,17 @@ class escenarioController extends Controller
       });
       $pesos = Request()->aPeso;
       for ($criterio=0; $criterio < count($criterios); $criterio++) {
+         if ($pesos[$criterio] > 0) {
             $escenario->criteriosxescenario()->attach($criterios[$criterio], ['npeso' => $pesos[$criterio]]);
+         }
       }
-      $datosGrid = Request()->grid;
+      $datosGrid = json_decode(Request()->grid);
       // foreach ($datosGrid as $value) {
       //    $escenario->proyectosyescenarios()->attach($value['id'], ['ntotpuntos' => $value['ntotpuntos'], 'excluir' => $value['excluir']]);
       // }
       $escid = $escenario->id;
-      foreach ($datosGrid as $valor) {
+      foreach ($datosGrid as &$valor) {
+         $valor = get_object_vars($valor);
          $escDetId = DB::table('escenariosdet')->insertGetId([
             'escenario_id' => $escid,
             'proyecto_id'  => $valor['id'],

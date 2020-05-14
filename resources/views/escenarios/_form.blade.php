@@ -51,6 +51,10 @@
 
 <hr>
 
+{{-- <div id='loader' style='display: none;'>
+  <img src="{{ url('img/ajax-loader.gif') }}">
+</div> --}}
+
 <input type="hidden" id="tope_costo" value="{{ head(h_topes()) }}">
 <input type="hidden" id="tope_rh" value="{{ last(h_topes()) }}">
 <input type="hidden" id="total_costo" value="0">
@@ -98,10 +102,40 @@
    </div>
 </div>
 
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#msgModal">
+  Launch demo modal
+</button>
 <div class="row mt-2 justify-content-md-end">
    <div class="col-12 m-2 text-right">
       <input class="btn btn-primary" id="save" type="submit" value="{{ $btnText }} ">
       {{-- <a class="btn btn-primary" id="save" href="#">{{ $btnText }}</a> --}}
       <a class="btn btn-outline-secondary " href="{{ route('escenarios.index') }}">Cancelar</a>
    </div>
+</div>
+
+
+<div class="modal fade" id="msgModal" data-toggle="modal" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalTitle">Grabando cambios espere...</h5>
+      </div>
+      <div class="modal-body text-center">
+        <img src="{{ url('img/horizontal_loading.gif') }}">
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="msgModal0" data-toggle="modal" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalTitle">Espere un momento...</h5>
+      </div>
+      <div class="modal-body text-center">
+        <img src="{{ url('img/horizontal_loading.gif') }}">
+      </div>
+    </div>
+  </div>
 </div>

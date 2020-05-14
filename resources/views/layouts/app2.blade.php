@@ -53,7 +53,6 @@
    {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/df-number-format/2.1.6/jquery.number.min.js"></script> --}}
 
    <!-- easyui -->
-   <script type="text/javascript" src="http://www.jeasyui.com/easyui/jquery.min.js"></script>
    <script type="text/javascript" src="http://www.jeasyui.com/easyui/jquery.easyui.min.js"></script>
    <script type="text/javascript" src="http://www.jeasyui.com/easyui/datagrid-scrollview.js"></script>
 
