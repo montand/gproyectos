@@ -216,7 +216,6 @@
          aPeso[1] = $('#peso2').val() === undefined ? 0 : $('#peso2').val();
          aPeso[2] = $('#peso3').val() === undefined ? 0 : $('#peso3').val();
          var newJson = JSON.stringify($('#dg').datagrid('getRows'));
-         console.log(newJson);
          $.ajax({
             url: '/escenarios',
             type: 'POST',

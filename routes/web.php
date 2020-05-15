@@ -8,6 +8,10 @@ Route::get('/', function () {
    return view('main');
 })->name('main');
 
+Route::get('/clear-cache', function() {
+    Artisan::call('cache:clear');
+    return "El Cache ha sido limpiado";
+});
 // Route::get('periodos', 'PeriodoController@index')->name('catperiodos');
 
 // Route::get('/elemxcrit', function(){
