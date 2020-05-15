@@ -218,6 +218,7 @@
          var newJson = JSON.stringify($('#dg').datagrid('getRows'));
          $.ajax({
             url: '/escenarios',
+            async: true,
             type: 'POST',
             data: {
                "_token": "{{ csrf_token() }}",
