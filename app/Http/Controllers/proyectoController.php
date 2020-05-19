@@ -12,9 +12,9 @@ use Illuminate\Http\Request;
 class proyectoController extends Controller
 {
 
-    public function __construct(){
-        $this->middleware('auth')->except('show');
-    }
+    // public function __construct(){
+    //     $this->middleware('auth')->except('show');
+    // }
 
     /**
      * Display a listing of the resource.
@@ -23,17 +23,23 @@ class proyectoController extends Controller
      */
     public function index()
     {
-
       if (request()->ajax()) {
 
          return Datatables()
             ->of(Proyecto::latest()->get())
             ->addColumn('btn', function($data){
-               $button = '<a href="'. route('proyectos.show', $data->id) .'" class="btn btn-primary btn-sm text-center" data-toggle="tooltip" data-placement="top" title="Ver"><i class="fas fa-glasses" aria-hidden="true"></i></a>';
-               $button .= '&nbsp;&nbsp;';
-               $button .= '<a href="'. route('proyectos.edit', $data->id) .'" class="btn btn-success btn-sm text-center" data-toggle="tooltip" data-placement="top" title="Editar"><i class="far fa-edit" aria-hidden="true"></i></a>';
-               $button .= '&nbsp;&nbsp;';
-               $button .= '<a href="'. route('proyectos.destroy', $data->id) .'" class="btn btn-danger btn-sm text-center" data-toggle="tooltip" data-placement="top" title="Eliminar"><i class="fas fa-trash-alt" aria-hidden="true"></i></a>';
+               $button='';
+               if(auth()->user()->hasPermissionTo('leer proyectos')){
+                  $button .= '<a href="'. route('proyectos.show', $data->id) .'" class="btn btn-primary btn-sm text-center" data-toggle="tooltip" data-placement="top" title="Ver"><i class="fas fa-glasses" aria-hidden="true"></i></a>';
+                  $button .= '&nbsp;&nbsp;';
+               }
+               if(auth()->user()->hasPermissionTo('editar proyectos')){
+                  $button .= '<a href="'. route('proyectos.edit', $data->id) .'" class="btn btn-success btn-sm text-center" data-toggle="tooltip" data-placement="top" title="Editar"><i class="far fa-edit" aria-hidden="true"></i></a>';
+                  $button .= '&nbsp;&nbsp;';
+               }
+               if(auth()->user()->hasPermissionTo('borrar proyectos')){
+                  $button .= '<a href="'. route('proyectos.destroy', $data->id) .'" class="btn btn-danger btn-sm text-center" data-toggle="tooltip" data-placement="top" title="Eliminar"><i class="fas fa-trash-alt" aria-hidden="true"></i></a>';
+               }
                return $button;
             })
             ->rawColumns(['btn'])

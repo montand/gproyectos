@@ -9,6 +9,7 @@
                <img src="{{ url('img/left.png') }}" alt="">
                Gestión de proyectos</h1>
             <p class="lead text-secondary">Sistema para el desarrollo y costeo de escenarios con pull de proyectos.</p>
+            {{-- <h5>@include('permisos-demo')</h5> --}}
         </div>
         <div class="col-12">
             <img class="img-fluid mb-4" src="/img/fondo.svg" alt="SGP_AS14">

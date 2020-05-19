@@ -1,5 +1,8 @@
 <?php
 
+use App\User;
+use App\Role;
+
 // Route::get('/', function () {
 //     return view('welcome');
 // })->name('home');
@@ -8,17 +11,11 @@ Route::get('/', function () {
    return view('main');
 })->name('main');
 
+
 Route::get('/clear-cache', function() {
     Artisan::call('cache:clear');
     return "El Cache ha sido limpiado";
 });
-// Route::get('periodos', 'PeriodoController@index')->name('catperiodos');
-
-// Route::get('/elemxcrit', function(){
-//    if ( Request::ajax() ) {
-//       return "Ajax obtuvo el request y regresa los elementos";
-//    }
-// });
 
 Route::get('/getelementos', 'getelementos@obtenElementos')->name('getelementos');
 
@@ -141,28 +138,40 @@ Route::get('escenarios/proy_para_escenarios', function(){
         ],
      ]
   ];
-
-// dd(head( h_totales_escenario() ));
-
   $final = json_encode($final);
   return $final;
-
 });
-Route::resource('proyectos', 'proyectoController');
-Route::resource('temas', 'temaController');
-Route::resource('criterios', 'criterioController');
-Route::resource('elementos', 'elementoController');
+
+Route::group(['middleware' => ['permission:leer usuarios']], function(){
+   Route::resource('usuarios', 'userController');
+});
+Route::group(['middleware' => ['permission:leer proyectos']], function(){
+   Route::resource('proyectos', 'proyectoController');
+});
+Route::group(['middleware' => ['permission:leer temas']], function(){
+   Route::resource('temas', 'temaController');
+});
+Route::group(['middleware' => ['permission:leer criterios']], function(){
+   Route::resource('criterios', 'criterioController');
+});
+Route::group(['middleware' => ['permission:leer elementos']], function(){
+   Route::resource('elementos', 'elementoController');
+});
 Route::get('escenarios/getProyectos', 'escenarioController@getProyectos')->name('escenarios.getProyectos');
 Route::get('escenarios/getProy_easy', 'escenarioController@getProy_easy');
 // Route::get('escenarios/proy_para_escenarios', 'escenarioController@proy_para_escenarios');
-Route::resource('escenarios', 'escenarioController');
-Route::resource('periodos', 'periodoController');
+Route::group(['middleware' => ['permission:leer escenarios']], function(){
+   Route::resource('escenarios', 'escenarioController');
+});
+Route::group(['middleware' => ['permission:leer periodos']], function(){
+   Route::resource('periodos', 'periodoController');
+});
 // Route::get('getelementos', 'getelementos@obtenElementos');
 
 
 Route::view('pmaestro', 'pmaestro.index')->name('pmaestro.index');
 Route::view('configuracion', 'configuracion.index')->name('configuracion.index');
-Route::view('usuarios', 'usuarios.index')->name('usuarios.index');
+// Route::view('usuarios', 'usuarios.index')->name('usuarios.index');
 
 
 Auth::routes(['register' => false]);

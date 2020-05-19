@@ -4,11 +4,11 @@
 <div class="container">
    <div class="d-flex justify-content-between align-items-center mb-3">
       <h3 class="mb-0 ">Criterios</h3>
-      @auth
+      @can('crear criterios')
          <a class="btn btn-primary"
             href="{{ route('criterios.create') }}">Crear criterio
          </a>
-      @endauth
+      @endcan
    </div>
    <div class="table-responsive">
       <table class="table table-hover table-sm">
@@ -36,11 +36,14 @@
                          @endforeach
                       </ul>
                   </td>
+                  @can('editar criterios')
                   <td class="col-sm-1">
                      <a class="btn btn-info btn-sm"
                         href="{{ route('criterios.edit', $crits->id) }} ">Editar
                      </a>
                   </td>
+                  @endcan
+                  @can('borrar criterios')
                   <td class="col-sm-1">
                      <form style="display:inline"
                         method="POST"
@@ -50,6 +53,7 @@
                         <button class="btn btn-danger btn-sm" type="submit" onclick="return confirm('Estas seguro de eliminar?')">Eliminar</button>
                      </form>
                   </td>
+                  @endcan
                </tr>
             @empty
                <li>No hay criterios para mostrar</li>

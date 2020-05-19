@@ -9,11 +9,11 @@
       <div class="card">
          <div class="card-header card-group">
             <div> <h4 class="card-title">Proyectos</h4> </div>
-            @auth
+            @can('crear proyectos')
                <a class="btn btn-sm btn-primary ml-auto px-3"
                   href="{{ route('proyectos.create') }}">Crear proyecto
                </a>
-            @endauth
+            @endcan
          </div>
          <div class="card card-body bg-light">
             <table id="project-table" class="table table-sm table-bordered table-primary">

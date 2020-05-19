@@ -180,6 +180,7 @@ return [
         RealRashid\SweetAlert\SweetAlertServiceProvider::class,
         'Barryvdh\Debugbar\ServiceProvider',
         Yajra\DataTables\DataTablesServiceProvider::class,
+        Spatie\Permission\PermissionServiceProvider::class,
 
     ],
 

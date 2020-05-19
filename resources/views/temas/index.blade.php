@@ -8,11 +8,11 @@
       <div class="card">
          <div class="card-header card-group">
             <div> <h4 class="card-title">Temas</h4> </div>
-            @auth
+            @can('crear temas')
                <a class="btn btn-sm btn-primary ml-auto px-3"
                   href="{{ route('temas.create') }}">Crear tema
                </a>
-            @endauth
+            @endcan
          </div>
          <div class="card card-body bg-light">
             <div class="table-responsive">

@@ -239,8 +239,15 @@ class escenarioController extends Controller
     * @param  \App\Escenario  $escenario
     * @return \Illuminate\Http\Response
     */
-   public function destroy(Escenario $escenario)
+   public function destroy($id)
    {
-      //
+
+      if(Escenario::findOrfail($id)->delete()){
+         return redirect()->route('escenarios.index')->with('success', 'El escenario fue eliminado con éxito');
+      }else{
+         return response()->json([
+            'mensaje' => 'Error al eliminar el escenario !'
+         ]);
+      }
    }
 }

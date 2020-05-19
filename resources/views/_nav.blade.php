@@ -17,51 +17,74 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
          @auth
             <ul class="nav nav-pills">
+               @if( auth()->user()->hasAnyPermission('leer elementos',
+                  'leer criterios','leer temas','leer proyectos','leer periodos'))
                <li class="nav-item dropdown">
                   <a id="catalogosDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>Catálogos
                   </a>
                   <div class="dropdown-menu dropdown-menu-left" aria-labelledby="catalogosDropdown">
+                     @can('leer elementos')
                      <a class="dropdown-item" href="{{ route('elementos.index') }}">
                         Elementos
                      </a>
+                     @endcan
+                     @can('leer criterios')
                      <a class="dropdown-item" href="{{ route('criterios.index') }}">
                         Criterios
                      </a>
+                     @endcan
+                     @can('leer temas')
                      <a class="dropdown-item" href="{{ route('temas.index') }}">
                         Temas
                      </a>
+                     @endcan
+                     @can('leer proyectos')
                      <a class="dropdown-item" href="{{ route('proyectos.index') }}">
                         Proyectos
                      </a>
+                     @endcan
+                     @can('leer periodos')
                      <a class="dropdown-item" href="{{ route('periodos.index') }}">
                         Periodos
                      </a>
+                     @endcan
                   </div>
                </li>
+               @endif
+               @if( auth()->user()->hasPermissionTo('leer escenarios'))
                <li class="nav-item dropdown">
                   <a id="capturaDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>Captura
                   </a>
                   <div class="dropdown-menu dropdown-menu-left" aria-labelledby="capturaDropdown">
+                     @can('leer escenarios')
                      <a class="dropdown-item" href="{{ route('escenarios.index') }}">
                         Escenarios
                      </a>
-                     <a class="dropdown-item" href="{{ route('pmaestro.index') }}">
+                     @endcan
+{{--                      <a class="dropdown-item" href="{{ route('pmaestro.index') }}">
                         Plan Maestro
-                     </a>
+                     </a> --}}
                   </div>
                </li>
+               @endif
+               @if( auth()->user()->hasAnyPermission('leer configuracion','leer usuarios'))
                <li class="nav-item dropdown">
                   <a id="configDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>Administración
                   </a>
                   <div class="dropdown-menu dropdown-menu-left" aria-labelledby="configDropdown">
-                     <a class="dropdown-item" href="{{ route('configuracion.index') }}">
-                        Configuración
-                     </a>
-                     <a class="dropdown-item" href="{{ route('usuarios.index') }}">
-                        Usuarios
-                     </a>
+                     @can('leer configuracion')
+                        <a class="dropdown-item" href="{{ route('configuracion.index') }}">
+                           Configuración
+                        </a>
+                     @endcan
+                     @can('leer usuarios')
+                        <a class="dropdown-item" href="{{ route('usuarios.index') }}">
+                           Usuarios
+                        </a>
+                     @endcan
                   </div>
                </li>
+               @endif
             </ul>
          @endauth
 

@@ -17,11 +17,11 @@
       <div class="card">
          <div class="card-header card-group">
             <div> <h4 class="card-title">Elementos</h4> </div>
-            @auth
+            @can('crear elementos')
                <a class="btn btn-sm btn-primary ml-auto px-3"
                   href="{{ route('elementos.create') }}">Crear elemento
                </a>
-            @endauth
+            @endcan
          </div>
          <div class="card card-body bg-light">
             <div class="table-responsive">

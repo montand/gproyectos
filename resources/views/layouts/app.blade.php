@@ -38,9 +38,9 @@
       <header>
          @include('_nav')
          {{-- @include('_session-status') --}}
-        @if (session()->has('status'))
+         @if (session()->has('status'))
             <div class="alert alert-success"> {{ session('status') }} </div>
-        @endif
+         @endif
       </header>
 
       <main class="py-4">
@@ -51,7 +51,7 @@
          {{ config('app.name') }} | Copyright ® {{ date('Y') }}
       </footer>
   </div>
-   <script src="{{ asset('select2-4.0.10/dist/js/select2.js') }}"></script>
+   {{-- <script src="{{ asset('select2-4.0.10/dist/js/select2.js') }}"></script> --}}
    {{-- <script src="https://getbootstrap.com/docs/4.0/assets/js/vendor/popper.min.js"></script> --}}
    <!-- jquery -->
    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
@@ -109,7 +109,7 @@
    </script>
 
 
-   <script src="https://unpkg.com/popper.js@1"></script>
+   {{-- <script src="https://unpkg.com/popper.js@1"></script> --}}
    <!-- Developer mode -->
    <script src="https://unpkg.com/tippy.js@5/dist/tippy-bundle.iife.js"></script>
    <!-- Production mode -->

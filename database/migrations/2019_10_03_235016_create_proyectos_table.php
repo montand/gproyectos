@@ -16,12 +16,12 @@ class CreateProyectosTable extends Migration
         Schema::create('proyectos', function (Blueprint $table) {
             $table->Increments('id')->unsigned();
             $table->string('cclave',15);
-            $table->string('cnombre',150);
-            $table->string('cdescripcion')->nullable();
-            $table->string('cjustificacion')->nullable();
-            $table->decimal('ncosto',18,2)->default('0');
-            $table->tinyInteger('nduracion')->unsigned()->default('0');
-            $table->integer('unidades_rh')->unsigned()->default('0');
+            $table->string('cnombre',500);
+            $table->string('cdescripcion',1000)->nullable();
+            $table->string('cjustificacion',1000)->nullable();
+            $table->decimal('ncosto',18,2)->nullable()->default('0');
+            $table->tinyInteger('nduracion')->unsigned()->nullable()->default('0');
+            $table->integer('unidades_rh')->unsigned()->nullable()->default('0');
             $table->integer('tema_id')->unsigned()->nullable();
             $table->timestamps();
 

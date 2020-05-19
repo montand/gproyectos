@@ -26,9 +26,14 @@ class temaController extends Controller
          return Datatables()
             ->of(Tema::get())
             ->addColumn('btn', function($data){
-               $button = '<a href="'. route('temas.edit', $data->id) .'" class="btn btn-success btn-sm text-center" data-toggle="tooltip" data-placement="top" title="Editar"><i class="far fa-edit" aria-hidden="true"></i></a>';
-               $button .= '&nbsp;&nbsp;';
-               $button .= '<a href="'. route('temas.destroy', $data->id) .'" class="btn btn-danger btn-sm text-center" data-toggle="tooltip" data-placement="top" title="Eliminar"><i class="fas fa-trash-alt" aria-hidden="true"></i></a>';
+               $button='';
+               if(auth()->user()->hasPermissionTo('editar temas')){
+                  $button .= '<a href="'. route('temas.edit', $data->id) .'" class="btn btn-success btn-sm text-center" data-toggle="tooltip" data-placement="top" title="Editar"><i class="far fa-edit" aria-hidden="true"></i></a>';
+                  $button .= '&nbsp;&nbsp;';
+               }
+               if(auth()->user()->hasPermissionTo('borrar temas')){
+                  $button .= '<a href="'. route('temas.destroy', $data->id) .'" class="btn btn-danger btn-sm text-center" data-toggle="tooltip" data-placement="top" title="Eliminar"><i class="fas fa-trash-alt" aria-hidden="true"></i></a>';
+               }
                return $button;
             })
             ->rawColumns(['btn'])
@@ -115,10 +120,9 @@ class temaController extends Controller
      * @param  \App\Tema  $tema
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Tema $tema)
+    public function destroy($id)
     {
 
-      // $tema->delete();
       Tema::findOrfail($id)->delete();
       return redirect()->route('temas.index')->with('success', 'El tema fue eliminado con éxito');
     }

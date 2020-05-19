@@ -6,9 +6,12 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
+use Spatie\Permission\Traits\HasRoles;
+
+
 class User extends Authenticatable      // implements MustVerifyEmail
 {
-    use Notifiable;
+   use Notifiable, HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -16,8 +19,12 @@ class User extends Authenticatable      // implements MustVerifyEmail
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+      'name', 'email', 'password',
     ];
+
+    // public function roles(){
+    //   return $this->belongsToMany('App\Role')->withTimesTamps();
+    // }
 
     /**
      * The attributes that should be hidden for arrays.
@@ -25,7 +32,7 @@ class User extends Authenticatable      // implements MustVerifyEmail
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+      'password', 'remember_token',
     ];
 
     /**
@@ -34,6 +41,12 @@ class User extends Authenticatable      // implements MustVerifyEmail
      * @var array
      */
     protected $casts = [
-        'email_verified_at' => 'datetime',
+      'email_verified_at' => 'datetime',
     ];
+
+    public function setPasswordAttribute($value){
+      if (!empty($value)) {
+         $this->attributes['password'] = bcrypt($value);
+      }
+    }
 }
