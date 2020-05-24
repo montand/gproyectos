@@ -8,9 +8,8 @@
          <div class="input-group-text">
             <div class="form-check">
                <label class="form-check-label align-middle ">
-                  <input id="chkCrit{{ $crit->id }}" class="form-check-input" name="chkCrits[]" type="checkbox"
-                        {{-- {{ $periodo->activo ? 'checked' : '' }} --}}
-                        value="{{ $crit->id }}" data-nombre="{{ $crit->cnombre }}">
+                  <input id="chkCrit{{ $crit->id }}" class="form-check-input cr" name="chkCrits[]" type="checkbox"
+                        value="{{ $crit->id }}" {{ is_numeric(array_search($crit->id, array_column($acritpesos, 'cid'))) ? 'checked':'' }} data-nombre="{{ $crit->cnombre }}">
                   {{ $crit->id }} - {{ $crit->cnombre }}
                </label>
             </div>
@@ -106,4 +105,17 @@
       {{-- <a class="btn btn-primary" id="save" href="#">{{ $btnText }}</a> --}}
       <a class="btn btn-outline-secondary " href="{{ route('escenarios.index') }}">Cancelar</a>
    </div>
+</div>
+
+<div class="modal fade" id="msgModal" data-toggle="modal" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalTitle">Grabando cambios espere...</h5>
+      </div>
+      <div class="modal-body text-center">
+        <img src="{{ url('img/horizontal_loading.gif') }}">
+      </div>
+    </div>
+  </div>
 </div>

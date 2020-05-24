@@ -8,7 +8,7 @@
          <div class="input-group-text">
             <div class="form-check">
                <label class="form-check-label align-middle ">
-                  <input id="chkCrit{{ $crit->id }}" class="form-check-input" name="chkCrits[]" type="checkbox"
+                  <input id="chkCrit{{ $crit->id }}" class="form-check-input cr" name="chkCrits[]" type="checkbox"
                         value="{{ $crit->id }}" data-nombre="{{ $crit->cnombre }}">
                   {{ $crit->id }} - {{ $crit->cnombre }}
                </label>

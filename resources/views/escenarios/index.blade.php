@@ -29,12 +29,15 @@
                         <td class="text-left">{{ $item->cnombre }}</td>
                         <td class="text-center">{{ number_format($item->ntotcosto,2) }}</td>
                         <td class="text-center">{{ number_format($item->ntotrh) }}</td>
+                        @can('editar escenarios')
                         <td class="text-center">
-                            <a class="btn btn-info btn-sm" id="btnEdit"
-                                href="#">Editar
-                                {{-- href="{{ route('escenarios.edit', $item->id) }} ">Editar --}}
-                            </a>
+                           <a class="btn btn-info btn-sm" id="btnEdit"
+                              {{-- href="#">Editar --}}
+                              href="{{ route('escenarios.edit', $item->id) }} ">Editar
+                           </a>
                         </td>
+                        @endcan
+                        @can('borrar escenarios')
                         <td class="text-center">
                             <form style="display:inline"
                               method="POST"
@@ -42,9 +45,11 @@
                               @method('DELETE')
                               @csrf
 
-                              <button class="btn btn-danger btn-sm" type="button" onclick="return confirm('Estas seguro de eliminar?')">Eliminar</button>
+                              <button class="btn btn-danger btn-sm" type="submit">Eliminar</button>
+                              {{-- <button class="btn btn-danger btn-sm" type="button" onclick="return confirm('Estas seguro de eliminar?')">Eliminar</button> --}}
                             </form>
                         </td>
+                        @endcan
                     </tr>
                 @empty
                     <li class="list-group-item border-0 mb-3 shadow-sm">

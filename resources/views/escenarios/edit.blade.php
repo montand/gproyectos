@@ -1,4 +1,5 @@
 {{-- {{ route('escenarios.getProyectos') }}; --}}
+<meta name="csrf-token" content="{!! csrf_token() !!}">
 @extends('layouts.app2')
 
 @section('content')
@@ -17,7 +18,8 @@
                   name="cnombre"
                   id="txtNombre"
                   placeholder="Nombre del escenario"
-                  value="{{ $escenario->cnombre ?? old('cnombre') }} ">
+                  value="{{ $escenario->cnombre ?? old('cnombre') }} "
+                  data-id={{ $escenario->id }}>
                   @error('cnombre')
                      <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }} </strong>
@@ -26,7 +28,7 @@
             </div>
             <div class="form-group col-4">   {{-- Uso $temas --}}
                <label for="temas" class="text-dark font-weight-bold">Tema: &ensp;</label>
-               <input disabled class="form-control col-8 bg-light shadow-sm @error('tema_id') is-invalid @else border-1 @enderror" type="text" name="tema_id" id="tema" value="{{ $escenario->tema->nomcorto ?? old('nomcorto') }}">
+               <input disabled class="form-control col-8 bg-light shadow-sm @error('tema_id') is-invalid @else border-1 @enderror" type="text" name="tema_id" id="tema" value="{{ $escenario->tema->nomcorto ?? old('nomcorto') }}" data-id={{ $escenario->tema->id }}>
 {{--                <select disabled class="form-control col-8" name="tema_id" id="tema">
                   <option value="{{ $escenario->tema_id ?? old('tema_id') }}" selected> Seleccione un tema </option>
                   @foreach ($temas as $key => $nomcorto)
@@ -50,7 +52,7 @@
    <script src="https://cdnjs.cloudflare.com/ajax/libs/df-number-format/2.1.6/jquery.number.min.js"></script>
    {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script> --}}
    <script>
-
+      var curTema = '';
       function format(num){
          return $.number(num);
       }
@@ -60,24 +62,30 @@
       }
 
       $(function() {
-          $('#dg').datagrid();
+         // $('#dg').datagrid();
+         var acrit_pesos = @json($acritpesos);
+         var ntema = $('#tema').data('id');
+         var nescen = $('#txtNombre').data('id');
+         // console.log(ntema);
+         muestraGrid(nescen);
+
+         for(var i in acrit_pesos){
+            var npeso = acrit_pesos[i].peso;
+            var ncrit = acrit_pesos[i].cid
+            muestraDatos(ntema, ncrit, npeso);
+         }
+
       });
 
-      var curTema = 0;
-
-      $('#tema').on('change', function(event) {
-         event.preventDefault();
-         curTema = $(this).val();
+      function muestraGrid(escen){
+         var curEsc = escen;
          // Limpio los checkbox y elementos que existan en el DOM
-         limpia();
-
-         var w = $(document).width()-220;
-         var h = $(document).height()-220;
+         // limpia();
          var dg = $('#dg');
          dg.datagrid({
             // view: scrollview,
             method:'get',
-            url: 'proy_de_temas/'+curTema,
+            url: 'detalle_escenario',
             singleSelect:false,
             remoteSort: false,
             fitColumns:true,
@@ -86,9 +94,9 @@
             // width: w,
             // height: h,
             scriped: true,
-            showFooter:true,
+            showFooter:false,
             collapsible:true,
-            toolbar:'#toolbar',
+            // toolbar:'#toolbar',
             idField:'proyecto',
             columns:[[
                {field:'proyecto', title:'Proyecto', halign:'center', width:200, sortable:true},
@@ -172,13 +180,22 @@
             onAfterEdit:function(index,row){
                row.editing = false;
                $(this).datagrid('refreshRow', index);
+            },
+            onLoadSuccess:function(){
+               // recupero las filas marcadas
+               var rows = $(this).datagrid('getRows');
+               for(var i=0; i<rows.length; i++){
+                  if (rows[i]['excluir']){
+                     $(this).datagrid('checkRow',i);
+                  }
+               }
             }
          });
          // No funciona el selectAll ni checkAll
-         dg.datagrid('reload');
+         // dg.datagrid('reload');
          // dg.datagrid().datagrid('enableCellEditing');
          $('#dg').datagrid('checkAll');
-      });
+      }
 
       var editIndex = undefined;
       function endEditing(){
@@ -199,47 +216,77 @@
 
          // var ruta = $('#frm-data').data('route');
       $('#save').on('click', function(e) {
+
          e.preventDefault();
          var aPeso = [];
+         var nescen = $('#txtNombre').data('id');
          var cnombre = $('#txtNombre').val();
-         var tema_id = $('#tema').val();
+         var tema_id = $('#tema').data('id');
          var ntotcosto = $('#total_costo').val();
          var ntotrh = $('#total_rh').val();
-         var aCrits = $('input[type=checkbox]:checked').map(function(){
-            return this.value;
-         }).get();
+
+         var aCrits = [];
+         aCrits = $('.cr:input:checked').map(function(i, e) {
+            return e.value
+         }).toArray();
+
          // aCrits = $.isEmptyObject(aCrits) ? [] : aCrits;
          // console.log("arreglo criterios: "+aCrits[0]);
+
          aPeso[0] = $('#peso1').val() === undefined ? 0 : $('#peso1').val();
          aPeso[1] = $('#peso2').val() === undefined ? 0 : $('#peso2').val();
          aPeso[2] = $('#peso3').val() === undefined ? 0 : $('#peso3').val();
          var newJson = $('#dg').datagrid('getRows');
-         console.log(newJson);
+
+         // console.log(newJson);
+         var objeto_json=
+                 {
+                  "cnombre": cnombre,
+                  "tema_id": tema_id,
+                  "ntotcosto": ntotcosto,
+                  "ntotrh": ntotrh,
+                  "aCrits": aCrits,
+                  "aPeso": aPeso,
+                  "grid": newJson
+                 };
+         var token=$('meta[name="csrf-token"]').attr('content');
+         var json=JSON.stringify(objeto_json);
          $.ajax({
-            url: '/escenarios',
-            type: 'POST',
-            data: {
-               "_token": "{{ csrf_token() }}",
-               "cnombre": cnombre,
-               "tema_id": tema_id,
-               "ntotcosto": ntotcosto,
-               "ntotrh": ntotrh,
-               "aCrits": aCrits,
-               "aPeso": aPeso,
-               "grid": newJson
-            },
+            url: `/escenarios/${nescen}`,
+            async: true,
+            headers:{'X-CSRF-TOKEN':token },
+            type: 'PUT',
+            contentType: 'application/json',
+            data: json,
+            beforeSend: function(){
+               $('#msgModal').modal('show');
+            }
             // success:function(data){
             //    console.log("Mensaje de que todo esta bien");
             // }
+            // complete: function(){
+            //    $('#msgModal').modal('hide');
+            // }
          })
          .done(function(response) {
-            if(response.respuesta=='1'){
-               // console.log(response.ruta);
+            $('#msgModal').modal('hide');
+            console.log(response);
+            if (response.message[0]==1) {
+               swal("Ok", response.message[1], "success");
                window.location.href = "/escenarios";
+            } else {
+               swal("Error", response.message[1], "error");
             }
          })
          .fail(function() {
-            console.log("error");
+            console.log(data);
+            var err = data.responseJSON;
+            var msg = "";
+            $.each(err, function(key, val) {
+                msg+=val+"<br>";
+            });
+            $('#msgModal').modal('hide');
+            swal("Error", msg, "error");
          });
 
          // var cambios = $('#dg').datagrid('getChanges');
@@ -336,6 +383,93 @@
          });
       });
 
+      function muestraDatos(tema, crit, peso){
+         if (tema === 0) {
+            alert('Favor de seleccionar primero un tema');
+            $('#chkCrit'+$.trim(crit)).prop('checked',false);
+            return false;
+         }
+         var col = 'C'+crit;
+         var nomCrit = $('#chkCrit'+$.trim(crit)).data('nombre').toUpperCase();
+         var ok = true;
+         var token = '{{ csrf_token() }}';
+         var dg = $('#dg');
+
+         if (ok) {
+            dg.datagrid('showColumn',col);
+         }else{
+            dg.datagrid('hideColumn',col);
+         }
+         // Traigo los elementos del criterio seleccionado para mostrarlo en el DOM
+         $.ajax({
+            type: 'GET',
+            url:' {{ route("getelementos") }}',
+            dataType: 'json',
+            data: {crit:crit, activo:ok, _token:token}
+         })
+         .done(function( response ){
+            var elem = deta = input = '';
+
+            var divCr = $('#cr'+$.trim(crit));
+            var divInput = $('#input'+$.trim(crit));
+            if (divCr.length > 0) {    // Si ya existe un div con el criterio actual
+               if (!ok) {               // Y el checkbox es false, lo elimino
+                  divCr.remove();
+                  divInput.remove();
+                  return false;
+               }
+            }
+            for(var i = 1; i <= 3; i++){
+               var box = $('#boxElem'+i);
+               var cuadro = box.find("div").length;
+               var div = $('#p'+i);
+
+               if (cuadro===0) {
+                  $.each(response, function(i, item) {
+                     deta+= '<li>' + item.npuntos + ' - ' + item.cnombre + '</li>';
+                  });
+                  break;
+               } else if (i === 3) {
+                  var delCr = box.find('div').attr('id');
+                  var chk = $('#chkCrit'+delCr.substr(delCr.length - 1));
+                  var delCol = 'C'+delCr.substr(delCr.length - 1);
+                  delCr = $('#'+delCr);
+                  delCr.remove();
+                  chk.prop('checked', false);
+                  dg.datagrid('hideColumn',delCol);
+                  // Elimino el div del input
+                  var delInput = div.find('div').attr('id');
+                  delInput = $('#'+delInput);
+                  delInput.remove();
+                  // tableProy.columns( [delCol] ).visible( false, false );
+                  $.each(response, function(i, item) {
+                     deta+= '<li>' + item.npuntos + ' - ' + item.cnombre + '</li>';
+                  });
+               }
+            }
+            elem+='<div id="cr'+$.trim(crit)+'">';
+            elem+='<span id="encab" class="text-center border border-primary rounded btn-block">'+ nomCrit +'</span>';
+            elem+='<div  class="input-group-text text-left">';
+            elem+='   <ul class="list-unstyled">';
+            elem+= deta;
+            elem+='   </ul>';
+            elem+='</div>';
+            elem+='</div>';
+
+            input+='<div id="input'+$.trim(crit)+'">';
+            input+='<input id="peso'+$.trim(i)+'" name="peso'+$.trim(i)+'" type="text" class="mr-2 text-center" value="'+$.trim(peso)+'" placeholder="Peso C'+i+'">';
+            input+='<label class="small">Peso C'+$.trim(crit)+'</label>';
+            input+='</div>';
+
+            if (ok) {    // Si se activo el check
+               box.append(elem);
+               div.append(input);
+            }
+         })
+         .fail(function(){
+            console.log("Algo Fallo!");
+         });
+      }
 
       $('#btnCalcula').on('click', function(e) {
          e.preventDefault();

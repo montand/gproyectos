@@ -60,9 +60,9 @@ Route::get('escenarios/proy_de_temas/{pTema}', function($pTema){
   return $final;
 });
 
-Route::get('escenarios/detalle_escenario/{pEscen}', function($pTema){
+Route::get('escenarios/{pEscen}/detalle_escenario', function($pEscen){
    // $proy = App\Tema::find($pTema)->proyectos()->where('tema_id', $pTema)->get()->toJson();
-   $proy = DB::Select('SELECT ed.proyecto_id AS id, CONCAT(p.cclave," - ", p.cnombre) AS proyecto,
+   $proy = DB::Select('SELECT ed.id, ed.proyecto_id AS proy_id, CONCAT(p.cclave," - ", p.cnombre) AS proyecto,
       IFNULL((SELECT npuntos FROM criterio_escenariodet WHERE escenariodet_id=ed.id AND criterio_id=1), 0) AS C1,
       IFNULL((SELECT npuntos FROM criterio_escenariodet WHERE escenariodet_id=ed.id AND criterio_id=2), 0) AS C2,
       IFNULL((SELECT npuntos FROM criterio_escenariodet WHERE escenariodet_id=ed.id AND criterio_id=3), 0) AS C3,
@@ -104,6 +104,10 @@ Route::get('escenarios/detalle_escenario/{pEscen}', function($pTema){
   $final = json_encode($final);
   return $final;
 });
+
+
+Route::put('/escenarios/{id}','escenarioController@update');
+//navegador
 
 Route::get('escenarios/proy_para_escenarios', function(){
    $proy = DB::select(DB::raw('CALL sp_critxproy'));

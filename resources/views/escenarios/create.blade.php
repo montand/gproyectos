@@ -59,7 +59,7 @@
       }
 
       $(function() {
-          $('#dg').datagrid();
+          // $('#dg').datagrid();
       });
 
       var curTema = 0;
@@ -207,47 +207,66 @@
          var tema_id = $('#tema').val();
          var ntotcosto = $('#total_costo').val();
          var ntotrh = $('#total_rh').val();
-         var aCrits = $('input[type=checkbox]:checked').map(function(){
-            return this.value;
-         }).get();
+         var aCrits = [];
+         aCrits = $('.cr:input:checked').map(function(i, e) {
+            return e.value
+         }).toArray();
          // aCrits = $.isEmptyObject(aCrits) ? [] : aCrits;
          // console.log("arreglo criterios: "+aCrits[0]);
          aPeso[0] = $('#peso1').val() === undefined ? 0 : $('#peso1').val();
          aPeso[1] = $('#peso2').val() === undefined ? 0 : $('#peso2').val();
          aPeso[2] = $('#peso3').val() === undefined ? 0 : $('#peso3').val();
-         var newJson = JSON.stringify($('#dg').datagrid('getRows'));
+         var newJson = $('#dg').datagrid('getRows');
+         var objeto_json=
+                 {
+                  "cnombre": cnombre,
+                  "tema_id": tema_id,
+                  "ntotcosto": ntotcosto,
+                  "ntotrh": ntotrh,
+                  "aCrits": aCrits,
+                  "aPeso": aPeso,
+                  "grid": newJson
+                 };
+         var token=$('meta[name="csrf-token"]').attr('content');
+         var json=JSON.stringify(objeto_json);
+         // var newJson = JSON.stringify($('#dg').datagrid('getRows'));
          $.ajax({
             url: '/escenarios',
             async: true,
+            headers:{'X-CSRF-TOKEN':token },
             type: 'POST',
-            data: {
-               "_token": "{{ csrf_token() }}",
-               "cnombre": cnombre,
-               "tema_id": tema_id,
-               "ntotcosto": ntotcosto,
-               "ntotrh": ntotrh,
-               "aCrits": aCrits,
-               "aPeso": aPeso,
-               "grid": newJson
-            },
+            contentType: 'application/json',
+            data: json,
             beforeSend: function(){
                $('#msgModal').modal('show');
-            },
+            }
             // success:function(data){
             //    console.log("Mensaje de que todo esta bien");
             // }
-            complete: function(){
-               $('#msgModal').modal('hide');
-            }
+            // complete: function(){
+            //    $('#msgModal').modal('hide');
+            // }
          })
          .done(function(response) {
-            if(response.respuesta=='1'){
-               // console.log(response.ruta);
+            $('#msgModal').modal('hide');
+            console.log(response);
+            if (response.message[0]==1) {
+               swal("Ok", response.message[1], "success");
                window.location.href = "/escenarios";
+            } else {
+               swal("Error", response.message[1], "error");
             }
          })
-         .fail(function() {
-            console.log("error");
+         .fail(function(data) {
+            console.log(data);
+            var err = data.responseJSON;
+            var msg = "";
+            $.each(err, function(key, val) {
+                msg+=val+"<br>";
+            });
+            $('#msgModal').modal('hide');
+            swal("Error", msg, "error");
+            // alert("Ups! Sucedió un error al grabar la información");
          });
 
          // var cambios = $('#dg').datagrid('getChanges');
