@@ -252,9 +252,11 @@
             console.log(response);
             if (response.message[0]==1) {
                swal("Ok", response.message[1], "success");
+               // alert()->success('Correcto', response.message[1]);
                window.location.href = "/escenarios";
             } else {
                swal("Error", response.message[1], "error");
+               // alert()->warning('Falta info', response.message[1]);
             }
          })
          .fail(function(data) {
@@ -264,9 +266,10 @@
             $.each(err, function(key, val) {
                 msg+=val+"<br>";
             });
-            $('#msgModal').modal('hide');
-            swal("Error", msg, "error");
-            // alert("Ups! Sucedió un error al grabar la información");
+            // $('#msgModal').modal('hide');
+            // swal("Error", msg, "error");
+            // alert()->error('Error', msg);
+            alert('Error', msg, 'error');
          });
 
          // var cambios = $('#dg').datagrid('getChanges');

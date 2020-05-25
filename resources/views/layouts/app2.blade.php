@@ -26,8 +26,9 @@
       <link rel="stylesheet" href="https://www.jeasyui.com/easyui/themes/default/easyui.css">
       <link rel="stylesheet" href="https://www.jeasyui.com/easyui/themes/icon.css">
       <link rel="stylesheet" href="https://unpkg.com/tippy.js@5/dist/backdrop.css" />
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.2.0/sweetalert2.min.css">
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.2.0/sweetalert2.all.min.js"></script>
+{{--       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.2.0/sweetalert2.min.css">
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.2.0/sweetalert2.all.min.js"></script> --}}
+
       @yield('styles')
 </head>
 
@@ -59,9 +60,7 @@
    <script type="text/javascript" src="http://www.jeasyui.com/easyui/jquery.easyui.min.js"></script>
    <script type="text/javascript" src="http://www.jeasyui.com/easyui/datagrid-scrollview.js"></script>
 
-   @include('sweetalert::alert')
-
-   <script>
+    <script>
 
 
       $(function() {
@@ -126,6 +125,7 @@
       });
    </script>
 
+   @include('sweetalert::alert')
    @yield('scripts')
 
    <script src="https://unpkg.com/popper.js@1"></script>

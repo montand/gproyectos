@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-Use Alert;
 use App\Tema;
 use App\Proyecto;
 use Illuminate\Http\Request;
+// use Illuminate\Validation\Rule;
 
 class temaController extends Controller
 {
@@ -39,7 +39,9 @@ class temaController extends Controller
             ->rawColumns(['btn'])
             ->make(true);
       }
-
+      // alert()->html('Titulo', '<h2>Esto es una prueba</h2>', 'success');
+      // Alert::error('Error', 'No puedes hacer eso wey!');
+      // toast('Muy bien! Eso ha sido todo', 'success');
       return view('temas.index');
 
     }
@@ -64,12 +66,20 @@ class temaController extends Controller
      */
     public function store(Request $request)
     {
-        $campos = $request->validate([
-            'nomcorto' => 'required'
-        ]);
-        Tema::create($campos);
 
-        return redirect()->route('temas.index')->with('success', 'El tema fue creado con éxito');
+         // dd($request);
+         $campos = $request->validate([
+            'nomcorto' => 'required'
+         ]);
+// dd($data);
+         // if ($validator->fails()) {
+         //    return back()->with('error', $validator->messages()->all()[0])->withInput();
+         // }
+
+         Tema::create($campos);
+
+         return redirect()->route('temas.index')->with('success', 'El tema fue creado con éxito');
+        // return redirect()->route('temas.index')->withSuccessMessage('El tema fue creado con éxito');
     }
 
     public function show(Tema $tema)

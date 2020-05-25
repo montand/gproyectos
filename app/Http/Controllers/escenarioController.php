@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-Use Alert;
 Use DB;
 use App\Escenario;
 use App\Escenariodet;
@@ -142,11 +141,13 @@ class escenarioController extends Controller
       $validator = Validator::make($data, $rules);
       if ($validator->fails()) {
          return response()->json($validator->messages(), 450);
+         // return back()->with('error', $validator->messages()->all()[0])->withInput();
          // return response()->json(['errors'=>$validator->errors()]);
       }
 
+      $validaok = true;
       DB::beginTransaction();
-      try{
+      try {
          $escenario = new Escenario;
          $escenario->cnombre = $data['cnombre'];
          $escenario->tema_id = $data['tema_id'];

@@ -1,4 +1,14 @@
 @csrf
+@if ($errors->any())
+    <div class="errors">
+        <p><strong>Por favor corrige los siguientes errores<strong></p>
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
 <div class="form-group">
    <label for="nomcorto">Nombre corto</label>
    <input class="form-control bg-light shadow-sm @error('nomcorto') is-invalid @else border-0 @enderror" type="text"
