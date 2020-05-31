@@ -8,16 +8,51 @@ use App\Role;
 // })->name('home');
 
 Route::get('/', function () {
+   // alert()->success('Mensaje','Titulo');
    return view('main');
 })->name('main');
 
 
 Route::get('/clear-cache', function() {
     Artisan::call('cache:clear');
-    return "El Cache ha sido limpiado";
+    app()->make(\Spatie\Permission\PermissionRegistrar::class)->forgetCachedPermissions();
+    return redirect('/')->with('success', 'El Cache ha sido limpiado');
 });
 
 Route::get('/getelementos', 'getelementos@obtenElementos')->name('getelementos');
+
+Route::put('/escenarios/{id}','escenarioController@update');
+
+// Route::group(['middleware' => ['permission:leer usuarios']], function(){
+   Route::resource('usuarios', 'userController')->middleware('permission:leer usuarios');
+// });
+Route::group(['middleware' => ['permission:leer proyectos']], function(){
+   Route::resource('proyectos', 'proyectoController');
+});
+Route::group(['middleware' => ['permission:leer temas']], function(){
+   Route::resource('temas', 'temaController');
+});
+Route::group(['middleware' => ['permission:leer criterios']], function(){
+   Route::resource('criterios', 'criterioController');
+});
+Route::group(['middleware' => ['permission:leer elementos']], function(){
+   Route::resource('elementos', 'elementoController');
+});
+Route::get('escenarios/getProyectos', 'escenarioController@getProyectos')->name('escenarios.getProyectos');
+Route::get('escenarios/getProy_easy', 'escenarioController@getProy_easy');
+// Route::get('escenarios/proy_para_escenarios', 'escenarioController@proy_para_escenarios');
+Route::group(['middleware' => ['permission:leer escenarios']], function(){
+   Route::resource('escenarios', 'escenarioController');
+});
+Route::group(['middleware' => ['permission:leer periodos']], function(){
+   Route::resource('periodos', 'periodoController');
+});
+// Route::get('getelementos', 'getelementos@obtenElementos');
+
+
+Route::view('pmaestro', 'pmaestro.index')->name('pmaestro.index');
+Route::view('configuracion', 'configuracion.index')->name('configuracion.index');
+// Route::view('usuarios', 'usuarios.index')->name('usuarios.index');
 
 // Route::get('proyectos/getProy', 'proyectoController@getProy')->name('proyectos.getProy');
 Route::get('escenarios/proy_de_temas/{pTema}', function($pTema){
@@ -105,10 +140,6 @@ Route::get('escenarios/{pEscen}/detalle_escenario', function($pEscen){
   return $final;
 });
 
-
-Route::put('/escenarios/{id}','escenarioController@update');
-//navegador
-
 Route::get('escenarios/proy_para_escenarios', function(){
    $proy = DB::select(DB::raw('CALL sp_critxproy'));
 
@@ -145,37 +176,6 @@ Route::get('escenarios/proy_para_escenarios', function(){
   $final = json_encode($final);
   return $final;
 });
-
-Route::group(['middleware' => ['permission:leer usuarios']], function(){
-   Route::resource('usuarios', 'userController');
-});
-Route::group(['middleware' => ['permission:leer proyectos']], function(){
-   Route::resource('proyectos', 'proyectoController');
-});
-Route::group(['middleware' => ['permission:leer temas']], function(){
-   Route::resource('temas', 'temaController');
-});
-Route::group(['middleware' => ['permission:leer criterios']], function(){
-   Route::resource('criterios', 'criterioController');
-});
-Route::group(['middleware' => ['permission:leer elementos']], function(){
-   Route::resource('elementos', 'elementoController');
-});
-Route::get('escenarios/getProyectos', 'escenarioController@getProyectos')->name('escenarios.getProyectos');
-Route::get('escenarios/getProy_easy', 'escenarioController@getProy_easy');
-// Route::get('escenarios/proy_para_escenarios', 'escenarioController@proy_para_escenarios');
-Route::group(['middleware' => ['permission:leer escenarios']], function(){
-   Route::resource('escenarios', 'escenarioController');
-});
-Route::group(['middleware' => ['permission:leer periodos']], function(){
-   Route::resource('periodos', 'periodoController');
-});
-// Route::get('getelementos', 'getelementos@obtenElementos');
-
-
-Route::view('pmaestro', 'pmaestro.index')->name('pmaestro.index');
-Route::view('configuracion', 'configuracion.index')->name('configuracion.index');
-// Route::view('usuarios', 'usuarios.index')->name('usuarios.index');
 
 
 Auth::routes(['register' => false]);

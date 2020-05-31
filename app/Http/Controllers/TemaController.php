@@ -6,6 +6,7 @@ Use Alert;
 use App\Tema;
 use App\Proyecto;
 use Illuminate\Http\Request;
+// use Illuminate\Support\Facades\Validator;
 
 class temaController extends Controller
 {
@@ -32,7 +33,7 @@ class temaController extends Controller
                   $button .= '&nbsp;&nbsp;';
                }
                if(auth()->user()->hasPermissionTo('borrar temas')){
-                  $button .= '<a href="'. route('temas.destroy', $data->id) .'" class="btn btn-danger btn-sm text-center" data-toggle="tooltip" data-placement="top" title="Eliminar"><i class="fas fa-trash-alt" aria-hidden="true"></i></a>';
+                  $button .= '<a href="'. route('temas.destroy', $data->id) .'" class="btn btn-danger btn-sm text-center delete" data-toggle="tooltip" data-placement="top" title="Eliminar"><i class="fas fa-trash-alt" aria-hidden="true"></i></a>';
                }
                return $button;
             })
@@ -65,8 +66,16 @@ class temaController extends Controller
     public function store(Request $request)
     {
         $campos = $request->validate([
-            'nomcorto' => 'required'
+            'nomcorto' => 'required',
         ]);
+         // $validator = Validator::make($request->all(), [
+         //    'nomcorto' => 'required'
+         // ]);
+
+         // if ($validator->fails()) {
+         //    return back()->with('error', $validator->messages()->all()[0])->withInput();
+         // }
+
         Tema::create($campos);
 
         return redirect()->route('temas.index')->with('success', 'El tema fue creado con éxito');
@@ -79,7 +88,13 @@ class temaController extends Controller
       if ($proyRela > 0) {
          return redirect()->route('temas.index')->with('error', 'El tema seleccionado no se puede eliminar ya que esta relacionado en '. $proyRela .' proyectos.');
       }
-      $tema->delete();
+      alert()->success('SuccessAlert','Lorem ipsum dolor sit amet.')->showConfirmButton('Confirm', '#3085d6');
+
+      // alert()->question('Estas seguro?','No se podrá deshacer esta acción')
+      //                ->showCancelButton()
+      //                ->showConfirmButton()->focusCancel(true);
+      // dd($resp);
+      // $tema->delete();
       return redirect()->route('temas.index')->with('success', 'El tema fue eliminado con éxito');
     }
 
@@ -123,7 +138,7 @@ class temaController extends Controller
     public function destroy($id)
     {
 
-      Tema::findOrfail($id)->delete();
+      // Tema::findOrfail($id)->delete();
       return redirect()->route('temas.index')->with('success', 'El tema fue eliminado con éxito');
     }
    }

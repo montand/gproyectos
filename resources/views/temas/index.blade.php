@@ -50,7 +50,7 @@
             { data: 'btn', name: 'btn', className: "text-center", orderable: false, exportable: false}
          ],
       });
-
+      // $('[data-toggle="tooltip"]').tooltip();
    });
 </script>
 @endsection
