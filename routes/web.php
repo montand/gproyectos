@@ -9,6 +9,9 @@ use App\Role;
 
 Route::get('/', function () {
    // alert()->success('Mensaje','Titulo');
+   // $resp = alert()->question('Estas seguro?','No se podrá deshacer!')
+   // ->showConfirmButton('si! Borralo', '#3085d6')
+   // ->showCancelButton('Cancelar', '#aaa')->reverseButtons();
    return view('main');
 })->name('main');
 
@@ -48,6 +51,8 @@ Route::group(['middleware' => ['permission:leer periodos']], function(){
    Route::resource('periodos', 'periodoController');
 });
 // Route::get('getelementos', 'getelementos@obtenElementos');
+Route::resource('roles', 'roleController');
+Route::resource('permissions', 'permissionController');
 
 
 Route::view('pmaestro', 'pmaestro.index')->name('pmaestro.index');

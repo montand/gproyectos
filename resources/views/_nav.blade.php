@@ -82,6 +82,16 @@
                            Usuarios
                         </a>
                      @endcan
+                     @can('leer roles')
+                        <a class="dropdown-item" href="{{ route('roles.index') }}">
+                           Roles
+                        </a>
+                     @endcan
+                     @can('leer permisos')
+                        <a class="dropdown-item" href="{{ route('permissions.index') }}">
+                           Permisos
+                        </a>
+                     @endcan
                   </div>
                </li>
                @endif

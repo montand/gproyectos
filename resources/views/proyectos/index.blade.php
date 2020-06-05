@@ -59,6 +59,29 @@
          rowId: 'id'
       });
 
+   $('#project-table').on('click', '.delete[data-remote]', function (e) {
+       e.preventDefault();
+       $.ajaxSetup({
+           headers: {
+               'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+           }
+       });
+       var url = $(this).data('remote');
+       if (!confirm('Estas seguro de eliminar el registro ?')) {
+          return false;
+       }
+       $.ajax({
+           url: url,
+           type: 'DELETE',
+           dataType: 'json',
+           data: {method: 'DELETE', submit: true}
+       })
+       .done(function(data) {
+          alert(data[1]);
+          $('#project-table').DataTable().draw(false);
+       });
+
+   });
       //$('#project-table tbody tr').on('click', 'a', function(e) {
       //    e.preventDefault();
       //    var href = $("a", this).attr('href');

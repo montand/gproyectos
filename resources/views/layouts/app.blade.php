@@ -11,7 +11,7 @@
      <title>{{ config('app.name', 'SGP-AS14') }}</title>
 
      <!-- Scripts -->
-     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+     {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script> --}}
      <script src="{{ asset('js/app.js') }}"></script>
 
      <!-- Fonts -->
@@ -107,7 +107,7 @@
             // ],
          });
 
-         $('[data-toggle="tooltip"]').tooltip();
+         // $('[data-toggle="tooltip"]').tooltip();
       });
    </script>
 
