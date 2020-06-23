@@ -44,7 +44,7 @@
                         action="{{ route('periodos.destroy', $per->id) }} ">
                         {!! csrf_field() !!}
                         {!! method_field('DELETE') !!}
-                        <button class="btn btn-danger btn-sm" type="submit">Eliminar</button>
+                        <button class="btn btn-danger btn-sm" type="submit" onclick="return confirm('Estas seguro de eliminar?')">Eliminar</button>
                      </form>
                   </td>
                </tr>

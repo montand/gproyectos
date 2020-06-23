@@ -5,11 +5,11 @@
 <div class="container">
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h1 class="mb-0">Lista de Escenarios</h1>
-        @auth
+        @can('crear escenarios')
             <a class="btn btn-primary"
                 href="{{ route('escenarios.create') }}">Crear escenario
             </a>
-        @endauth
+        @endcan
     </div>
     <div class="table-responsive justify-content-center">
         <table class="table table-hover table-sm ">
@@ -45,8 +45,8 @@
                               @method('DELETE')
                               @csrf
 
-                              <button class="btn btn-danger btn-sm" type="submit">Eliminar</button>
-                              {{-- <button class="btn btn-danger btn-sm" type="button" onclick="return confirm('Estas seguro de eliminar?')">Eliminar</button> --}}
+                              {{-- <button class="btn btn-danger btn-sm" type="submit">Eliminar</button> --}}
+                              <button class="btn btn-danger btn-sm" type="button" onclick="return confirm('Estas seguro de eliminar?')">Eliminar</button>
                             </form>
                         </td>
                         @endcan

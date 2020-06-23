@@ -73,6 +73,15 @@ class elementoController extends Controller
         return redirect()->route('elementos.index')->with('success', 'El elemento fue creado con éxito');
    }
 
+
+    public function show(Elemento $elemento)
+    {
+
+      $elemento->delete();
+      return redirect()->route('elementos.index')->with('success', 'El elemento fue eliminado con éxito');
+    }
+
+
    /**
     * Show the form for editing the specified resource.
     *

@@ -50,7 +50,67 @@
             { data: 'btn', name: 'btn', className: "text-center", orderable: false, exportable: false}
          ],
       });
+      // $('[data-toggle="tooltip"]').tooltip();
+      // $('[data-toggle="confirmation"]').confirmation('show');
+   });
+
+   $('#temas-table').on('click', '.delete[data-remote]', function (e) {
+       e.preventDefault();
+       $.ajaxSetup({
+           headers: {
+               'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+           }
+       });
+       var url = $(this).data('remote');
+       if (!confirm('Estas seguro de eliminar el registro ?')) {
+          return false;
+       }
+       $.ajax({
+           url: url,
+           type: 'DELETE',
+           dataType: 'json',
+           data: {method: 'DELETE', submit: true}
+       })
+       .done(function(data) {
+          alert(data[1]);
+          $('#temas-table').DataTable().draw(false);
+       });
 
    });
+
+   function confirmDelete(nId){
+   // $('#btnDelete').on('click', function(e) {
+      // e.preventDefault();
+      var linkURL = "route('temas.destroy', "+nId+")";
+      var name = $('#btnDelete'+nId).data('name');
+      console.log("Entra a jquery: "+nId+" cNombre: "+name+" URL: "+linkURL);
+      warnBeforeRedirect(linkURL,name);
+   // });
+   }
+
+   function warnBeforeRedirect(linkURL,name) {
+      // console.log(resp);
+      // swal({
+      //    title: "Are you sure?",
+      //    text: "You will delete record with name = "+name+" !",
+      //    type: "warning",
+      //    showCancelButton: true,
+      //    confirmButtonColor: "#DD6B55",
+      //    confirmButtonText: "Yes, delete it!",
+      //    cancelButtonText: "No, cancel it!",
+      //    closeOnConfirm: false,
+      //    closeOnCancel: false
+      // },
+      //    function(isConfirm){
+      //       if (isConfirm) {
+      //          console.log('done');
+      //          swal("Deleted!", "Your record with name "+name+" has been deleted.", "success");
+      //          window.location.href = linkURL;
+      //       } else {
+      //          swal("Cancelled", "Your record with name "+name+" is safe :)", "error");
+      //       }
+      //    }
+      // );
+   }
 </script>
 @endsection

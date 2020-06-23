@@ -28,7 +28,6 @@
       <link rel="stylesheet" href="https://unpkg.com/tippy.js@5/dist/backdrop.css" />
 {{--       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.2.0/sweetalert2.min.css">
       <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.2.0/sweetalert2.all.min.js"></script> --}}
-
       @yield('styles')
 </head>
 

@@ -11,6 +11,7 @@
      <title>{{ config('app.name', 'SGP-AS14') }}</title>
 
      <!-- Scripts -->
+     {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script> --}}
      <script src="{{ asset('js/app.js') }}"></script>
 
      <!-- Fonts -->
@@ -30,7 +31,6 @@
       <link rel="stylesheet" href="https://cdn.datatables.net/fixedheader/3.1.6/css/fixedHeader.bootstrap4.min.css">
       <!-- dataTable checkboxes -->
       <link rel="stylesheet" href="https://gyrocode.github.io/jquery-datatables-checkboxes/1.2.11/css/dataTables.checkboxes.css">
-
       @yield('styles')
 </head>
 
@@ -105,6 +105,8 @@
             //    'copy', 'csv', 'excel', 'pdf', 'print'
             // ],
          });
+
+         // $('[data-toggle="tooltip"]').tooltip();
       });
    </script>
 

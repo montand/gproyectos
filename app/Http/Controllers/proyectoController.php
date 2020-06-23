@@ -11,6 +11,9 @@ use Illuminate\Http\Request;
 
 class proyectoController extends Controller
 {
+    function __construct(){
+        $this->middleware('auth');
+    }
 
     // public function __construct(){
     //     $this->middleware('auth')->except('show');
@@ -38,7 +41,7 @@ class proyectoController extends Controller
                   $button .= '&nbsp;&nbsp;';
                }
                if(auth()->user()->hasPermissionTo('borrar proyectos')){
-                  $button .= '<a href="'. route('proyectos.destroy', $data->id) .'" class="btn btn-danger btn-sm text-center" data-toggle="tooltip" data-placement="top" title="Eliminar"><i class="fas fa-trash-alt" aria-hidden="true"></i></a>';
+                  $button .= '<a href="#" data-remote="/proyectos/'. $data->id .'" class="btn btn-danger btn-sm text-center delete" data-toggle="tooltip" data-placement="top" title="Eliminar"><i class="fas fa-trash-alt" aria-hidden="true"></i></a>';
                }
                return $button;
             })
@@ -238,8 +241,13 @@ class proyectoController extends Controller
     {
 
       $proyecto->find($proyecto->id)->criteriosxproy()->detach();
-      $proyecto->delete();
-      return redirect()->route('proyectos.index')->with('success', 'El proyecto fue eliminado con éxito');
+      $return = $proyecto->delete();
+      if ($return) {
+         return response()->json(['1','El proyecto fue eliminado con éxito']);
+      }else{
+         return response()->json(['0','Hubo un error al intentar eliminar el registro']);
+         // return redirect()->route('proyectos.index')->with('success', 'El proyecto fue eliminado con éxito');
+      }
     }
 
 }

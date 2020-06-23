@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 Use Alert;
 use Illuminate\Http\Request;
 use App\User;
-use App\Role;
+use \Spatie\Permission\Models\Role;
 
 class userController extends Controller
 {

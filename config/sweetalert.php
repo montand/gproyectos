@@ -138,6 +138,9 @@ return [
         'alert_auto_close' => env('SWEET_ALERT_MIDDLEWARE_ALERT_AUTO_CLOSE', 5000),
 
         'auto_display_error_messages' => env('SWEET_ALERT_AUTO_DISPLAY_ERROR_MESSAGES', true),
+
+        'auto_display_error_messages' => env('SWEET_ALERT_AUTO_DISPLAY_ERROR_MESSAGES', false),
+
     ],
 
    /*
@@ -163,5 +166,6 @@ return [
        'confirmButton' => env('SWEET_ALERT_CONFIRM_BUTTON_CLASS'),
        'cancelButton' => env('SWEET_ALERT_CANCEL_BUTTON_CLASS'),
        'footer' => env('SWEET_ALERT_FOOTER_CLASS'),
-   ],
+   ]
+
 ];
