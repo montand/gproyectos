@@ -5,7 +5,7 @@ namespace App;
 use App\Criterio;
 use Illuminate\Database\Eloquent\Model;
 
-class elemento extends Model
+class Elemento extends Model
 {
     protected $fillable =['cnombre','npuntos','criterio_id'];
 

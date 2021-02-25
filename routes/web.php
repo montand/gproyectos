@@ -42,6 +42,7 @@ Route::group(['middleware' => ['permission:leer elementos']], function(){
    Route::resource('elementos', 'elementoController');
 });
 Route::get('escenarios/getProyectos', 'escenarioController@getProyectos')->name('escenarios.getProyectos');
+Route::get('escenarios/exportaExcel/{id}', 'escenarioController@exportaExcel')->name('escenarios.exportaExcel');
 Route::get('escenarios/getProy_easy', 'escenarioController@getProy_easy');
 // Route::get('escenarios/proy_para_escenarios', 'escenarioController@proy_para_escenarios');
 Route::group(['middleware' => ['permission:leer escenarios']], function(){

@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\User;
 use \Spatie\Permission\Models\Role;
 
-class userController extends Controller
+class UserController extends Controller
 {
     function __construct(){
         $this->middleware('auth');

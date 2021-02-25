@@ -7,7 +7,7 @@ use App\Proyecto;
 use Illuminate\Http\Request;
 // use Illuminate\Validation\Rule;
 
-class temaController extends Controller
+class TemaController extends Controller
 {
 
     function __construct(){
@@ -34,7 +34,7 @@ class temaController extends Controller
                if(auth()->user()->hasPermissionTo('borrar temas')){
                   // $idDel = 'btnDelete'.$data->id;
                   // $button .= '<a data-toggle="confirmation" href="#" class="btn btn-danger btn-sm text-center" id="'.$idDel.'" onclick="confirmDelete('.$data->id.')" data-toggle="tooltip" data-placement="top" data-name="'.$data->nomcorto.'" title="Eliminar"><i class="fas fa-trash-alt" aria-hidden="true"></i></a>';
-                  $button .= '<a data-toggle="confirmation" href="#" data-remote="/temas/'. $data->id .'" class="btn btn-danger btn-sm text-center delete" data-toggle="tooltip" data-placement="top" data-name="'.$data->nomcorto.'" title="Eliminar"><i class="fas fa-trash-alt" aria-hidden="true"></i></a>';
+                //   $button .= '<a data-toggle="confirmation" href="#" data-remote="/temas/'. $data->id .'" class="btn btn-danger btn-sm text-center delete" data-toggle="tooltip" data-placement="top" data-name="'.$data->nomcorto.'" title="Eliminar"><i class="fas fa-trash-alt" aria-hidden="true"></i></a>';
                   $button .= '<a href="'. route('temas.destroy', $data->id) .'" class="btn btn-danger btn-sm text-center" data-toggle="tooltip" data-placement="top" title="Eliminar"><i class="fas fa-trash-alt" aria-hidden="true"></i></a>';
                }
                return $button;

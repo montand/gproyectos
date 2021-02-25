@@ -12,7 +12,14 @@ use App\Tema;
 use Carbon\Carbon;
 // use App\Http\Requests\SaveEscenarioRequest;
 use Illuminate\Http\Request;
+use PhpOffice\PhpSpreadsheet\Cell\DataType;
 use Validator;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Style\Border;
+use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\Style\Alignment;
 
 class escenarioController extends Controller
 {
@@ -34,6 +41,206 @@ class escenarioController extends Controller
       ]);
    }
 
+	public function exportaExcel($id){
+
+        $aElem = DB::Select('SELECT e.cNombre, CONCAT(t.nomcorto,". ",t.descripcion) AS descTema
+            FROM escenarios e
+            LEFT JOIN temas t ON e.tema_id=t.id
+            WHERE e.id='.$id
+        );
+        $aTit=$aElem[0];
+        $sAno = session('glo_periodo');
+
+        $aCrits = DB::select("SELECT CONCAT('C',c.id,'.',c.cnombre) AS crits, ce.npeso,
+            (SELECT GROUP_CONCAT(CONCAT(npuntos,' - ', cnombre) SEPARATOR '\n')
+                FROM elementos
+                WHERE criterio_id = c.id
+            ) AS elem
+        FROM critero_escenario ce
+        LEFT JOIN criterios c ON ce.criterio_id=c.id
+        WHERE ce.escenario_id=".$id);
+
+        $aProy = DB::select("SELECT CONCAT(p.cclave,' - ', p.cnombre) AS proyecto,
+            IFNULL((SELECT npuntos FROM criterio_escenariodet WHERE escenariodet_id=ed.id AND criterio_id=1),0) AS C1,
+            IFNULL((SELECT npuntos FROM criterio_escenariodet WHERE escenariodet_id=ed.id AND criterio_id=2),0) AS C2,
+            IFNULL((SELECT npuntos FROM criterio_escenariodet WHERE escenariodet_id=ed.id AND criterio_id=3),0) AS C3,
+            IFNULL((SELECT npuntos FROM criterio_escenariodet WHERE escenariodet_id=ed.id AND criterio_id=4),0) AS C4,
+            IFNULL((SELECT npuntos FROM criterio_escenariodet WHERE escenariodet_id=ed.id AND criterio_id=5),0) AS C5,
+            ed.ntotpuntos
+        FROM escenariosdet AS ed
+           LEFT JOIN proyectos p ON ed.proyecto_id=p.id
+        WHERE ed.ntotpuntos>0 AND ed.escenario_id=".$id);
+
+        // $elId = Escenario::findOrfail($id);
+        // dd($aCrits);
+
+        ini_set('memory_limit', '-1');
+		$libro = new Spreadsheet();
+        $libro->setActiveSheetIndex(0);
+		$libro->getProperties()->setTitle('Formato análisis de alternativas');
+		$libro->getDefaultStyle()->getFont()
+			->setName('Calibri')
+			->setSize(11);
+		$hoja = $libro->getActiveSheet();
+
+		$hoja->setTitle('Reporte Escenario '.$id);
+
+        $style_center = [
+            'alignment' => ['horizontal' => Alignment::HORIZONTAL_CENTER, 'vertical' => Alignment::VERTICAL_CENTER]
+        ];
+
+        $style_vcenter = [
+          'alignment' => ['vertical' => Alignment::VERTICAL_CENTER]
+        ];
+
+        $style_borders1 = [
+            'borders' => [
+               'outline' => ['style' => Border::BORDER_THIN, 'color' => ['argb' => '000000']],
+            ],
+        ];
+
+        $style_borders2 = [
+            'borders' => [
+               'outline' => ['style' => Border::BORDER_MEDIUM, 'color' => ['argb' => '000000']],
+            ],
+        ];
+
+        // Logo o escudo
+        $oImg = new Drawing;
+        $oImg->setName('Logo');
+        $oImg->setDescription('Logo');
+        $oImg->setPath('img/left.png');
+        $oImg->setCoordinates('B1');
+        // $oImg->setHeight(75);
+        $oImg->setOffsetX(40);
+        $oImg->setWorksheet($libro->getActiveSheet());
+
+        $cTitle = "Gestión de Proyectos de Obra Pública ".$sAno." - Gobierno Municipal de Guanajuato";
+        $hoja->setCellValue('C1',$cTitle);
+        // ajustaTexto($hoja,'A1');
+        ajustaTexto($hoja, 'C1');
+        $hoja->mergeCells('C1:F1');
+        formatTitulos($hoja,'C1:F1',14,'Verdana',2);
+        $hoja->getRowDimension('1')->setRowHeight(90);
+
+        $aABCD=array("A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","AA","AB","AC","AD","AE","AF","AG","AH","AI","AJ","AK","AL","AM","AN","AO","AP","AQ","AR","AS"  );
+        $aAncho=array(3,26.5,31,31,31,31);
+
+        for ($i=0; $i<=5; $i++) {
+            ajustaAncho($hoja,$aABCD[$i],$aAncho[$i]);
+        }
+
+        $iRow=4;
+        $hoja->setCellValue('B'.$iRow,'Escenario:');
+        formatDatos($hoja,'B'.$iRow,false,2,true,false,'FFB4C6E7');
+        $hoja->setCellValue('C'.$iRow,$aTit->cNombre);
+        $hoja->mergeCells('C'.$iRow.':F'.$iRow);
+        formatDatos($hoja,'C'.$iRow.':F'.$iRow);
+        $hoja->getRowDimension($iRow)->setRowHeight(17);
+        $iRow+=1;
+        $hoja->setCellValue('B'.$iRow,'Tema:');
+        formatDatos($hoja,'B'.$iRow,false,2,true,false,'FFB4C6E7');
+        $hoja->setCellValue('C'.$iRow,$aTit->descTema);
+        $hoja->mergeCells('C'.$iRow.':F'.$iRow);
+        formatDatos($hoja,'C'.$iRow.':F'.$iRow);
+        $hoja->getRowDimension($iRow)->setRowHeight(17);
+
+        $iRow+=1;
+        $hoja->getRowDimension($iRow)->setRowHeight(23);
+
+        $iRow+=1;
+        $hoja->setCellValue('B'.$iRow,'CRITERIOS DE PUNTUACIÓN');
+        // formatDatos($hoja,'B'.$iRow,false,2,true,false,'FF4472C4');
+        formatTitulos($hoja,'B'.$iRow,11,'Calibri',2,'FF4472C4','FFFFFF');
+        $hoja->setCellValue('C'.$iRow,'PESO ASIGNADO');
+        // formatDatos($hoja,'C'.$iRow,false,2,true,false,'FF4472C4');
+        formatTitulos($hoja,'C'.$iRow,11,'Calibri',2,'FF4472C4','FFFFFF');
+        $hoja->setCellValue('D'.$iRow,'ELEMENTOS');
+        $hoja->getStyle('D'.$iRow)->getFont()->setBold(true);
+        $hoja->mergeCells('D'.$iRow.':F'.$iRow);
+        formatDatos($hoja,'D'.$iRow.':F'.$iRow,true,2,true,false,'FFB4C6E7');
+        $hoja->getRowDimension($iRow)->setRowHeight(24);
+
+        $iRow+=1;
+        foreach ($aCrits as $row) {
+            // print_r($row->crits);
+            $iCol=1;
+            foreach ($row as $key => $value) {
+                $hoja->setCellValueByColumnAndRow($iCol+1, $iRow, $value);
+                switch ($iCol) {
+                    case '1':
+                        // formatDatos($hoja,$aABCD[$iCol].$iRow,true,2,false);
+                        formatTitulos($hoja,$aABCD[$iCol].$iRow,11,'Calibri',2,'FFFFFF','000000',false,false);
+                        break;
+                    case '2':
+                        // formatDatos($hoja,$aABCD[$iCol].$iRow);
+                        formatTitulos($hoja,$aABCD[$iCol].$iRow,11,'Calibri',2,'FFFFFF','000000',false);
+                        break;
+                    case '3':
+                        $hoja->mergeCells($aABCD[$iCol].$iRow.':'.$aABCD[$iCol+2].$iRow);
+                        formatDatos($hoja,$aABCD[$iCol].$iRow.':'.$aABCD[$iCol+2].$iRow,true,1,false,true);
+                        break;
+                }
+                $iCol+=1;
+            }
+            $hoja->getRowDimension($iRow)->setRowHeight(43);
+            $iRow+=1;
+        }
+        // dd($aCrits);
+        $iRow+=2;
+        // Si existen proyectos del escenario seleccionado
+        if (count($aProy)>0) {
+            $hoja->setCellValue('B'.$iRow,'PROYECTO');
+            formatTitulos($hoja,'B'.$iRow,11,'Arial',1,'000000','FFFFFF');
+            $iCol=2;
+            foreach ($aCrits as $row) {
+                $hoja->setCellValueByColumnAndRow($iCol+1, $iRow, 'PUNTOS '.substr($row->crits,0,2));
+                formatTitulos($hoja,$aABCD[$iCol].$iRow,11,'Arial',1,'000000','FFFFFF');
+                $iCol+=1;
+            }
+            $hoja->setCellValue('F'.$iRow, 'PUNTUACIÓN TOTAL');
+            formatTitulos($hoja,'F'.$iRow,11,'Arial',1,'000000','FFFFFF');
+            $hoja->getRowDimension($iRow)->setRowHeight(18);
+            $iRow+=1;
+            foreach ($aProy as $row) {
+                $iCol=1;
+                foreach ($row as $key => $value) {
+                    if ($iCol>1 && $value>0) {
+                        $hoja->setCellValueByColumnAndRow($iCol+1, $iRow, $value,DataType::TYPE_NUMERIC);
+                        formatDatos($hoja,$aABCD[$iCol].$iRow,false,1);
+                        $iCol+=1;
+                    }elseif($iCol==1){
+                        $hoja->setCellValueByColumnAndRow($iCol+1, $iRow, $value);
+                        formatDatos($hoja,$aABCD[$iCol].$iRow,false,1,false);
+                        $hoja->getStyle($aABCD[$iCol].$iRow)->getFont()->setBold(true);
+                        $hoja->getStyle($aABCD[$iCol].$iRow)->getAlignment()->setVertical(Alignment::VERTICAL_TOP);
+                        $hoja->getStyle($aABCD[$iCol].$iRow)->getAlignment()->setWrapText(true);
+                        $iCol+=1;
+                    }
+                }
+                $hoja->getRowDimension($iRow)->setRowHeight(33);
+                $iRow+=1;
+            }
+        }
+
+
+		header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+		// header('Content-Disposition: attachment;filename="'.$this->data["exlstitle"].'.xlsx"');
+		header('Content-Disposition: attachment;filename="pruebas.xlsx"');
+		header('Cache-Control: max-age=0');
+        // header('Cache-Control: max-age=1');
+        // header('Cache-Control: cache, must-revalidate');
+        // header('Pragma: public');
+		$oWriter = IOFactory::createWriter($libro, 'Xlsx');
+        // $oWriter = new Xlsx($libro);
+
+		// ob_end_clean();
+
+		$oWriter->save('php://output');
+        die;
+	}
+
+
    /**
     * Show the form for creating a new resource.
     *
@@ -41,19 +248,19 @@ class escenarioController extends Controller
     */
    public function create()
    {
-       // $criteriosTodos = Criterio::pluck('cnombre','id');
-       $criteriosTodos = Criterio::all();
-       $elementos = Elemento::all();
-       $proyectos = Proyecto::all();
-       $temas = Tema::pluck('nomcorto','id')->toArray();
+		// $criteriosTodos = Criterio::pluck('cnombre','id');
+		$criteriosTodos = Criterio::all();
+		$elementos = Elemento::all();
+		$proyectos = Proyecto::all();
+		$temas = Tema::pluck('nomcorto','id')->toArray();
 
-       return view('escenarios.create', [
-         'escenario' => new Escenario,
-         'criteriosTodos' => $criteriosTodos,
-         'elementos' => $elementos,
-         'temas' => $temas,
-         'proyectos' => $proyectos
-       ]);
+		return view('escenarios.create', [
+		'escenario' => new Escenario,
+		'criteriosTodos' => $criteriosTodos,
+		'elementos' => $elementos,
+		'temas' => $temas,
+		'proyectos' => $proyectos
+		]);
 
        // return view('escenarios.create', [
        //    'escenario' => new Escenario
@@ -83,11 +290,11 @@ class escenarioController extends Controller
 
      // return $query;
 
-     if ($request->ajax()) {
-       return Datatables()
-         ->of($query)
-         ->make(true);
-     }
+		if ($request->ajax()) {
+			return Datatables()
+			->of($query)
+			->make(true);
+		}
 
    }
 

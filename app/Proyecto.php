@@ -5,7 +5,7 @@ namespace App;
 use App\Criterio;
 use Illuminate\Database\Eloquent\Model;
 
-class proyecto extends Model
+class Proyecto extends Model
 {
    // protected $table = 'cat_proyectos';
 

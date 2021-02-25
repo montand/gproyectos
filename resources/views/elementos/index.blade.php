@@ -13,33 +13,33 @@
     </div> --}}
     {{-- Tope costo : {{ number_format(h_topecosto(),2) }} &emsp; Tope RH : {{ number_format(h_toperh()) }} --}}
 
- <div class="col-md-12">
-      <div class="card">
-         <div class="card-header card-group">
-            <div> <h4 class="card-title">Elementos</h4> </div>
-            @can('crear elementos')
-               <a class="btn btn-sm btn-primary ml-auto px-3"
-                  href="{{ route('elementos.create') }}">Crear elemento
-               </a>
-            @endcan
-         </div>
-         <div class="card card-body bg-light">
-            <div class="table-responsive">
-            <table id="elem-table" class="table table-hover table-sm ">
-               <thead>
-                  <tr>
-                     <th class="exportable">ID</th>
-                     <th class="exportable">Nombre</th>
-                     <th class="exportable text-center">Puntos</th>
-                     <th>Acciones</th>
-                  </tr>
-               </thead>
-            </table>
-            </div>
+	<div class="col-md-12">
+		<div class="card">
+			<div class="card-header card-group">
+				<div> <h4 class="card-title">Elementos</h4> </div>
+				@can('crear elementos')
+					<a class="btn btn-sm btn-primary ml-auto px-3"
+						href="{{ route('elementos.create') }}">Crear elemento
+					</a>
+				@endcan
+			</div>
+			<div class="card card-body bg-light">
+				<div class="table-responsive">
+				<table id="elem-table" class="table table-hover table-sm ">
+					<thead>
+						<tr>
+							<th class="exportable">ID</th>
+							<th class="exportable">Nombre</th>
+							<th class="exportable text-center">Puntos</th>
+							<th>Acciones</th>
+						</tr>
+					</thead>
+				</table>
+				</div>
 
-       </div>
-      </div>
-   </div>
+			</div>
+		</div>
+	</div>
  {{--            <tbody>
                 @forelse($elementos as $element)
                     <tr class="active small">

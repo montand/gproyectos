@@ -19,7 +19,7 @@
                     <th class="text-left" scope="col">Nombre</th>
                     <th scope="col">Total costo</th>
                     <th scope="col">Total R.H.</th>
-                    <th scope="col" colspan="2">Acciones</th>
+                    <th style="width: 25%" scope="col" colspan="3">Acciones</th>
                 </tr>
             </thead>
             <tbody>
@@ -37,6 +37,12 @@
                            </a>
                         </td>
                         @endcan
+                        <td class="text-center">
+                            <a class="btn btn-info btn-sm" id="btnPrint"
+                               {{-- href="#">Exportar --}}
+                               href="{{ route('escenarios.exportaExcel', $item->id) }} ">Exportar
+                            </a>
+                         </td>
                         @can('borrar escenarios')
                         <td class="text-center">
                             <form style="display:inline"
