@@ -9,7 +9,6 @@ use App\Criterio;
 use App\Elemento;
 use App\Proyecto;
 use App\Tema;
-use Carbon\Carbon;
 // use App\Http\Requests\SaveEscenarioRequest;
 use Illuminate\Http\Request;
 use PhpOffice\PhpSpreadsheet\Cell\DataType;
@@ -18,7 +17,6 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Style\Border;
 use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
-use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
 
 class escenarioController extends Controller
@@ -75,9 +73,10 @@ class escenarioController extends Controller
         // dd($aCrits);
 
         ini_set('memory_limit', '-1');
+        $nombreReporte = "Formato análisis de alternativas";
 		$libro = new Spreadsheet();
         $libro->setActiveSheetIndex(0);
-		$libro->getProperties()->setTitle('Formato análisis de alternativas');
+		$libro->getProperties()->setTitle($nombreReporte);
 		$libro->getDefaultStyle()->getFont()
 			->setName('Calibri')
 			->setSize(11);
@@ -226,7 +225,7 @@ class escenarioController extends Controller
 
 		header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
 		// header('Content-Disposition: attachment;filename="'.$this->data["exlstitle"].'.xlsx"');
-		header('Content-Disposition: attachment;filename="pruebas.xlsx"');
+		header('Content-Disposition: attachment;filename="'.$nombreReporte.'.xlsx"');
 		header('Cache-Control: max-age=0');
         // header('Cache-Control: max-age=1');
         // header('Cache-Control: cache, must-revalidate');
