@@ -12,7 +12,7 @@
             {{-- <h5>@include('permisos-demo')</h5> --}}
         </div>
         <div class="col-12">
-            <img class="img-fluid mb-4" src="/img/fondo.svg" alt="SGP_AS14">
+            <img class="img-fluid mb-4" src="{{ url('img/fondo.svg') }}" alt="SGP_AS14">
         </div>
     </div>
 

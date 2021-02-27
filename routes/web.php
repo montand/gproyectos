@@ -27,13 +27,13 @@ Route::get('/getelementos', 'getelementos@obtenElementos')->name('getelementos')
 Route::put('/escenarios/{id}','escenarioController@update');
 
 // Route::group(['middleware' => ['permission:leer usuarios']], function(){
-   Route::resource('usuarios', 'userController')->middleware('permission:leer usuarios');
+   Route::resource('usuarios', 'UserController')->middleware('permission:leer usuarios');
 // });
 Route::group(['middleware' => ['permission:leer proyectos']], function(){
    Route::resource('proyectos', 'proyectoController');
 });
 Route::group(['middleware' => ['permission:leer temas']], function(){
-   Route::resource('temas', 'temaController');
+   Route::resource('temas', 'TemaController');
 });
 Route::group(['middleware' => ['permission:leer criterios']], function(){
    Route::resource('criterios', 'criterioController');
@@ -52,7 +52,7 @@ Route::group(['middleware' => ['permission:leer periodos']], function(){
    Route::resource('periodos', 'periodoController');
 });
 // Route::get('getelementos', 'getelementos@obtenElementos');
-Route::resource('roles', 'roleController');
+Route::resource('roles', 'RoleController');
 Route::resource('permissions', 'permissionController');
 
 
