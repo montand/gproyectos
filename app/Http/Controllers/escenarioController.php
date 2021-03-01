@@ -476,7 +476,7 @@ class escenarioController extends Controller
        foreach ($escenario->proyectosyescenarios as $dato) {
          $aDetalles[] = ["proy_id" => $dato->id, "cnombre" => $dato->cnombre];
        }
-       dd($aCritPesos);
+    //    dd($aCritPesos);
        // dd($escenario->tema->id);
 
        return view('escenarios.edit', [

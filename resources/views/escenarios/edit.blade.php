@@ -1,5 +1,6 @@
 {{-- {{ route('escenarios.getProyectos') }}; --}}
-<meta name="csrf-token" content="{!! csrf_token() !!}">
+{{-- <meta name="csrf-token" content="{!! csrf_token() !!}"> --}}
+<meta name="csrf-token" content="{{ csrf_token() }}">
 @extends('layouts.app2')
 
 @section('content')

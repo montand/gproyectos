@@ -13,6 +13,7 @@
      <!-- Scripts -->
      {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script> --}}
      <script src="{{ asset('js/app.js') }}"></script>
+     <script src="https://kit.fontawesome.com/1b585118d9.js" crossorigin="anonymous"></script>
 
      <!-- Fonts -->
      <link rel="dns-prefetch" href="//fonts.gstatic.com">
