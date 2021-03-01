@@ -462,7 +462,6 @@ class escenarioController extends Controller
        $criteriosTodos = Criterio::all();
        $elementos = Elemento::all();
        $proyectos = Proyecto::all();
-       dump("Entra a editar.");
        $temas = Tema::pluck('nomcorto','id')->toArray();
        $escenario->with('criteriosxescenario','tema','proyectosyescenarios');
        // dd($escenario->criteriosxescenario->pluck('npeso','id')->toArray());
@@ -477,7 +476,7 @@ class escenarioController extends Controller
        foreach ($escenario->proyectosyescenarios as $dato) {
          $aDetalles[] = ["proy_id" => $dato->id, "cnombre" => $dato->cnombre];
        }
-       // dd($aCritPesos);
+       dd($aCritPesos);
        // dd($escenario->tema->id);
 
        return view('escenarios.edit', [
