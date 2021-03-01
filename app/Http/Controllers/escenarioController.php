@@ -462,6 +462,7 @@ class escenarioController extends Controller
        $criteriosTodos = Criterio::all();
        $elementos = Elemento::all();
        $proyectos = Proyecto::all();
+       dump("Entra a editar.");
        $temas = Tema::pluck('nomcorto','id')->toArray();
        $escenario->with('criteriosxescenario','tema','proyectosyescenarios');
        // dd($escenario->criteriosxescenario->pluck('npeso','id')->toArray());
