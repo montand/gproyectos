@@ -51,7 +51,7 @@
 
 @section('scripts')
    <script src="https://cdnjs.cloudflare.com/ajax/libs/df-number-format/2.1.6/jquery.number.min.js"></script>
-   {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script> --}}
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
    <script>
       var curTema = '';
       function format(num){
@@ -215,85 +215,83 @@
          }
       }
 
-         // var ruta = $('#frm-data').data('route');
-      $('#save').on('click', function(e) {
+        // var ruta = $('#frm-data').data('route');
+    $('#save').on('click', function(e) {
 
-         e.preventDefault();
-         var aPeso = [];
-         var nescen = $('#txtNombre').data('id');
-         var cnombre = $('#txtNombre').val();
-         var tema_id = $('#tema').data('id');
-         var ntotcosto = $('#total_costo').val();
-         var ntotrh = $('#total_rh').val();
+        e.preventDefault();
+        var aPeso = [];
+        var nescen = $('#txtNombre').data('id');
+        var cnombre = $('#txtNombre').val();
+        var tema_id = $('#tema').data('id');
+        var ntotcosto = $('#total_costo').val();
+        var ntotrh = $('#total_rh').val();
 
-         var aCrits = [];
-         aCrits = $('.cr:input:checked').map(function(i, e) {
+        var aCrits = [];
+        aCrits = $('.cr:input:checked').map(function(i, e) {
             return e.value
-         }).toArray();
+        }).toArray();
 
-         // aCrits = $.isEmptyObject(aCrits) ? [] : aCrits;
-         // console.log("arreglo criterios: "+aCrits[0]);
+        // aCrits = $.isEmptyObject(aCrits) ? [] : aCrits;
+        // console.log("arreglo criterios: "+aCrits[0]);
 
-         aPeso[0] = $('#peso1').val() === undefined ? 0 : $('#peso1').val();
-         aPeso[1] = $('#peso2').val() === undefined ? 0 : $('#peso2').val();
-         aPeso[2] = $('#peso3').val() === undefined ? 0 : $('#peso3').val();
-         var newJson = $('#dg').datagrid('getRows');
+        aPeso[0] = $('#peso1').val() === undefined ? 0 : $('#peso1').val();
+        aPeso[1] = $('#peso2').val() === undefined ? 0 : $('#peso2').val();
+        aPeso[2] = $('#peso3').val() === undefined ? 0 : $('#peso3').val();
+        var newJson = $('#dg').datagrid('getRows');
 
-         // console.log(newJson);
-         var objeto_json=
-                 {
-                  "cnombre": cnombre,
-                  "tema_id": tema_id,
-                  "ntotcosto": ntotcosto,
-                  "ntotrh": ntotrh,
-                  "aCrits": aCrits,
-                  "aPeso": aPeso,
-                  "grid": newJson
-                 };
-         var token=$('meta[name="csrf-token"]').attr('content');
-         var json=JSON.stringify(objeto_json);
-         $.ajax({
-            url: `/escenarios/${nescen}`,
+        // console.log(newJson);
+        var objeto_json=
+            {
+            "cnombre": cnombre,
+            "tema_id": tema_id,
+            "ntotcosto": ntotcosto,
+            "ntotrh": ntotrh,
+            "aCrits": aCrits,
+            "aPeso": aPeso,
+            "grid": newJson
+            };
+        var token=$('meta[name="csrf-token"]').attr('content');
+        var json=JSON.stringify(objeto_json);
+        var miUrl="{{ url('/escenarios/') }}";
+        miUrl+="/"+nescen;
+
+        $.ajax({
+            url: miUrl,
             async: true,
             headers:{'X-CSRF-TOKEN':token },
             type: 'PUT',
             contentType: 'application/json',
             data: json,
             beforeSend: function(){
-               $('#msgModal').modal('show');
+                $('#msgModal').modal('show');
             }
-            // success:function(data){
-            //    console.log("Mensaje de que todo esta bien");
-            // }
-            // complete: function(){
-            //    $('#msgModal').modal('hide');
-            // }
-         })
-         .done(function(response) {
+        })
+        .done(function(response) {
             $('#msgModal').modal('hide');
             console.log(response);
             if (response.message[0]==1) {
-               swal("Ok", response.message[1], "success");
-               window.location.href = "/escenarios";
+                swal("Ok", response.message[1], "success");
+                window.location.href = "/escenarios";
             } else {
-               swal("Error", response.message[1], "error");
+                swal("Error", response.message[1], "error");
             }
-         })
-         .fail(function() {
-            console.log(data);
+        })
+        .fail(function(data) {
+            // console.log("Fallo al guardar la información!");
             var err = data.responseJSON;
             var msg = "";
             $.each(err, function(key, val) {
                 msg+=val+"<br>";
             });
             $('#msgModal').modal('hide');
-            swal("Error", msg, "error");
-         });
+            swal("Error al grabar la informacion", msg, "error");
+            return false;
+        });
 
-         // var cambios = $('#dg').datagrid('getChanges');
-         // console.log(cambios);
-         // alert('Grabando cambios');
-      });
+        // var cambios = $('#dg').datagrid('getChanges');
+        // console.log(cambios);
+        // alert('Grabando cambios');
+    });
 
       $(".form-check-input").on('click', function() {
          if (curTema === 0) {

@@ -13,7 +13,7 @@
 
      <!-- Scripts -->
      <script src="{{ asset('js/app.js') }}"></script>
-     <script src="https://kit.fontawesome.com/1b585118d9.js" crossorigin="anonymous"></script>
+     {{-- <script src="https://kit.fontawesome.com/1b585118d9.js" crossorigin="anonymous"></script> --}}
 
      <!-- Fonts -->
      <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -29,6 +29,11 @@
       <link rel="stylesheet" href="https://unpkg.com/tippy.js@5/dist/backdrop.css" />
 {{--       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.2.0/sweetalert2.min.css">
       <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.2.0/sweetalert2.all.min.js"></script> --}}
+
+		<!-- SweetAlert2 -->
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.2.0/sweetalert2.min.css">
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.2.0/sweetalert2.all.min.js"></script>
+
       @yield('styles')
 </head>
 
@@ -126,6 +131,7 @@
    </script>
 
    @include('sweetalert::alert')
+	{{-- @include('sweetalert::alert', ['cdn' => "https://cdn.jsdelivr.net/npm/sweetalert2@9"]) --}}
    @yield('scripts')
 
    <script src="https://unpkg.com/popper.js@1"></script>

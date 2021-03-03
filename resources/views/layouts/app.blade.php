@@ -13,7 +13,7 @@
      <!-- Scripts -->
      {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script> --}}
      <script src="{{ asset('js/app.js') }}"></script>
-     <script src="https://kit.fontawesome.com/1b585118d9.js" crossorigin="anonymous"></script>
+     {{-- <script src="https://kit.fontawesome.com/1b585118d9.js" crossorigin="anonymous"></script> --}}
 
      <!-- Fonts -->
      <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -112,6 +112,7 @@
    </script>
 
    @include('sweetalert::alert')
+   {{-- @include('sweetalert::alert', ['cdn' => "https://cdn.jsdelivr.net/npm/sweetalert2@9"]) --}}
    {{-- <script src="https://unpkg.com/popper.js@1"></script> --}}
    <!-- Developer mode -->
    <script src="https://unpkg.com/tippy.js@5/dist/tippy-bundle.iife.js"></script>
