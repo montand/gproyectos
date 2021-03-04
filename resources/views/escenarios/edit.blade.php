@@ -252,8 +252,8 @@
             };
         var token=$('meta[name="csrf-token"]').attr('content');
         var json=JSON.stringify(objeto_json);
-        var miUrl="{{ url('/escenarios/') }}";
-        miUrl+="/"+nescen;
+        var urlEsc="{{ url('/escenarios/') }}";
+        var miUrl=urlEsc+"/"+nescen;
 
         $.ajax({
             url: miUrl,
@@ -268,12 +268,23 @@
         })
         .done(function(response) {
             $('#msgModal').modal('hide');
-            console.log(response);
+            // console.log(response);
             if (response.message[0]==1) {
-                swal("Ok", response.message[1], "success");
-                window.location.href = "/escenarios";
+                // swal("Ok", response.message[1], "success");
+                swal({
+                    position: 'top-end',
+                    type: 'success',
+                    title: response.message[1],
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+                window.location.href = urlEsc;
             } else {
-                swal("Error", response.message[1], "error");
+                swal({
+                    title: "Error",
+                    text: response.message[1],
+                    type: 'error'
+                });
             }
         })
         .fail(function(data) {
@@ -284,7 +295,12 @@
                 msg+=val+"<br>";
             });
             $('#msgModal').modal('hide');
-            swal("Error al grabar la informacion", msg, "error");
+            // swal("Error al grabar la informacion", msg, "error");
+            swal({
+                title: "Error",
+                text: msg,
+                type: 'error'
+            });
             return false;
         });
 

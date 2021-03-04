@@ -50,7 +50,6 @@
                               action="{{ route('escenarios.destroy', $item->id) }} ">
                               @method('DELETE')
                               @csrf
-
                               {{-- <button class="btn btn-danger btn-sm" type="submit">Eliminar</button> --}}
                               <button class="btn btn-danger btn-sm" type="button" onclick="return confirm('Estas seguro de eliminar?')">Eliminar</button>
                             </form>

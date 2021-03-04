@@ -133,7 +133,7 @@ $('#criterios').append(newOption).trigger('change'); --}}
             <tbody>
                 <tr id="crit0">
                     <td>
-                        <select name="criterios[]" class="form-control">
+                        <select name="criterios[]" id="criterios" class="form-control">
                             <option value="">-- seleccione el criterio --</option>
                             @foreach ($criterios as $crit)
                                 <option value="{{ $crit->id }}">{{ $crit->cnombre }}</option>

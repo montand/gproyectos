@@ -42,41 +42,41 @@ class escenarioController extends Controller
 
 	public function exportaExcel($id){
 
-        $aElem = DB::Select('SELECT e.cNombre, CONCAT(t.nomcorto,". ",t.descripcion) AS descTema
-            FROM escenarios e
-            LEFT JOIN temas t ON e.tema_id=t.id
-            WHERE e.id='.$id
-        );
-        $aTit=$aElem[0];
-        $sAno = session('glo_periodo');
+      $aElem = DB::Select('SELECT e.cNombre, CONCAT(t.nomcorto,". ",t.descripcion) AS descTema
+         FROM escenarios e
+         LEFT JOIN temas t ON e.tema_id=t.id
+         WHERE e.id='.$id
+      );
+      $aTit=$aElem[0];
+      $sAno = session('glo_periodo');
 
-        $aCrits = DB::select("SELECT CONCAT('C',c.id,'.',c.cnombre) AS crits, ce.npeso,
-            (SELECT GROUP_CONCAT(CONCAT(npuntos,' - ', cnombre) SEPARATOR '\n')
-                FROM elementos
-                WHERE criterio_id = c.id
-            ) AS elem
-        FROM critero_escenario ce
-        LEFT JOIN criterios c ON ce.criterio_id=c.id
-        WHERE ce.escenario_id=".$id);
+      $aCrits = DB::select("SELECT CONCAT('C',c.id,'.',c.cnombre) AS crits, ce.npeso,
+         (SELECT GROUP_CONCAT(CONCAT(npuntos,' - ', cnombre) SEPARATOR '\n')
+               FROM elementos
+               WHERE criterio_id = c.id
+         ) AS elem
+      FROM critero_escenario ce
+      LEFT JOIN criterios c ON ce.criterio_id=c.id
+      WHERE ce.escenario_id=".$id);
 
-        $aProy = DB::select("SELECT CONCAT(p.cclave,' - ', p.cnombre) AS proyecto,
-            IFNULL((SELECT npuntos FROM criterio_escenariodet WHERE escenariodet_id=ed.id AND criterio_id=1),0) AS C1,
-            IFNULL((SELECT npuntos FROM criterio_escenariodet WHERE escenariodet_id=ed.id AND criterio_id=2),0) AS C2,
-            IFNULL((SELECT npuntos FROM criterio_escenariodet WHERE escenariodet_id=ed.id AND criterio_id=3),0) AS C3,
-            IFNULL((SELECT npuntos FROM criterio_escenariodet WHERE escenariodet_id=ed.id AND criterio_id=4),0) AS C4,
-            IFNULL((SELECT npuntos FROM criterio_escenariodet WHERE escenariodet_id=ed.id AND criterio_id=5),0) AS C5,
-            ed.ntotpuntos
-        FROM escenariosdet AS ed
-           LEFT JOIN proyectos p ON ed.proyecto_id=p.id
-        WHERE ed.ntotpuntos>0 AND ed.escenario_id=".$id);
+      $aProy = DB::select("SELECT CONCAT(p.cclave,' - ', p.cnombre) AS proyecto,
+         IFNULL((SELECT npuntos FROM criterio_escenariodet WHERE escenariodet_id=ed.id AND criterio_id=1),0) AS C1,
+         IFNULL((SELECT npuntos FROM criterio_escenariodet WHERE escenariodet_id=ed.id AND criterio_id=2),0) AS C2,
+         IFNULL((SELECT npuntos FROM criterio_escenariodet WHERE escenariodet_id=ed.id AND criterio_id=3),0) AS C3,
+         IFNULL((SELECT npuntos FROM criterio_escenariodet WHERE escenariodet_id=ed.id AND criterio_id=4),0) AS C4,
+         IFNULL((SELECT npuntos FROM criterio_escenariodet WHERE escenariodet_id=ed.id AND criterio_id=5),0) AS C5,
+         ed.ntotpuntos
+      FROM escenariosdet AS ed
+         LEFT JOIN proyectos p ON ed.proyecto_id=p.id
+      WHERE ed.ntotpuntos>0 AND ed.escenario_id=".$id);
 
-        // $elId = Escenario::findOrfail($id);
-        // dd($aCrits);
+      // $elId = Escenario::findOrfail($id);
+    //   dd($aCrits);
 
-        ini_set('memory_limit', '-1');
-        $nombreReporte = "Formato análisis de alternativas";
+      ini_set('memory_limit', '-1');
+      $nombreReporte = "Formato análisis de alternativas";
 		$libro = new Spreadsheet();
-        $libro->setActiveSheetIndex(0);
+      $libro->setActiveSheetIndex(0);
 		$libro->getProperties()->setTitle($nombreReporte);
 		$libro->getDefaultStyle()->getFont()
 			->setName('Calibri')
@@ -85,25 +85,25 @@ class escenarioController extends Controller
 
 		$hoja->setTitle('Reporte Escenario '.$id);
 
-        $style_center = [
-            'alignment' => ['horizontal' => Alignment::HORIZONTAL_CENTER, 'vertical' => Alignment::VERTICAL_CENTER]
-        ];
+      $style_center = [
+         'alignment' => ['horizontal' => Alignment::HORIZONTAL_CENTER, 'vertical' => Alignment::VERTICAL_CENTER]
+      ];
 
-        $style_vcenter = [
-          'alignment' => ['vertical' => Alignment::VERTICAL_CENTER]
-        ];
+      $style_vcenter = [
+         'alignment' => ['vertical' => Alignment::VERTICAL_CENTER]
+      ];
 
-        $style_borders1 = [
-            'borders' => [
-               'outline' => ['style' => Border::BORDER_THIN, 'color' => ['argb' => '000000']],
-            ],
-        ];
+      $style_borders1 = [
+         'borders' => [
+            'outline' => ['style' => Border::BORDER_THIN, 'color' => ['argb' => '000000']],
+         ],
+      ];
 
-        $style_borders2 = [
-            'borders' => [
-               'outline' => ['style' => Border::BORDER_MEDIUM, 'color' => ['argb' => '000000']],
-            ],
-        ];
+      $style_borders2 = [
+         'borders' => [
+            'outline' => ['style' => Border::BORDER_MEDIUM, 'color' => ['argb' => '000000']],
+         ],
+      ];
 
         // Logo o escudo
         $oImg = new Drawing;
@@ -193,11 +193,15 @@ class escenarioController extends Controller
             $hoja->setCellValue('B'.$iRow,'PROYECTO');
             formatTitulos($hoja,'B'.$iRow,11,'Arial',1,'000000','FFFFFF');
             $iCol=2;
+            $aCritSel=[];
             foreach ($aCrits as $row) {
                 $hoja->setCellValueByColumnAndRow($iCol+1, $iRow, 'PUNTOS '.substr($row->crits,0,2));
                 formatTitulos($hoja,$aABCD[$iCol].$iRow,11,'Arial',1,'000000','FFFFFF');
+                array_push($aCritSel,substr($row->crits,0,2));
                 $iCol+=1;
             }
+            array_push($aCritSel, "ntotpuntos");
+            // dd($aProy);
             $hoja->setCellValue('F'.$iRow, 'PUNTUACIÓN TOTAL');
             formatTitulos($hoja,'F'.$iRow,11,'Arial',1,'000000','FFFFFF');
             $hoja->getRowDimension($iRow)->setRowHeight(18);
@@ -205,10 +209,12 @@ class escenarioController extends Controller
             foreach ($aProy as $row) {
                 $iCol=1;
                 foreach ($row as $key => $value) {
-                    if ($iCol>1 && $value>0) {
-                        $hoja->setCellValueByColumnAndRow($iCol+1, $iRow, $value,DataType::TYPE_NUMERIC);
-                        formatDatos($hoja,$aABCD[$iCol].$iRow,false,1);
-                        $iCol+=1;
+                    if ($iCol>1) {
+                        if (in_array($key, $aCritSel)) {
+                            $hoja->setCellValueByColumnAndRow($iCol+1, $iRow, $value,DataType::TYPE_NUMERIC);
+                            formatDatos($hoja,$aABCD[$iCol].$iRow,false,1);
+                            $iCol+=1;
+                        }
                     }elseif($iCol==1){
                         $hoja->setCellValueByColumnAndRow($iCol+1, $iRow, $value);
                         formatDatos($hoja,$aABCD[$iCol].$iRow,false,1,false);
@@ -592,12 +598,14 @@ class escenarioController extends Controller
    public function destroy($id)
    {
 
-      if(Escenario::findOrfail($id)->delete()){
-         return redirect()->route('escenarios.index')->with('success', 'El escenario fue eliminado con éxito');
-      }else{
-         return response()->json([
+        $escen=Escenario::findOrFail($id);
+        dd($escen);
+        if($escen->delete()){
+            return redirect()->route('escenarios.index')->with('success', 'El escenario fue eliminado con éxito');
+        }else{
+            return response()->json([
             'mensaje' => 'Error al eliminar el escenario !'
-         ]);
-      }
+            ]);
+        }
    }
 }

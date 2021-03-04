@@ -229,9 +229,10 @@
                  };
          var token=$('meta[name="csrf-token"]').attr('content');
          var json=JSON.stringify(objeto_json);
+         var urlEsc="{{ url('/escenarios/') }}";
          // var newJson = JSON.stringify($('#dg').datagrid('getRows'));
          $.ajax({
-            url: '/escenarios',
+            url: urlEsc,
             async: true,
             headers:{'X-CSRF-TOKEN':token },
             type: 'POST',
@@ -249,27 +250,42 @@
          })
          .done(function(response) {
             $('#msgModal').modal('hide');
-            console.log(response);
+            // console.log(response);
             if (response.message[0]==1) {
-               swal("Ok", response.message[1], "success");
+                swal({
+                    position: 'top-end',
+                    type: 'success',
+                    title: response.message[1],
+                    showConfirmButton: false,
+                    timer: 2000
+                });
                // alert()->success('Correcto', response.message[1]);
-               window.location.href = "/escenarios";
+               window.location.href = urlEsc;
             } else {
-               swal("Error", response.message[1], "error");
+                //    swal("Error", response.message[1], "error");
+                swal({
+                    title: "Error",
+                    message: response.message[1],
+                    type: 'error'
+                });
                // alert()->warning('Falta info', response.message[1]);
             }
          })
          .fail(function(data) {
-            console.log(data);
+            // console.log(data);
             var err = data.responseJSON;
             var msg = "";
             $.each(err, function(key, val) {
                 msg+=val+"<br>";
             });
             // $('#msgModal').modal('hide');
-            // swal("Error", msg, "error");
             // alert()->error('Error', msg);
-            alert('Error', msg, 'error');
+            // swal('Error', msg, 'error');
+            swal({
+                title: "Error",
+                text: msg,
+                type: 'error'
+            });
          });
 
          // var cambios = $('#dg').datagrid('getChanges');

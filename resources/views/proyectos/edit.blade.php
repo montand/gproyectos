@@ -38,17 +38,11 @@
             }
          });
 
-         $("#criterios").select2({
-            tags: true,
-            allowClear: true,
-            placeholder : "Seleccionar"
-         });
-
-         $("#elementos").select2({
-            tags: true,
-            allowClear: true,
-            placeholder : "Seleccionar"
-         });
+        //  $("#criterios").select2({
+        //     tags: true,
+        //     allowClear: true,
+        //     placeholder : "Seleccionar"
+        //  });
 
       });
    </script>

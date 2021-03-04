@@ -21,7 +21,8 @@
 
      <!-- Styles -->
      <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-     <link href="{{ asset('select2-4.0.10/dist/css/select2.css') }}" rel="stylesheet">
+     {{-- <link href="{{ asset('select2-4.0.10/dist/css/select2.css') }}" rel="stylesheet"> --}}
+     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
       <!-- dataTables -->
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.css">
@@ -53,11 +54,12 @@
          {{ config('app.name') }} | Copyright ® {{ date('Y') }}
       </footer>
   </div>
-   {{-- <script src="{{ asset('select2-4.0.10/dist/js/select2.js') }}"></script> --}}
-   {{-- <script src="https://getbootstrap.com/docs/4.0/assets/js/vendor/popper.min.js"></script> --}}
+      {{-- <script src="https://getbootstrap.com/docs/4.0/assets/js/vendor/popper.min.js"></script> --}}
    <!-- jquery -->
    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
    <script src="https://cdnjs.cloudflare.com/ajax/libs/df-number-format/2.1.6/jquery.number.min.js"></script>
+   {{-- <script src="{{ asset('select2-4.0.10/dist/js/select2.js') }}"></script> --}}
+   <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
    <!-- dataTables -->
    <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
    <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>
